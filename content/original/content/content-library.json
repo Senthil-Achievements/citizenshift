@@ -1,0 +1,41 @@
+{
+  "project": "CitizenShift",
+  "prepared_on": "2026-11-01",
+  "source_pages": [
+    {"url":"https://www.citizenshift.us/","title":"CitizenShift | Join the Movement Today","content_blocks":[
+      {"type":"hero","text":"Corporations, governments, and technology are becoming more powerful than ever. It’s imperative that the voice of the people does the same."},
+      {"type":"cta","text":"Join the Movement","href":"https://citizenshift.vercel.app/"},
+      {"type":"problem","text":"The Problem: Legislation is complex, inaccessible, and time-consuming to understand. While thousands of bills are introduced each year, most Americans do not have the time, tools, or context to track how laws affect their lives—or to effectively communicate with their elected officials. This information gap weakens civic participation and accountability."},
+      {"type":"mission","text":"Our Mission is to increase civic engagement by making legislation more accessible, understandable, and actionable for every American."},
+      {"type":"product_description","text":"We do this by bringing bills into a social-media like format personalized to every American based on geography and policy interests. We reduce barriers in communication between legislators and constituents by making it possible to contact legislators and advocate for policies with the push of a button."}
+    ]},
+    {"url":"https://www.citizenshift.us/donate","title":"Donate | Support Civic Engagement — Contribute Now — CitizenShift","content_blocks":[
+      {"type":"heading","text":"Help us Strengthen Democracy."},
+      {"type":"body","text":"CitizenShift aims to make legislation more accessible, understandable, and actionable for every American. One small donation goes a long way in supporting our mission."},
+      {"type":"donation_link","text":"DONATE","href":"https://secure.actblue.com/donate/citizenshift-1"}
+    ]},
+    {"url":"https://www.citizenshift.us/the-team","title":"The Team | Join Our Community Effort — Get Involved Now — CitizenShift","content_blocks":[
+      {"type":"heading","text":"Meet the Team"}
+    ]},
+    {"url":"https://www.citizenshift.us/contact","title":"Contact | Get in Touch Today — CitizenShift","content_blocks":[
+      {"type":"heading","text":"Contact Us"}
+    ]}
+  ],
+  "nonpartisanship": "CitizenShift does not support or oppose candidates for public office or take a stand for or against any political party.",
+  "location": "New York, NY",
+  "contact_email": "erin.chouinard@citizenshift.us",
+  "team": [
+    {"name":"Erin Chouinard","display_role":"Founder, Executive Director","bio":"Erin has worked in advocacy in local communities over the last 8 years. She brought this work to her college campus and founded an organization teaching students how to advocate on and interact with legislation. Erin has experience creating organizations from the ground up, recruiting and leading teams, and creating change.","image_url":"https://images.squarespace-cdn.com/content/v1/69264d5e4e00141d9198b545/03ca31b3-74bb-405d-b578-6d04e19817a9/Erin%2BHeadshot.jpeg"},
+    {"name":"Sav Perera","display_role":"Director of Technology","bio":"Sav is a software engineer and is pursuing his master's degree in ML specialization at the Georgia Institute of Technology. He has had experience developing frontend solutions across multiple organizations, working with React, TypeScript, Python, C++, and Java to build and improve web applications. His work has spanned performance optimization, feature development, and UI enhancements across a variety of projects.","image_url":"https://images.squarespace-cdn.com/content/v1/69264d5e4e00141d9198b545/9759e2ba-0383-4fd3-99cb-d3456a0344df/1749823320826.jpeg"},
+    {"name":"Ariana Warden","display_role":"Director of Finance (inferred from page sequence and bio; confirm)","bio":"Ariana (Director of Finance) is a financial analyst who has worked in Equities Research for three years. She has also worked at various startups in Business Development and Operations Strategy roles. Ariana graduated from Cornell University with a degree in Operations Research and Information Engineering.","image_url":"https://images.squarespace-cdn.com/content/v1/69264d5e4e00141d9198b545/1f0b4943-8d3e-4d01-8625-d2b5e411e394/1688480681094.jpeg"},
+    {"name":"Governor Jim Douglas","display_role":"Advisory Director / Advisory Board Member (source labels differ; confirm)","bio":"James Douglas (Advisory Board Member) was the 80th governor of Vermont from 2003 to 2011 and serves as a political expert on the board.","image_url":"https://images.squarespace-cdn.com/content/v1/69264d5e4e00141d9198b545/2fbca534-cb4e-4b9f-8d85-fcdfa8f14930/James-Douglas_Headshot.jpg"}
+  ],
+  "not_verified_or_not_extracted": [
+    "Standalone About page route (an /about attempt did not resolve; the homepage contains mission/problem copy)",
+    "Complete privacy policy and terms URLs",
+    "Social media destination URLs",
+    "Phone number",
+    "Complete dynamic legislation feed and its upstream API provider",
+    "Full image downloads from the existing site; team image source URLs are listed, but local copies were not fetched"
+  ]
+}

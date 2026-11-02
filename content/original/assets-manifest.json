@@ -1,0 +1,24 @@
+{
+  "production_candidates": [
+    {"file":"logo-original-client.jpg","type":"logo","status":"client-supplied original","usage":"Use as source of truth until a vector redraw is reviewed and approved.","note":"The uploaded source is low resolution; do not silently replace with the generated emblem-only concept."},
+    {"file":"civic-hero-capitol-community-ai.png","type":"photography","status":"AI-generated illustration/photo asset","usage":"Potential home hero / editorial section background.","note":"Illustrative, not documentary. Do not suggest the depicted gathering is an actual event."},
+    {"file":"civic-townhall-ai.png","type":"photography","status":"AI-generated illustration/photo asset","usage":"Potential civic participation / town-hall section."},
+    {"file":"civic-policy-reading-ai.png","type":"photography","status":"AI-generated illustration/photo asset","usage":"Potential explain-legislation / research section."}
+  ],
+  "concept_only": [
+    {"file":"logo-upscale-emblem-concept.png","type":"logo concept","status":"unapproved concept","usage":"Visual exploration only; not a production logo / wordmark."},
+    {"file":"../reference/early-design-concept-board-reference-only.png","type":"design board","status":"reference only","usage":"Do not use as production asset. Contains placeholder team identities and invented metrics."}
+  ],
+  "external_client_assets": [
+    {"name":"Erin Chouinard headshot","url":"https://images.squarespace-cdn.com/content/v1/69264d5e4e00141d9198b545/03ca31b3-74bb-405d-b578-6d04e19817a9/Erin%2BHeadshot.jpeg","status":"found on live team page; permission / currentness to confirm"},
+    {"name":"Sav Perera image","url":"https://images.squarespace-cdn.com/content/v1/69264d5e4e00141d9198b545/9759e2ba-0383-4fd3-99cb-d3456a0344df/1749823320826.jpeg","status":"found on live team page; permission / currentness to confirm"},
+    {"name":"Ariana Warden image","url":"https://images.squarespace-cdn.com/content/v1/69264d5e4e00141d9198b545/1f0b4943-8d3e-4d01-8625-d2b5e411e394/1688480681094.jpeg","status":"found on live team page; permission / currentness to confirm"},
+    {"name":"Jim Douglas headshot","url":"https://images.squarespace-cdn.com/content/v1/69264d5e4e00141d9198b545/2fbca534-cb4e-4b9f-8d85-fcdfa8f14930/James-Douglas_Headshot.jpg","status":"found on live team page; permission / currentness to confirm"}
+  ],
+  "references": [
+    {"file":"../reference/current-public-homepage-screenshot.png","type":"client screenshot","usage":"Current public website visual reference"},
+    {"file":"../reference/current-legislation-dashboard-screenshot.png","type":"client screenshot","usage":"Current feature / card / control inventory"},
+    {"file":"../reference/client-color-palette-reference.png","type":"client brand guide","usage":"Exact palette source"},
+    {"file":"../reference/pinterest-carousel-video-montage.jpg","type":"interaction reference","usage":"Horizontal carousel interaction inspiration only; source video shows travel destination cards, not a civic UI"}
+  ]
+}

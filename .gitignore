@@ -30,3 +30,8 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Large archives — deliberately excluded from permanent history
+# (decision: "Code + assets, no archives")
+*.zip
+*.mp4

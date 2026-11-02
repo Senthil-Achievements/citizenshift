@@ -133,10 +133,10 @@ function BillCardBase({
         </p>
       </div>
 
-      {/* summary */}
+      {/* summary — official text first; AI never stands in for it */}
       <div className="flex flex-1 flex-col pl-5 pr-5 sm:pl-6">
         <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-navy/75">
-          {bill.aiSummary?.summary || bill.summary}
+          {bill.full_summary || bill.summary || bill.aiSummary?.summary}
         </p>
       </div>
 

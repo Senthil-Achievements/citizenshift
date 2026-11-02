@@ -1,0 +1,79 @@
+{
+  "prepared_on": "2026-11-01",
+  "records_are_only_the_two_visible_in_client_dashboard_screenshot": true,
+  "records": [
+    {
+      "id":"119-hr-10870",
+      "congress":119,
+      "session":2,
+      "bill_type":"hr",
+      "bill_number":10870,
+      "display_number":"H.R. 10870",
+      "chamber":"House",
+      "title":"Military Domestic Violence Survivors Support Act",
+      "introduced_date":"2026-10-22",
+      "latest_action_date":"2026-10-22",
+      "latest_action":"Referred to the House Committee on Armed Services.",
+      "sponsor":"Rep. Maggie Goodlander",
+      "committee":"House Committee on Armed Services",
+      "official_policy_area":"Armed Forces and National Security",
+      "citizenshift_topic":"Unclassified",
+      "status":"Introduced / referred to committee",
+      "old_dashboard_identifier":"HB10870",
+      "old_dashboard_summary_bullets":[
+        "Extends Special Victims’ Counsel services to domestic violence victims in the military.",
+        "Amends title 10 provisions, expanding who can receive domestic violence victim advocacy.",
+        "Effective two years after enactment; requires a briefing to Congress within one year of enactment."
+      ],
+      "editorial_summary_note":"Cross-referenced secondary legislative summaries say the bill would amend 10 U.S.C. §1044e to add domestic violence cases to Special Victims’ Counsel services, take effect two years after enactment, and require a Pentagon briefing within one year. Recheck against the official text before release.",
+      "official_record_url":"https://www.congress.gov/bill/119th-congress/house-bill/10870",
+      "govinfo_package_url":"https://www.govinfo.gov/app/details/BILLS-119hr10870ih",
+      "verification_status":"Metadata/title/intro date/latest action cross-referenced; official full-text retrieval incomplete in this audit. Summary requires direct bill-text validation.",
+      "source_notes":[
+        "Client dashboard screenshot showed the bill title, HB10870, status, and bullets.",
+        "A public legislative record page identifies the official H.R. 10870 record and its referral to Armed Services.",
+        "Independent bill summaries describe the Title 10 / effective-date provisions."
+      ]
+    },
+    {
+      "id":"119-hr-10905",
+      "congress":119,
+      "session":2,
+      "bill_type":"hr",
+      "bill_number":10905,
+      "display_number":"H.R. 10905",
+      "chamber":"House",
+      "title":"No Personal Data in Grocery Pricing Act",
+      "introduced_date":"2026-10-22",
+      "latest_action_date":"2026-10-22",
+      "latest_action":"Referred to the House Committee on Energy and Commerce.",
+      "sponsor":"Rep. Eugene Simon Vindman",
+      "committee":"House Committee on Energy and Commerce",
+      "official_policy_area":null,
+      "citizenshift_topic":"Technology & Privacy",
+      "status":"Introduced / referred to committee",
+      "old_dashboard_identifier":"HB10905",
+      "old_dashboard_summary_bullets":[
+        "A covered operator may not use individualized pricing, dynamic pricing, or facial recognition or other biometric data to set item prices.",
+        "Enforcement is through the Federal Trade Commission; state attorneys general can bring actions under the bill's requirements.",
+        "The bill defines covered operators/stores and pricing/data terms; the provisions would take effect one year after enactment."
+      ],
+      "verified_plain_english_summary":"The introduced bill would prohibit covered food-store operators and online platforms from using individualized pricing, biometric/facial-recognition data to set prices, or dynamic pricing. It includes specified permitted practices (including coupons, voluntary loyalty discounts, certain publicly disclosed discounts, markdowns and disclosed service fees), provides FTC enforcement, authorizes qualifying state attorneys general to bring civil actions, preserves stronger state-law protections, and takes effect one year after enactment.",
+      "official_record_url":"https://www.congress.gov/bill/119th-congress/house-bill/10905",
+      "official_bill_text_url":"https://www.govinfo.gov/content/pkg/BILLS-119hr10905ih/pdf/BILLS-119hr10905ih.pdf",
+      "verification_status":"Title, bill number, introduced date, referred committee and key prohibitions/exceptions/enforcement/effective-date details checked against official GovInfo introduced bill text and current index records.",
+      "source_notes":[
+        "Client dashboard screenshot showed the bill title, HB10905, status, Technology & Privacy topic, and bullets.",
+        "Official GovInfo PDF is the introduced H.R. 10905 bill text.",
+        "Official bill text includes the FTC enforcement and state attorney-general civil-action provisions, defined terms and one-year effective date."
+      ]
+    }
+  ],
+  "important_rules": [
+    "Do not label proposed bills as enacted laws.",
+    "Use H.R. in the visible bill number for House bills; store bill_type=hr.",
+    "Keep official_policy_area separate from Citizenshift's curated topic labels.",
+    "Keep official CRS summaries separate from CitizenShift-written or AI-assisted explanations.",
+    "Each editorial summary must cite the specific bill version and be rechecked when that version changes."
+  ]
+}

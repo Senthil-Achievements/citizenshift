@@ -1,0 +1,14 @@
+# Original content must be byte-identical forever.
+# These files are checksummed in content/original/SHA256SUMS.txt.
+# Marking them -text stops Git converting line endings on checkout,
+# which would otherwise invalidate every hash.
+content/original/** -text
+content/original/SHA256SUMS.txt -text
+
+# Scripts keep LF so they run identically everywhere.
+*.ps1 text eol=lf
+*.mjs text eol=lf
+
+# Source stays as-is; do not normalise existing files.
+*.ts text
+*.tsx text

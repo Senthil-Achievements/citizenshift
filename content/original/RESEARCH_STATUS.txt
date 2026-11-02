@@ -1,0 +1,18 @@
+CitizenShift pre-build research status (2026-11-01)
+
+COMPLETED IN THIS PASS
+- Manual review of accessible public site routes: /, /donate, /the-team, /contact.
+- Extracted public mission, problem statement, product description, donation copy, contact details, nonpartisanship declaration, team bios.
+- Captured public route and CTA destination problem.
+- Inspected app text shell and current dashboard screenshot.
+- Cross-checked the two visible bill examples against official/independent legislative sources; H.R. 10905 key text checked against official GovInfo introduced bill PDF.
+- Prepared content, example bill records, source assessment, brand tokens and asset manifest.
+- Copied supplied logo, generated civic images, client screenshots and interaction reference into this pack.
+
+NOT COMPLETED / BLOCKED
+- A full Firecrawl map+crawl has not run. The previously pasted API key must be revoked and replaced. No replacement secret has been installed in a secure runtime.
+- The existing app's actual upstream API/provider is not conclusively identified because the public app only exposes "Loading bills..." to text extraction and the app source/network logs were not available.
+- Only two bill records visible in the client screenshot are extracted here. The complete dynamic feed, any remaining cards and the exact meaning of the 1-of-6 indicator are unknown.
+- H.R. 10870's official bill text file was not directly retrieved during this pass; its summary should be checked against the official text before production.
+- Team role display order needs client confirmation; external team portrait usage should be reconfirmed.
+- State/local legislative sources, district matching, representative lookup and authentication provider remain undefined.

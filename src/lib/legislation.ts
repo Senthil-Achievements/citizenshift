@@ -74,13 +74,21 @@ export function matchesTopic(bill: Bill, topic: string): boolean {
   return haystack.includes(topic.toLowerCase()) || bill.policy_area === topic;
 }
 
+/**
+ * Official title first — never let AI-generated text stand in for it.
+ * See docs/content-fidelity-policy.md §2.3.
+ */
 export function billTitle(bill: Bill): string {
-  return bill.aiSummary?.title || bill.full_title || bill.title;
+  return bill.full_title || bill.title || bill.aiSummary?.title || "";
 }
 
+/**
+ * Official summary bullets first; AI bullets only when no official ones exist.
+ * See docs/content-fidelity-policy.md §2.3.
+ */
 export function billBullets(bill: Bill): string[] {
-  if (bill.aiSummary?.summaryBullets?.length) return bill.aiSummary.summaryBullets;
   if (bill.summary_bullets && bill.summary_bullets.length > 1) return bill.summary_bullets;
+  if (bill.aiSummary?.summaryBullets?.length) return bill.aiSummary.summaryBullets;
   return [];
 }
 

@@ -1,0 +1,15 @@
+# CitizenShift original content - SHA-256 checksum manifest
+# Generated: 2026-11-02
+# Verify with: powershell -ExecutionPolicy Bypass -File content/original/verify.ps1
+# Any changed hash means original content was modified.
+# Restore from citizenshift_research_pack.zip if so.
+
+73d8bcf3046eb5fe3e19ac42df9fe406a8adc69ff09cc85a765add5b6379fc19  assets-manifest.json
+cb4fef5f8a099ce95a86ce6fd496d24e1fd544ce6b082887574faacc5d939e92  brand-design-system.md
+e178c2284b5537d3859e4a2be8e02c588bbaba4981dc4b7d4367b3792b1a503f  brand-design-tokens.json
+069991b29f0e270892c0e021ab4fbcce346b864360d2e60b06dd8733c54c3333  content/content-library.json
+f377d084fc4103c62f10a00d3b6a3c265ff49f55464389ee1445c84c92027ecf  content/verified-example-bills.json
+d889fd7346853dcd2ae8b4fec58ca55b2416263ad165f8aac83933227f1e7042  PACK-README.md
+cd82e493513a03015b97ca59f3fdda2128adb8aa533574960785412bd3e541e9  research/legislation-data-audit.md
+7110b11b96a600857dc3142a368e2b5c37597f616470a8543f5d7a5aacaaea28  research/website-audit.md
+6e9c13132e6e89f1021eee71c519fe4566836fcdaeea98162cac869e884a1389  RESEARCH_STATUS.txt

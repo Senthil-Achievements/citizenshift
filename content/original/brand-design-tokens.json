@@ -1,0 +1,24 @@
+{
+  "brand":"CitizenShift",
+  "source":"Client-provided palette reference image",
+  "colors":{
+    "icyBlue":{"hex":"#B3E5FC","role":"primary field / 60% visual balance"},
+    "berryRed":{"hex":"#C2121F","role":"primary accent / 30% visual balance"},
+    "navy":{"hex":"#173B57","role":"anchor, navigation, text / 10% visual balance"},
+    "softWhite":{"hex":"#F8FBFD","role":"supporting neutral surface"},
+    "white":{"hex":"#FFFFFF","role":"pure text and surface contrast"},
+    "ink":{"hex":"#0B2438","role":"body/headline ink"},
+    "muted":{"hex":"#5C7282","role":"secondary text on light surfaces"},
+    "border":{"hex":"#C9DDE8","role":"subtle borders"}
+  },
+  "colorBalance":{"primarySurfacePercent":60,"secondaryAccentPercent":30,"anchorPercent":10,"note":"The 60 and 30 portions can trade between Icy Blue and Berry Red by section; Soft White is a supporting neutral."},
+  "typography":{
+    "display":{"family":"Space Grotesk","weights":[500,600,700]},
+    "body":{"family":"Inter","weights":[400,500,600]},
+    "scale":{"xs":"0.75rem","sm":"0.875rem","base":"1rem","lg":"1.125rem","xl":"1.25rem","2xl":"1.5rem","3xl":"1.875rem","4xl":"2.25rem","5xl":"3rem","6xl":"3.75rem","hero":"clamp(3rem, 8vw, 8rem)"}
+  },
+  "layout":{"maxWidth":"1440px","desktopColumns":12,"tabletColumns":8,"mobileColumns":4,"pageGutter":"clamp(1rem, 3vw, 3rem)","sectionSpacing":"clamp(4rem, 8vw, 9rem)"},
+  "shape":{"cardRadius":"18px","panelRadius":"28px","buttonRadius":"999px","borderWidth":"1px"},
+  "motion":{"scroll":"Lenis","scrollTriggers":"GSAP ScrollTrigger","microInteractions":"CSS / GSAP","reducedMotion":"Honor prefers-reduced-motion"},
+  "framework":{"app":"Next.js App Router","language":"TypeScript","styles":"Tailwind CSS"}
+}
