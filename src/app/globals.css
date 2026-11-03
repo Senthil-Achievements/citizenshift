@@ -237,6 +237,49 @@ body {
 }
 
 /* ============================================================
+   Widening Dome Opening Transition (Florist reference)
+   ============================================================ */
+
+#opening {
+  position: relative;
+  background: var(--color-navy-900);
+}
+
+.op__hold {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  height: 100svh;
+  min-height: 580px;
+  overflow: clip visible;
+}
+
+.op__night {
+  position: relative;
+  z-index: 10;
+  min-height: 100svh;
+  overflow: clip;
+  background: var(--color-paper);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .op__night {
+    will-change: clip-path;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .op__hold {
+    position: relative !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+  .op__night {
+    clip-path: none !important;
+  }
+}
+
+/* ============================================================
    Reduced motion
    ============================================================ */
 
