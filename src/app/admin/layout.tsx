@@ -19,7 +19,8 @@
 
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { requireAdmin, NotAuthenticatedError, verifySession } from "@/lib/supabase/server";
+import { verifySession } from "@/lib/supabase/server";
+import { getCmsPrincipal } from "@/lib/cms/guard";
 import { SupabaseConfigurationError } from "@/lib/supabase/env";
 import { AUTH_ROUTES, safeInternalRedirect } from "@/config/auth-routes";
 import { AdminNav } from "@/components/admin/AdminNav";
@@ -35,11 +36,12 @@ function Forbidden() {
         <div className="max-w-lg border hairline bg-paper p-8">
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-berry">403 — Forbidden</p>
           <h1 className="mt-3 font-display text-3xl font-semibold text-navy">
-            You don't have admin access.
+            You don&apos;t have admin access.
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-navy/70">
-            Your account is not on the administrator allowlist. Access to this area is
-            granted server-side and cannot be changed from the browser.
+            This area is restricted. Access is granted server-side — administrators come from a
+            private allowlist, editors are granted roles in the dashboard — and cannot be changed
+            from the browser.
           </p>
           <Link
             href={AUTH_ROUTES.afterLogout}
@@ -68,24 +70,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     throw err;
   }
 
-  // Authorized admin?
-  let admin;
-  try {
-    admin = await requireAdmin();
-  } catch (err) {
-    if (err instanceof NotAuthenticatedError) {
-      redirect(`${AUTH_ROUTES.login}?next=${encodeURIComponent("/admin")}`);
-    }
-    if (err instanceof SupabaseConfigurationError) {
-      return <NotConfiguredNotice area="Admin" missing={err.missing} />;
-    }
-    throw err;
-  }
-
-  if (!admin) {
-    // Real 403 — not a soft redirect that would mask the failure.
+  // Resolve the CMS principal: allowlist admin, granted editor, or nobody.
+  const principal = await getCmsPrincipal();
+  if (!principal) {
+    // A signed-in user without a CMS role gets a real 403 — not a login loop.
     return <Forbidden />;
   }
+  const isAdmin = principal.role === "admin";
 
   return (
     <div className="min-h-screen bg-icy-50">
@@ -96,7 +87,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               CitizenShift
             </Link>
             <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-berry">
-              Admin
+              Admin · {principal.role}
             </span>
           </div>
           <Link
@@ -109,7 +100,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       </header>
 
       <div className="shell py-8">
-        <AdminNav />
+        <AdminNav role={principal.role} />
         <main className="mt-6">{children}</main>
       </div>
     </div>

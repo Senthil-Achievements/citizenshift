@@ -47,6 +47,16 @@ export const AUTH_ROUTES = {
   /* --- admin --- */
   adminIntegrations: "/admin/integrations/supabase",
   adminCustomers: "/admin/customers",
+  adminDashboard: "/admin",
+  adminLegislation: "/admin/legislation",
+  adminSponsors: "/admin/sponsors",
+  adminCategories: "/admin/categories",
+  adminLinks: "/admin/links",
+  adminPages: "/admin/pages",
+  adminUsers: "/admin/users",
+  adminCommunity: "/admin/community",
+  adminSettings: "/admin/settings",
+  adminAudit: "/admin/audit",
 
   /* --- legal: client-supplied, null until provided --- */
   privacyPolicy: null,
