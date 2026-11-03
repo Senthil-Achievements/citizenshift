@@ -724,3 +724,86 @@ export async function whoAmIAction(): Promise<
     },
   };
 }
+
+
+/* ------------------------------------------------------------------ */
+/* Testimonials (Public submission + Admin review)                    */
+/* ------------------------------------------------------------------ */
+
+import * as cmsTestimonials from "@/lib/cms/testimonials";
+import type { TestimonialRow, TestimonialUpdate, TestimonialSubmitInput } from "@/lib/cms/types";
+import { getAdminClient, isAdminClientAvailable } from "@/lib/supabase/admin";
+
+export async function submitPublicTestimonialAction(
+  input: TestimonialSubmitInput & { hp_website?: string },
+): Promise<ActionEnvelope<{ id: string }>> {
+  // 1. Spam protection honeypot
+  if (input.hp_website && input.hp_website.trim().length > 0) {
+    // Bot filled hidden field — silently reject without revealing mechanism
+    return { ok: true, data: { id: "spam_filtered" } };
+  }
+
+  // 2. Validate consent explicitly
+  if (!input.consent_given) {
+    return { ok: false, code: "invalid", message: "Explicit permission to publish is required." };
+  }
+
+  const db = isAdminClientAvailable() ? getAdminClient() : null;
+  const res = await cmsTestimonials.submitTestimonial(db, input);
+  if (!res.ok) return { ok: false, code: res.code, message: res.message };
+  return { ok: true, data: { id: res.id } };
+}
+
+export async function listTestimonialsAction(
+  filters: cmsTestimonials.ListTestimonialOpts = {},
+): Promise<ActionEnvelope<{ rows: TestimonialRow[]; total: number }>> {
+  const ctx = await requireCmsContext();
+  if (!ctx.ok) return { ok: false, code: ctx.code };
+  const res = await cmsTestimonials.listAdminTestimonials(ctx.ctx.db, filters);
+  if (res.error) return fail(res.error);
+  return { ok: true, data: { rows: res.rows, total: res.total } };
+}
+
+export async function updateTestimonialAction(
+  id: string,
+  patch: TestimonialUpdate,
+): Promise<ActionEnvelope<{ row: TestimonialRow }>> {
+  const ctx = await requireCmsContext();
+  if (!ctx.ok) return { ok: false, code: ctx.code };
+  const res = await cmsTestimonials.updateTestimonial(ctx.ctx.db, id, patch, actorOf(ctx.ctx));
+  if (!res.ok) return fail(res);
+  return { ok: true, data: { row: res.row } };
+}
+
+export async function setTestimonialStatusAction(
+  id: string,
+  status: "pending" | "approved" | "rejected",
+  notes?: string,
+): Promise<ActionEnvelope<{ row: TestimonialRow }>> {
+  const ctx = await requireCmsContext();
+  if (!ctx.ok) return { ok: false, code: ctx.code };
+  const res = await cmsTestimonials.setTestimonialStatus(ctx.ctx.db, id, status, notes, actorOf(ctx.ctx));
+  if (!res.ok) return fail(res);
+  return { ok: true, data: { row: res.row } };
+}
+
+export async function setTestimonialFeatureAction(
+  id: string,
+  is_featured: boolean,
+): Promise<ActionEnvelope<{ row: TestimonialRow }>> {
+  const ctx = await requireCmsContext();
+  if (!ctx.ok) return { ok: false, code: ctx.code };
+  const res = await cmsTestimonials.setTestimonialFeature(ctx.ctx.db, id, is_featured, actorOf(ctx.ctx));
+  if (!res.ok) return fail(res);
+  return { ok: true, data: { row: res.row } };
+}
+
+export async function deleteTestimonialAction(
+  id: string,
+): Promise<ActionEnvelope<{ deleted: true }>> {
+  const ctx = await requireCmsContext();
+  if (!ctx.ok) return { ok: false, code: ctx.code };
+  const res = await cmsTestimonials.deleteTestimonial(ctx.ctx.db, id, actorOf(ctx.ctx));
+  if (!res.ok) return fail(res);
+  return { ok: true, data: { deleted: true } };
+}

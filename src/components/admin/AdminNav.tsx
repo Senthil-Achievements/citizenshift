@@ -18,6 +18,7 @@ const LINKS = [
   { href: AUTH_ROUTES.adminLinks, label: "Links", adminOnly: false },
   { href: AUTH_ROUTES.adminPages, label: "Pages", adminOnly: false },
   { href: AUTH_ROUTES.adminCommunity, label: "Community", adminOnly: false },
+  { href: AUTH_ROUTES.adminTestimonials, label: "Testimonials", adminOnly: false },
   { href: AUTH_ROUTES.adminAudit, label: "Audit log", adminOnly: false },
   { href: AUTH_ROUTES.adminUsers, label: "Users", adminOnly: true },
   { href: AUTH_ROUTES.adminSettings, label: "Settings", adminOnly: true },

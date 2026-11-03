@@ -275,3 +275,68 @@ export interface ChannelRow {
 export type ChannelUpdate = Partial<
   Pick<ChannelRow, "slug" | "name" | "topic" | "description" | "is_active" | "sort_order">
 >;
+
+
+/* ---------------------------- testimonials ---------------------------- */
+
+export interface TestimonialRow {
+  id: string;
+  full_name: string;
+  email: string;
+  organization: string | null;
+  role: string | null;
+  testimonial_text: string;
+  quote_highlight: string | null;
+  avatar_url: string | null;
+  video_url: string | null;
+  video_provider: "direct" | "youtube" | "vimeo" | null;
+  video_duration_seconds: number | null;
+  consent_given: boolean;
+  consent_timestamp: string;
+  status: "pending" | "approved" | "rejected";
+  publish_state: "draft" | "published" | "archived";
+  is_featured: boolean;
+  sort_order: number;
+  moderated_by: string | null;
+  moderated_at: string | null;
+  moderation_notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type PublicTestimonial = Omit<
+  TestimonialRow,
+  "email" | "moderated_by" | "moderated_at" | "moderation_notes"
+>;
+
+export interface TestimonialSubmitInput {
+  full_name: string;
+  email: string;
+  organization?: string;
+  role?: string;
+  testimonial_text: string;
+  quote_highlight?: string;
+  avatar_url?: string;
+  video_url?: string;
+  video_provider?: "direct" | "youtube" | "vimeo" | null;
+  consent_given: boolean;
+}
+
+export type TestimonialUpdate = Partial<
+  Pick<
+    TestimonialRow,
+    | "full_name"
+    | "organization"
+    | "role"
+    | "testimonial_text"
+    | "quote_highlight"
+    | "avatar_url"
+    | "video_url"
+    | "video_provider"
+    | "status"
+    | "publish_state"
+    | "is_featured"
+    | "sort_order"
+    | "moderation_notes"
+  >
+>;

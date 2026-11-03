@@ -55,8 +55,13 @@ export const AUTH_ROUTES = {
   adminPages: "/admin/pages",
   adminUsers: "/admin/users",
   adminCommunity: "/admin/community",
+  adminTestimonials: "/admin/testimonials",
   adminSettings: "/admin/settings",
   adminAudit: "/admin/audit",
+
+  /* --- testimonials --- */
+  testimonials: "/testimonials",
+  testimonialsSubmit: "/testimonials/submit",
 
   /* --- legal: client-supplied, null until provided --- */
   privacyPolicy: null,
