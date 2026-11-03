@@ -1,0 +1,54 @@
+# Original bill URLs supplied by the client for exact reproduction.
+# Format: <bill_id>\t<original_page_url>
+# Titles below are the client's supplied titles — the authoritative copy is
+# fetched from the original API and stored under content/original/bills/.
+2161532	https://citizenshift.vercel.app/bills/2161532
+2161533	https://citizenshift.vercel.app/bills/2161533
+2161530	https://citizenshift.vercel.app/bills/2161530
+2161531	https://citizenshift.vercel.app/bills/2161531
+2161525	https://citizenshift.vercel.app/bills/2161525
+2161200	https://citizenshift.vercel.app/bills/2161200
+2161524	https://citizenshift.vercel.app/bills/2161524
+2161201	https://citizenshift.vercel.app/bills/2161201
+2161527	https://citizenshift.vercel.app/bills/2161527
+2161202	https://citizenshift.vercel.app/bills/2161202
+2161526	https://citizenshift.vercel.app/bills/2161526
+2161203	https://citizenshift.vercel.app/bills/2161203
+2161213	https://citizenshift.vercel.app/bills/2161213
+2161521	https://citizenshift.vercel.app/bills/2161521
+2161204	https://citizenshift.vercel.app/bills/2161204
+2161212	https://citizenshift.vercel.app/bills/2161212
+2161205	https://citizenshift.vercel.app/bills/2161205
+2161211	https://citizenshift.vercel.app/bills/2161211
+2161275	https://citizenshift.vercel.app/bills/2161275
+2161517	https://citizenshift.vercel.app/bills/2161517
+2161208	https://citizenshift.vercel.app/bills/2161208
+2161209	https://citizenshift.vercel.app/bills/2161209
+2161210	https://citizenshift.vercel.app/bills/2161210
+2161277	https://citizenshift.vercel.app/bills/2161277
+2161529	https://citizenshift.vercel.app/bills/2161529
+2161206	https://citizenshift.vercel.app/bills/2161206
+2161276	https://citizenshift.vercel.app/bills/2161276
+2161207	https://citizenshift.vercel.app/bills/2161207
+2161274	https://citizenshift.vercel.app/bills/2161274
+2161280	https://citizenshift.vercel.app/bills/2161280
+2161214	https://citizenshift.vercel.app/bills/2161214
+2161215	https://citizenshift.vercel.app/bills/2161215
+2161273	https://citizenshift.vercel.app/bills/2161273
+2161281	https://citizenshift.vercel.app/bills/2161281
+2161216	https://citizenshift.vercel.app/bills/2161216
+2161217	https://citizenshift.vercel.app/bills/2161217
+2161272	https://citizenshift.vercel.app/bills/2161272
+2161218	https://citizenshift.vercel.app/bills/2161218
+2161219	https://citizenshift.vercel.app/bills/2161219
+2161220	https://citizenshift.vercel.app/bills/2161220
+2161528	https://citizenshift.vercel.app/bills/2161528
+2161523	https://citizenshift.vercel.app/bills/2161523
+2161221	https://citizenshift.vercel.app/bills/2161221
+2161271	https://citizenshift.vercel.app/bills/2161271
+2161522	https://citizenshift.vercel.app/bills/2161522
+2161222	https://citizenshift.vercel.app/bills/2161222
+2161223	https://citizenshift.vercel.app/bills/2161223
+2161278	https://citizenshift.vercel.app/bills/2161278
+2161520	https://citizenshift.vercel.app/bills/2161520
+2161279	https://citizenshift.vercel.app/bills/2161279

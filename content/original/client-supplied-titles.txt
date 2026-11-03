@@ -1,0 +1,54 @@
+# Titles exactly as supplied by the client alongside each URL.
+# Used ONLY to cross-check against what the original site actually serves.
+# The authoritative content is content/original/rendered/captured-50.json.
+# Format: <bill_id>\t<client-supplied title>
+2161532	To amend the Controlled Substances Act to better align such Act with modern medical knowledge, establish a new system for the scheduling of controlled substances, redelegate certain authorities, promote scientific research, and for other purposes
+2161533	To amend the Voting Rights Act of 1965 to prohibit destroying or damaging ballot boxes, and for other purposes
+2161530	Recognizing the contributions of Hispanic and Latino servicemembers in the United States Armed Forces and promoting Hispanic and Latino leadership within all branches of the military
+2161531	To amend the Internal Revenue Code of 1986 to exclude from gross income certain retirement plan distributions used for a down payment or closing costs for a principal residence, and for other purposes
+2161525	To rename the Office of Technology Assessment as the Congressional Office of Technology, to revise the functions and duties of the Office, and for other purposes
+2161200	Locality Pay Adjustment Act
+2161524	To amend the Social Security Act to establish a Medicare for America health program to provide for comprehensive health coverage for all Americans
+2161201	Protect Clean Water Act
+2161527	To amend title XXVII of the Public Health Service Act to ensure the equitable treatment of covered entities and pharmacies participating in the 340B drug discount program, and for other purposes
+2161202	Disaster Data Protection Act
+2161526	Breast Cancer Patient Equity Act
+2161203	Ronald Reagan Peace Through Strength Act of 2026
+2161213	To amend the Federal Food, Drug, and Cosmetic Act and Public Health Service Act to advance the next-generation of clinical development of novel treatments and cures, and for other purposes
+2161521	To amend title 38, United States Code, to extend the veterans' employment emphasis under Federal contracts to military spouses, to increase thresholds relating to the applicability of such emphases, and for other purposes
+2161204	Vets and Pets Act
+2161212	To provide additional options on certain federal application forms to allow an individual to elect to be an organ donor and for other purposes
+2161205	Sami’s Law
+2161211	American Home Mobility Act
+2161275	Eliminating Dangerous Preservatives Act
+2161517	To amend title 11, United States Code, to prohibit the payment of bonuses to highly compensated individuals employed by the debtor and insiders of the debtor to perform services during the bankruptcy case, and for other purposes
+2161208	To amend titles II and XVIII of the Social Security Act to lower the Medicare eligibility age to 50, and for other purposes
+2161209	Brews to Barns Act of 2026
+2161210	Truth and Accountability Commission Act
+2161277	Wildfire Emergency Act of 2026
+2161529	Expressing the sense of the House of Representatives that Congress must refuse to provide any additional funds or exceptional regulatory support to companies or financial institutions facing insolvency or financial collapse due to exposures to acute stress within the artificial intelligence market and must provide support to all harmed Americans instead
+2161206	Biotech Defense Act
+2161276	American Cost of Living Defense Act
+2161207	Tell the Government Once Act
+2161274	U.S. Swine Health Improvement Plan Act of 2026
+2161280	Honoring and commemorating United Baptist Church's 100 years of historic contributions to the Akron and surrounding communities
+2161214	Protecting Students from Sexually Explicit Materials Act
+2161215	QUAHOGS Act of 2026 Quantifying Uncertainty and Action to Help Optimize Growth of Shellfish Act of 2026
+2161273	Fast Tracking European Investment in Ukraine’s Defense Act
+2161281	Expressing support for the recognition of October 26, 2026, as Intersex Awareness Day, and supporting the goals and ideals of Intersex Awareness Day
+2161216	Combatting Auto Robbery at the Source Act of 2026
+2161217	Military Suicide Prevention Oversight Act
+2161272	Dunkin’s Law
+2161218	Stop Beijing’s Bots Act
+2161219	Military Family Relocation Support Act
+2161220	San Carlos Irrigation Project Divestiture Act of 2026
+2161528	Honoring the contributions of Indian Americans and supporting the designation of July as "Indian American Heritage Month"
+2161523	To direct the Administrator of the Environmental Protection Agency to include certain nanoplastics and microplastics on a certain list of unregulated contaminants published pursuant to the Safe Drinking Water Act, and for other purposes
+2161221	Dual Citizen Disclosure Act
+2161271	Deaths in Custody Reporting Reform Act
+2161522	To direct the Administrator of the Federal Emergency Management Agency provide to the requesting State or Indian tribe the recommendation report for a major disaster declaration, to develop factors for recommending a declaration of a major disaster for a snowstorm or other snowfall event, and for other purposes
+2161222	Teaching Engaged Citizenship Act of 2026
+2161223	Samier Amer Foster Care Improvement Act of 2026
+2161278	Socorro Vet Center Act
+2161520	Expressing support for the designation of October 2026 as "National Financial Planning Month"
+2161279	Ending Patient Runaround Act
