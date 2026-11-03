@@ -2,6 +2,7 @@ import { getAdminClient, isAdminClientAvailable } from "@/lib/supabase/admin";
 import { getCmsPrincipal } from "@/lib/cms/guard";
 import { listSettings } from "@/lib/cms/settings";
 import { SettingsManager } from "@/components/admin/SettingsManager";
+import { VantaSettingsCard } from "@/components/admin/VantaSettingsCard";
 
 export const dynamic = "force-dynamic";
 
@@ -31,19 +32,24 @@ export default async function AdminSettingsPage() {
   const db = getAdminClient();
   const res = await listSettings(db);
 
+  const vantaSetting = res.rows.find((s) => s.key === "vanta.birds_config") ?? null;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold text-navy">Site Settings</h1>
           <p className="mt-1 text-sm text-navy/60">
-            Configure global website behavior, flags and copy without editing code
+            Configure global website behavior, civic animations, flags, and copy without editing code
           </p>
         </div>
       </div>
 
+      {/* Vanta.js BIRDS Animation Engine Settings */}
+      <VantaSettingsCard existingSetting={vantaSetting} isAdmin={true} />
+
+      {/* Global Key-Value Site Settings */}
       <SettingsManager settings={res.rows} isAdmin={true} />
     </div>
   );
 }
-

@@ -1,5 +1,7 @@
 "use client";
 
+import { VantaBirds } from "@/components/vanta/VantaBirds";
+
 /**
  * Hero — cinematic editorial opening.
  * GSAP ScrollTrigger parallax + pointer-reactive drift + word-by-word reveal.
@@ -117,6 +119,7 @@ export default function Hero() {
           className="absolute inset-[-6%] bg-cover bg-[center_38%] will-change-transform"
           style={{ backgroundImage: "url(/photo/hero.jpg)" }}
         />
+        <VantaBirds className="absolute inset-0 pointer-events-none opacity-60" config={{ backgroundAlpha: 0.0, quantity: 3.0, speedLimit: 6.0, birdSize: 0.9, wingSpan: 11.0, color1: "#38bdf8", color2: "#f43f5e" }} />
         <div className="absolute inset-0 bg-gradient-to-b from-navy-900/78 via-navy-900/35 to-navy-900/80" />
         <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_15%_10%,rgba(23,59,87,0.5),transparent_60%)]" />
       </div>
