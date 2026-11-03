@@ -103,6 +103,10 @@ export function VantaBirds({
           backgroundAlpha: cfg.backgroundAlpha,
         });
 
+        if (vantaRef.current && typeof vantaRef.current.resize === "function") {
+          vantaRef.current.resize();
+        }
+
         setIsReady(true);
       } catch (err) {
         console.warn("Vanta BIRDS initialization skipped:", err);
@@ -139,16 +143,11 @@ export function VantaBirds({
   return (
     <div
       ref={containerRef}
+      data-vanta-birds="true"
       className={`relative overflow-hidden ${className}`}
       style={style}
       aria-hidden="true"
     >
-      {/* Fallback overlay before WebGL is ready */}
-      <div
-        className={`absolute inset-0 transition-opacity duration-1000 ${
-          isReady ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
-      />
       {children}
     </div>
   );

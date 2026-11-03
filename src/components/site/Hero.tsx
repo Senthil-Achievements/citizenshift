@@ -112,26 +112,44 @@ export default function Hero() {
 
   return (
     <section id="home" className="atmos grain relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-navy-900 text-paper">
-      {/* backdrop image */}
-      <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
+      {/* 1. Backdrop image of the Capitol dome + atmospheric vignette */}
+      <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         <div
           ref={imageRef}
           className="absolute inset-[-6%] bg-cover bg-[center_38%] will-change-transform"
           style={{ backgroundImage: "url(/photo/hero.jpg)" }}
         />
-        <VantaBirds className="absolute inset-0 pointer-events-none opacity-60" config={{ backgroundAlpha: 0.0, quantity: 3.0, speedLimit: 6.0, birdSize: 0.9, wingSpan: 11.0, color1: "#38bdf8", color2: "#f43f5e" }} />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-900/78 via-navy-900/35 to-navy-900/80" />
-        <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_15%_10%,rgba(23,59,87,0.5),transparent_60%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-900/75 via-navy-900/30 to-navy-900/85" />
+        <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_15%_10%,rgba(23,59,87,0.45),transparent_60%)]" />
+      </div>
+
+      {/* 2. Vanta.js BIRDS animation — soaring gracefully across the sky above Capitol */}
+      <div aria-hidden="true" className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <VantaBirds
+          className="w-full h-full"
+          config={{
+            backgroundAlpha: 0.0,
+            birdSize: 1.15,
+            wingSpan: 16.0,
+            speedLimit: 6.0,
+            separation: 85.0,
+            alignment: 80.0,
+            cohesion: 85.0,
+            quantity: 4.0,
+            color1: "#38bdf8",
+            color2: "#f43f5e",
+          }}
+        />
       </div>
 
       {/* vertical index rail */}
-      <div className="pointer-events-none absolute right-5 top-1/2 hidden -translate-y-1/2 rotate-90 xl:block">
+      <div className="pointer-events-none absolute right-5 top-1/2 hidden -translate-y-1/2 rotate-90 xl:block z-10">
         <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-icy/40">
           50 STATES — ONE RECORD — ZERO PARTISANSHIP
         </span>
       </div>
 
-      <div className="shell flex flex-1 flex-col justify-end pb-14 pt-36 sm:pb-20">
+      <div className="shell relative z-10 flex flex-1 flex-col justify-end pb-14 pt-36 sm:pb-20">
         {/* eyebrow */}
         <div className="reveal-words" data-intro>
           <p className={`mb-8 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.25em] text-icy/70 sm:gap-5 sm:text-[11px]`}>
