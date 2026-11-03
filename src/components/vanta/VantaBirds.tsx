@@ -25,10 +25,12 @@ function isWebGLAvailable(): boolean {
     const canvas = document.createElement("canvas");
     return Boolean(
       window.WebGLRenderingContext &&
-        (canvas.getContext("webgl") || canvas.getContext("experimental-webgl")),
+        (canvas.getContext("webgl2") ||
+          canvas.getContext("webgl", { failIfMajorPerformanceCaveat: false }) ||
+          canvas.getContext("experimental-webgl")),
     );
   } catch {
-    return false;
+    return true;
   }
 }
 
@@ -49,19 +51,17 @@ export function VantaBirds({
   };
 
   useEffect(() => {
-    // 1. Accessibility: Check for user preference for reduced motion
-    const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReducedMotion || !cfg.enabled) {
+    if (!cfg.enabled) {
       return;
     }
 
-    // 2. Hardware: WebGL check
     if (!isWebGLAvailable()) {
       return;
     }
+
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let isDisposed = false;
 
@@ -83,7 +83,12 @@ export function VantaBirds({
       try {
         const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
         const effectiveScaleMobile = isMobile ? Math.max(cfg.scaleMobile, 2.0) : cfg.scaleMobile;
-        const effectiveQuantity = isMobile ? Math.min(cfg.quantity, 3.0) : cfg.quantity;
+        const effectiveQuantity = prefersReducedMotion
+          ? 2.0
+          : isMobile
+            ? Math.min(cfg.quantity, 3.0)
+            : cfg.quantity;
+        const effectiveSpeed = prefersReducedMotion ? Math.min(cfg.speedLimit, 2.5) : cfg.speedLimit;
         const effectiveWingSpan = isMobile ? Math.min(cfg.wingSpan, 13.0) : cfg.wingSpan;
 
         vantaRef.current = window.VANTA.BIRDS({
@@ -97,7 +102,7 @@ export function VantaBirds({
           scaleMobile: effectiveScaleMobile,
           birdSize: cfg.birdSize,
           wingSpan: effectiveWingSpan,
-          speedLimit: cfg.speedLimit,
+          speedLimit: effectiveSpeed,
           separation: cfg.separation,
           alignment: cfg.alignment,
           cohesion: cfg.cohesion,

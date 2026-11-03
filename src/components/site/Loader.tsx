@@ -12,18 +12,25 @@ export default function Loader() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const seen = sessionStorage.getItem("citizenshift:loaded");
-    if (reduced || seen) {
+    // If user arrived with a specific anchor hash (e.g. #legislation), skip curtain
+    if (typeof window !== "undefined" && window.location.hash) {
       setPhase("done");
       document.body.style.overflow = "";
       return;
     }
 
+    const seen = sessionStorage.getItem("citizenshift:loaded");
+    if (seen) {
+      setPhase("done");
+      document.body.style.overflow = "";
+      return;
+    }
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     document.body.style.overflow = "hidden";
     const timers: ReturnType<typeof setTimeout>[] = [];
     const start = performance.now();
-    const DURATION = 1400;
+    const DURATION = reduced ? 800 : 1400;
 
     let raf = 0;
     const tick = (t: number) => {
