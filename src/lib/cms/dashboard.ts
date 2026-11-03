@@ -118,11 +118,6 @@ export async function getDashboardData(db: SupabaseClient): Promise<DashboardRes
           approved: num(testimonialsApproved) ?? 0,
         },
   };
-      : { total: num(communitiesTotal) ?? 0, published: num(communitiesPublished) ?? 0 },
-    moderationOpen: num(moderationOpen),
-    editors: num(editors),
-    links: isMissing ? null : { billLinks: num(billLinks) ?? 0, siteLinks: num(siteLinks) ?? 0 },
-  };
 
   // Recent audit activity (may itself be missing until migrations run).
   let recentActivity: AuditLogRow[] = [];

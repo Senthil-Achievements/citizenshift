@@ -22,6 +22,8 @@ import type {
 import { mapCmsError, type CmsError } from "./repository";
 import { recordAudit, type AuditActor } from "./audit";
 
+export type { TestimonialCampaign };
+
 export interface ListTestimonialOpts {
   status?: "pending" | "approved" | "rejected" | "all";
   publishState?: "draft" | "published" | "archived" | "all";
