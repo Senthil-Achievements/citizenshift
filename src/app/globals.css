@@ -34,7 +34,23 @@
 html {
   -webkit-text-size-adjust: 100%;
   scrollbar-width: thin;
-  scrollbar-color: var(--color-navy) var(--color-icy-100);
+  scrollbar-color: rgba(23, 59, 87, 0.45) transparent;
+}
+
+/* Chrome, Edge, Safari scrollbar — transparent track prevents light-blue right border */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(23, 59, 87, 0.35);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(23, 59, 87, 0.65);
 }
 
 html.lenis,
@@ -47,11 +63,13 @@ html.lenis body {
 }
 
 body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background: var(--color-paper);
   color: var(--color-navy);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  overflow-x: clip;
 }
 
 ::selection {
