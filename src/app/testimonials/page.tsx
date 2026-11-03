@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getAdminClient, isAdminClientAvailable } from "@/lib/supabase/admin";
 import { listPublicTestimonials } from "@/lib/cms/testimonials";
 import { TestimonialFeed } from "@/components/site/TestimonialFeed";
+import Testimonials3D from "@/components/site/Testimonials3D";
 
 export const metadata: Metadata = {
   title: "Civic Feedback & Testimonials — CitizenShift",
@@ -49,6 +50,16 @@ export default async function TestimonialsPage() {
         </div>
       </section>
 
+      {/* 3D Testimonials Showcase */}
+      <section className="border-b hairline bg-paper/60 py-12 overflow-hidden">
+        <div className="mx-auto max-w-6xl px-4 mb-6 text-center">
+          <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-navy/60">
+            Live Civic Pulse · Real Citizen Voices
+          </p>
+        </div>
+        <Testimonials3D />
+      </section>
+
       {/* Main feed */}
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         <TestimonialFeed testimonials={res.rows} />
@@ -58,17 +69,18 @@ export default async function TestimonialsPage() {
       <section className="border-t hairline bg-paper py-16">
         <div className="mx-auto max-w-4xl px-4 text-center">
           <h2 className="font-display text-2xl font-semibold text-navy sm:text-3xl">
-            Has CitizenShift made an impact on your civic advocacy?
+            Have you tracked a bill or reached an elected official?
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-navy/70 leading-relaxed">
-            Whether you recorded a 30-second video message or wrote a short paragraph, we want to hear your story. Submissions take under two minutes.
+          <p className="mx-auto mt-3 max-w-xl text-sm text-navy/70">
+            Share how open legislative records helped your community, school, or union. Submissions are reviewed
+            promptly by the CitizenShift editorial board.
           </p>
-          <div className="mt-6">
+          <div className="mt-6 flex justify-center gap-4">
             <Link
               href="/testimonials/submit"
-              className="inline-block rounded-full bg-navy px-7 py-3 text-xs font-semibold text-paper hover:bg-navy-600"
+              className="rounded-full bg-berry px-6 py-3 text-xs font-semibold text-paper shadow-xs transition hover:bg-berry-600"
             >
-              Submit Your Experience →
+              Submit Your Testimonial
             </Link>
           </div>
         </div>
@@ -76,4 +88,3 @@ export default async function TestimonialsPage() {
     </div>
   );
 }
-
