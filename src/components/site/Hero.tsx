@@ -129,8 +129,8 @@ export default function Hero() {
           className="w-full h-full"
           config={{
             backgroundAlpha: 0.0,
-            birdSize: 1.15,
-            wingSpan: 16.0,
+            birdSize: 0.8,
+            wingSpan: 11.0,
             speedLimit: 6.0,
             separation: 85.0,
             alignment: 80.0,

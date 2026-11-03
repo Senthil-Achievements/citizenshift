@@ -35,7 +35,7 @@ export const DEFAULT_VANTA_BIRDS_CONFIG: VantaBirdsConfig = {
   minWidth: 200.0,
   scale: 1.0,
   scaleMobile: 1.0,
-  birdSize: 0.9,
+  birdSize: 0.8,
   wingSpan: 11.0,
   speedLimit: 7.0,
   separation: 100.0,
