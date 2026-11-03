@@ -81,22 +81,27 @@ export function VantaBirds({
       }
 
       try {
+        const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+        const effectiveScaleMobile = isMobile ? Math.max(cfg.scaleMobile, 2.0) : cfg.scaleMobile;
+        const effectiveQuantity = isMobile ? Math.min(cfg.quantity, 3.0) : cfg.quantity;
+        const effectiveWingSpan = isMobile ? Math.min(cfg.wingSpan, 13.0) : cfg.wingSpan;
+
         vantaRef.current = window.VANTA.BIRDS({
           el: containerRef.current,
           mouseControls: cfg.mouseControls,
-          touchControls: cfg.touchControls,
+          touchControls: isMobile ? false : cfg.touchControls,
           gyroControls: cfg.gyroControls,
           minHeight: cfg.minHeight,
           minWidth: cfg.minWidth,
           scale: cfg.scale,
-          scaleMobile: cfg.scaleMobile,
+          scaleMobile: effectiveScaleMobile,
           birdSize: cfg.birdSize,
-          wingSpan: cfg.wingSpan,
+          wingSpan: effectiveWingSpan,
           speedLimit: cfg.speedLimit,
           separation: cfg.separation,
           alignment: cfg.alignment,
           cohesion: cfg.cohesion,
-          quantity: cfg.quantity,
+          quantity: effectiveQuantity,
           color1: hexToVantaColor(cfg.color1),
           color2: hexToVantaColor(cfg.color2),
           backgroundColor: hexToVantaColor(cfg.backgroundColor),

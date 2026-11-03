@@ -165,7 +165,7 @@ export default function Hero() {
         </div>
 
         {/* headline */}
-        <h1 className="reveal-words max-w-[15ch] font-display text-[clamp(2.85rem,8.6vw,7.25rem)] font-semibold leading-[0.98] tracking-[-0.025em]">
+        <h1 className="reveal-words max-w-[15ch] font-display text-[clamp(2.35rem,8vw,7.25rem)] font-semibold leading-[0.98] tracking-[-0.025em]">
           <Word>Bringing</Word>
           <Word>power</Word>
           <Word>to</Word>
@@ -200,7 +200,7 @@ export default function Hero() {
             <button
               type="button"
               onClick={() => setJoinOpen(true)}
-              className="rounded-full border border-paper/30 px-7 py-4 text-center text-sm font-semibold text-paper transition-all duration-300 hover:border-icy hover:bg-paper/5"
+              className="rounded-full border border-paper/30 bg-navy-900/40 backdrop-blur-sm px-7 py-4 text-center text-sm font-semibold text-paper transition-all duration-300 hover:border-icy hover:bg-paper/10"
             >
               Join the Movement
             </button>

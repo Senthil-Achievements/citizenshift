@@ -56,7 +56,8 @@ export default function Header() {
     };
   }, [menuOpen]);
 
-  const dark = overDark && !scrolled && !menuOpen;
+  const isHome = pathname === "/";
+  const dark = isHome && overDark && !scrolled && !menuOpen;
   const darkBelow = pathname !== "/"; // never used in single-page deployment, future-proof
 
   void darkBelow;
@@ -180,7 +181,7 @@ export default function Header() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="grain pointer-events-none relative flex h-full flex-col overflow-hidden">
-              <div className="shell flex flex-1 flex-col pt-16">
+              <div className="shell pointer-events-auto flex flex-1 flex-col pt-16">
                 <nav className="flex flex-1 flex-col justify-center" aria-label="Mobile">
                   {NAV.map((item, i) => (
                     <motion.div

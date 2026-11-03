@@ -35,3 +35,6 @@ Thumbs.db
 # (decision: "Code + assets, no archives")
 *.zip
 *.mp4
+
+.vercel
+.env*
