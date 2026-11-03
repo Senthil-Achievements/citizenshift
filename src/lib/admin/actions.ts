@@ -421,6 +421,16 @@ export async function listPagesAction(
   return { ok: true, data: { rows: res.rows, total: res.total } };
 }
 
+export async function createPageAction(
+  input: { slug?: string; title: string; sections?: unknown; publish_state?: SitePageRow["publish_state"] },
+): Promise<ActionEnvelope<{ row: SitePageRow }>> {
+  const ctx = await requireCmsContext();
+  if (!ctx.ok) return { ok: false, code: ctx.code };
+  const res = await cmsPages.createPage(ctx.ctx.db, input, actorOf(ctx.ctx));
+  if (!res.ok) return fail(res);
+  return { ok: true, data: { row: res.row } };
+}
+
 export async function getPageAction(id: string): Promise<ActionEnvelope<{ row: SitePageRow }>> {
   const ctx = await requireCmsContext();
   if (!ctx.ok) return { ok: false, code: ctx.code };
