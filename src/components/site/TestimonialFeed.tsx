@@ -4,6 +4,26 @@ import { useState } from "react";
 import Link from "next/link";
 import type { PublicTestimonial } from "@/lib/cms/types";
 
+function getYouTubeId(url: string): string {
+  if (url.includes("youtu.be/")) {
+    return url.split("youtu.be/")[1]?.split("?")[0] || "";
+  }
+  if (url.includes("watch?v=")) {
+    return url.split("watch?v=")[1]?.split("&")[0] || "";
+  }
+  if (url.includes("youtube.com/shorts/")) {
+    return url.split("youtube.com/shorts/")[1]?.split("?")[0] || "";
+  }
+  return "";
+}
+
+function getVimeoId(url: string): string {
+  if (url.includes("vimeo.com/")) {
+    return url.split("vimeo.com/")[1]?.split("?")[0] || "";
+  }
+  return "";
+}
+
 function VideoEmbed({
   url,
   provider,
@@ -12,12 +32,7 @@ function VideoEmbed({
   provider: "direct" | "youtube" | "vimeo" | null;
 }) {
   if (provider === "youtube" || url.includes("youtube.com") || url.includes("youtu.be")) {
-    let videoId = "";
-    if (url.includes("youtu.be/")) {
-      videoId = url.split("youtu.be/")[1]?.split("?")[0] || "";
-    } else if (url.includes("watch?v=")) {
-      videoId = url.split("watch?v=")[1]?.split("&")[0] || "";
-    }
+    const videoId = getYouTubeId(url);
     const embedUrl = `https://www.youtube.com/embed/${videoId}`;
     return (
       <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-navy/10">
@@ -33,7 +48,7 @@ function VideoEmbed({
   }
 
   if (provider === "vimeo" || url.includes("vimeo.com")) {
-    const vimeoId = url.split("vimeo.com/")[1]?.split("?")[0] || "";
+    const vimeoId = getVimeoId(url);
     const embedUrl = `https://player.vimeo.com/video/${vimeoId}`;
     return (
       <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-navy/10">
@@ -69,11 +84,27 @@ export function TestimonialFeed({
   testimonials: PublicTestimonial[];
 }) {
   const [filter, setFilter] = useState<"all" | "video" | "text">("all");
+  const [sortBy, setSortBy] = useState<"featured" | "newest" | "order">("featured");
 
   const filtered = testimonials.filter((t) => {
     if (filter === "video") return Boolean(t.video_url);
     if (filter === "text") return !t.video_url;
     return true;
+  });
+
+  const sorted = [...filtered].sort((a, b) => {
+    if (sortBy === "featured") {
+      if (a.is_featured && !b.is_featured) return -1;
+      if (!a.is_featured && b.is_featured) return 1;
+      return a.sort_order - b.sort_order || new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    }
+    if (sortBy === "newest") {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    }
+    if (sortBy === "order") {
+      return a.sort_order - b.sort_order;
+    }
+    return 0;
   });
 
   const featured = testimonials.find((t) => t.is_featured);
@@ -165,22 +196,37 @@ export function TestimonialFeed({
           </button>
         </div>
 
-        <Link
-          href="/testimonials/submit"
-          className="rounded-full bg-navy px-4 py-2 text-xs font-semibold text-paper transition hover:bg-navy-600"
-        >
-          + Submit Your Story
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-2 text-xs text-navy/70">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-navy/50">Sort:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as "featured" | "newest" | "order")}
+              className="rounded-md border hairline bg-paper px-2.5 py-1 text-xs text-navy focus:border-navy focus:outline-none"
+            >
+              <option value="featured">Featured First</option>
+              <option value="newest">Newest First</option>
+              <option value="order">Display Order</option>
+            </select>
+          </label>
+
+          <Link
+            href="/testimonials/submit"
+            className="rounded-full bg-navy px-4 py-2 text-xs font-semibold text-paper transition hover:bg-navy-600 shadow-xs"
+          >
+            + Submit Your Story
+          </Link>
+        </div>
       </div>
 
       {/* Testimonials Grid */}
-      {filtered.length === 0 ? (
+      {sorted.length === 0 ? (
         <div className="rounded-xl border hairline bg-paper p-12 text-center">
           <p className="text-sm text-navy/60">No testimonials found in this category.</p>
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((t) => {
+          {sorted.map((t) => {
             const hasVideo = Boolean(t.video_url);
             return (
               <article

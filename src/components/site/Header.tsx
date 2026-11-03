@@ -9,6 +9,7 @@ import JoinModal from "@/components/site/JoinModal";
 const NAV = [
   { label: "Home", href: "#home" },
   { label: "Explore Legislation", href: "#legislation" },
+  { label: "Stories", href: "/testimonials" },
   { label: "About", href: "#about" },
   { label: "Donate", href: "#donate" },
   { label: "The Team", href: "#team" },
@@ -62,6 +63,13 @@ export default function Header() {
 
   const linkTone = dark ? "text-paper/85 hover:text-paper" : "text-navy/80 hover:text-navy";
 
+  const resolveNavHref = (href: string) => {
+    if (pathname !== "/" && href.startsWith("#")) {
+      return `/${href}`;
+    }
+    return href;
+  };
+
   return (
     <>
       <header
@@ -75,7 +83,7 @@ export default function Header() {
       >
         <div className="shell flex h-16 items-center justify-between gap-4 sm:h-[4.5rem]">
           {/* wordmark */}
-          <Link href="#home" className="group flex items-center gap-2.5" aria-label="CitizenShift home">
+          <Link href={pathname === "/" ? "#home" : "/"} className="group flex items-center gap-2.5" aria-label="CitizenShift home">
             <span
               className={`grid size-9 shrink-0 place-items-center overflow-hidden rounded-full ring-1 transition-colors ${
                 dark ? "ring-paper/30" : "ring-navy/20"
@@ -99,7 +107,7 @@ export default function Header() {
             {NAV.map((item) => (
               <Link
                 key={item.href}
-                href={item.href}
+                href={resolveNavHref(item.href)}
                 className={`text-[13px] font-medium transition-colors ${linkTone}`}
               >
                 {item.label}
@@ -117,7 +125,7 @@ export default function Header() {
               Sign In
             </button>
             <Link
-              href="#donate"
+              href={resolveNavHref("#donate")}
               className="-ml-3 rounded-full bg-berry px-4 py-2 text-[13px] font-semibold text-paper transition-colors hover:bg-berry-600"
             >
               Donate
@@ -182,7 +190,7 @@ export default function Header() {
                       transition={{ delay: 0.12 + i * 0.05, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <Link
-                        href={item.href}
+                        href={resolveNavHref(item.href)}
                         onClick={() => setMenuOpen(false)}
                         className="group flex items-baseline justify-between border-b border-icy/12 py-4"
                       >
@@ -202,7 +210,7 @@ export default function Header() {
                   className="flex flex-col gap-3 pb-10"
                 >
                   <Link
-                    href="#donate"
+                    href={resolveNavHref("#donate")}
                     onClick={() => setMenuOpen(false)}
                     className="mt-2 rounded-full bg-berry px-5 py-3.5 text-center font-semibold text-paper"
                   >

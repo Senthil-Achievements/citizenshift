@@ -19,6 +19,7 @@ export interface ModuleCounts {
   moderationOpen: number | null;
   editors: number | null;
   links: { billLinks: number; siteLinks: number } | null;
+  testimonials: { total: number; pending: number; approved: number } | null;
 }
 
 export interface DashboardResult {
@@ -58,6 +59,9 @@ export async function getDashboardData(db: SupabaseClient): Promise<DashboardRes
     editors,
     billLinks,
     siteLinks,
+    testimonialsTotal,
+    testimonialsPending,
+    testimonialsApproved,
   ] = await Promise.all([
     countOf(db, "bills"),
     countOf(db, "bills", [{ column: "publish_state", value: "published" }]),
@@ -72,12 +76,16 @@ export async function getDashboardData(db: SupabaseClient): Promise<DashboardRes
     countOf(db, "cms_user_roles", [{ column: "role", value: "editor" }]),
     countOf(db, "bill_links"),
     countOf(db, "site_links"),
+    countOf(db, "testimonials"),
+    countOf(db, "testimonials", [{ column: "status", value: "pending" }]),
+    countOf(db, "testimonials", [{ column: "status", value: "approved" }]),
   ]);
 
   const numbers = [
     billsTotal, billsPublished, billsDraft, billsArchived, sponsors,
     pagesTotal, pagesPublished, communitiesTotal, communitiesPublished,
     moderationOpen, editors, billLinks, siteLinks,
+    testimonialsTotal, testimonialsPending, testimonialsApproved,
   ];
   const isMissing = numbers.some((v) => typeof v === "object" && v !== null && "missing" in v);
   const num = (v: number | { missing: true }): number | null =>
@@ -98,6 +106,18 @@ export async function getDashboardData(db: SupabaseClient): Promise<DashboardRes
       : { total: num(pagesTotal) ?? 0, published: num(pagesPublished) ?? 0 },
     communities: isMissing
       ? null
+      : { total: num(communitiesTotal) ?? 0, published: num(communitiesPublished) ?? 0 },
+    moderationOpen: num(moderationOpen),
+    editors: num(editors),
+    links: isMissing ? null : { billLinks: num(billLinks) ?? 0, siteLinks: num(siteLinks) ?? 0 },
+    testimonials: isMissing
+      ? null
+      : {
+          total: num(testimonialsTotal) ?? 0,
+          pending: num(testimonialsPending) ?? 0,
+          approved: num(testimonialsApproved) ?? 0,
+        },
+  };
       : { total: num(communitiesTotal) ?? 0, published: num(communitiesPublished) ?? 0 },
     moderationOpen: num(moderationOpen),
     editors: num(editors),

@@ -50,9 +50,9 @@ export default async function TestimonialsPage() {
       </section>
 
       {/* Main feed */}
-      <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         <TestimonialFeed testimonials={res.rows} />
-      </main>
+      </section>
 
       {/* Bottom CTA */}
       <section className="border-t hairline bg-paper py-16">

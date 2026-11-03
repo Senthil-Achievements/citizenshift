@@ -279,6 +279,20 @@ export type ChannelUpdate = Partial<
 
 /* ---------------------------- testimonials ---------------------------- */
 
+export interface TestimonialCampaign {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  status: "active" | "revoked";
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+  revoked_at: string | null;
+  revoked_by: string | null;
+  submission_count?: number;
+}
+
 export interface TestimonialRow {
   id: string;
   full_name: string;
@@ -300,6 +314,8 @@ export interface TestimonialRow {
   moderated_by: string | null;
   moderated_at: string | null;
   moderation_notes: string | null;
+  campaign_id: string | null;
+  campaign_name: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -320,6 +336,7 @@ export interface TestimonialSubmitInput {
   video_url?: string;
   video_provider?: "direct" | "youtube" | "vimeo" | null;
   consent_given: boolean;
+  campaign_slug?: string;
 }
 
 export type TestimonialUpdate = Partial<
@@ -338,5 +355,7 @@ export type TestimonialUpdate = Partial<
     | "is_featured"
     | "sort_order"
     | "moderation_notes"
+    | "campaign_id"
+    | "campaign_name"
   >
 >;

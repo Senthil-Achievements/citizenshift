@@ -98,6 +98,16 @@ export default async function AdminDashboardPage() {
           href="/admin/pages"
         />
         <StatCard
+          label="Testimonials"
+          value={counts.testimonials?.total ?? "—"}
+          sub={
+            counts.testimonials
+              ? `${counts.testimonials.pending} pending · ${counts.testimonials.approved} approved`
+              : undefined
+          }
+          href="/admin/testimonials"
+        />
+        <StatCard
           label="Communities"
           value={counts.communities?.total ?? "—"}
           sub={counts.communities ? `${counts.communities.published} published` : undefined}

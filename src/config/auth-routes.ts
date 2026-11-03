@@ -81,6 +81,7 @@ const INTERNAL_PREFIXES = [
   "/explore",
   "/account/",
   "/admin/",
+  "/testimonials",
   "/",
 ] as const;
 

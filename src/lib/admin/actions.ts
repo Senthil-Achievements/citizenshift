@@ -220,10 +220,10 @@ export async function upsertSponsorAction(
   const res = id
     ? await cmsSponsors.updateSponsor(ctx.ctx.db, id, patch, actorOf(ctx.ctx))
     : await cmsSponsors.createSponsor(
-        ctx.ctx.db,
-        patch as SponsorUpdate & { name: string },
-        actorOf(ctx.ctx),
-      );
+      ctx.ctx.db,
+      patch as SponsorUpdate & { name: string },
+      actorOf(ctx.ctx),
+    );
   if (!res.ok) return fail(res);
   return { ok: true, data: { row: res.row } };
 }
@@ -386,10 +386,10 @@ export async function upsertSiteLinkAction(
   const res = id
     ? await cmsLinks.updateSiteLink(ctx.ctx.db, id, patch, actorOf(ctx.ctx))
     : await cmsLinks.createSiteLink(
-        ctx.ctx.db,
-        patch as { label: string; href: string; kind?: SiteLinkRow["kind"] },
-        actorOf(ctx.ctx),
-      );
+      ctx.ctx.db,
+      patch as { label: string; href: string; kind?: SiteLinkRow["kind"] },
+      actorOf(ctx.ctx),
+    );
   if (!res.ok) return fail(res);
   return { ok: true, data: { row: res.row } };
 }
@@ -566,10 +566,10 @@ export async function upsertCommunityAction(
   const res = id
     ? await cmsCommunity.updateCommunity(ctx.ctx.db, id, patch, actorOf(ctx.ctx))
     : await cmsCommunity.createCommunity(
-        ctx.ctx.db,
-        patch as { name: string; slug?: string },
-        actorOf(ctx.ctx),
-      );
+      ctx.ctx.db,
+      patch as { name: string; slug?: string },
+      actorOf(ctx.ctx),
+    );
   if (!res.ok) return fail(res);
   return { ok: true, data: { row: res.row } };
 }
@@ -734,8 +734,11 @@ import * as cmsTestimonials from "@/lib/cms/testimonials";
 import type { TestimonialRow, TestimonialUpdate, TestimonialSubmitInput } from "@/lib/cms/types";
 import { getAdminClient, isAdminClientAvailable } from "@/lib/supabase/admin";
 
+// Rate limiter for public testimonial submissions: max 5 per 10 min
+const testimonialSubmitRateLimit = new Map<string, { count: number; resetAt: number }>();
+
 export async function submitPublicTestimonialAction(
-  input: TestimonialSubmitInput & { hp_website?: string },
+  input: TestimonialSubmitInput & { hp_website?: string; client_ip?: string },
 ): Promise<ActionEnvelope<{ id: string }>> {
   // 1. Spam protection honeypot
   if (input.hp_website && input.hp_website.trim().length > 0) {
@@ -743,13 +746,59 @@ export async function submitPublicTestimonialAction(
     return { ok: true, data: { id: "spam_filtered" } };
   }
 
-  // 2. Validate consent explicitly
+  // 2. Rate limiting check
+  const ipKey = input.client_ip || input.email?.trim().toLowerCase() || "anonymous";
+  const now = Date.now();
+  const entry = testimonialSubmitRateLimit.get(ipKey);
+  if (entry && now < entry.resetAt) {
+    if (entry.count >= 5) {
+      return {
+        ok: false,
+        code: "rate_limited",
+        message: "Too many submissions received. Please wait 10 minutes before submitting again.",
+      };
+    }
+    entry.count += 1;
+  } else {
+    testimonialSubmitRateLimit.set(ipKey, { count: 1, resetAt: now + 10 * 60 * 1000 });
+  }
+
+  // 3. Validate consent explicitly
   if (!input.consent_given) {
     return { ok: false, code: "invalid", message: "Explicit permission to publish is required." };
   }
 
+  // 4. Strict validation of form fields
+  const fullName = input.full_name?.trim() ?? "";
+  if (fullName.length < 2 || fullName.length > 100) {
+    return { ok: false, code: "invalid", message: "Full name must be between 2 and 100 characters." };
+  }
+
+  const email = input.email?.trim().toLowerCase() ?? "";
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email) || email.length > 255) {
+    return { ok: false, code: "invalid", message: "A valid email address is required." };
+  }
+
+  const text = input.testimonial_text?.trim() ?? "";
+  if (text.length < 10 || text.length > 5000) {
+    return { ok: false, code: "invalid", message: "Testimonial text must be between 10 and 5,000 characters." };
+  }
+
+  if (input.video_url && input.video_url.trim()) {
+    const vUrl = input.video_url.trim();
+    if (!vUrl.startsWith("https://") && !vUrl.startsWith("/uploads/testimonials/")) {
+      return { ok: false, code: "invalid", message: "Video link must be a secure https:// URL or uploaded file." };
+    }
+  }
+
   const db = isAdminClientAvailable() ? getAdminClient() : null;
-  const res = await cmsTestimonials.submitTestimonial(db, input);
+  const res = await cmsTestimonials.submitTestimonial(db, {
+    ...input,
+    full_name: fullName,
+    email,
+    testimonial_text: text,
+  });
   if (!res.ok) return { ok: false, code: res.code, message: res.message };
   return { ok: true, data: { id: res.id } };
 }
@@ -787,6 +836,17 @@ export async function setTestimonialStatusAction(
   return { ok: true, data: { row: res.row } };
 }
 
+export async function setTestimonialPublishStateAction(
+  id: string,
+  publish_state: "draft" | "published" | "archived",
+): Promise<ActionEnvelope<{ row: TestimonialRow }>> {
+  const ctx = await requireCmsContext();
+  if (!ctx.ok) return { ok: false, code: ctx.code };
+  const res = await cmsTestimonials.setTestimonialPublishState(ctx.ctx.db, id, publish_state, actorOf(ctx.ctx));
+  if (!res.ok) return fail(res);
+  return { ok: true, data: { row: res.row } };
+}
+
 export async function setTestimonialFeatureAction(
   id: string,
   is_featured: boolean,
@@ -806,4 +866,36 @@ export async function deleteTestimonialAction(
   const res = await cmsTestimonials.deleteTestimonial(ctx.ctx.db, id, actorOf(ctx.ctx));
   if (!res.ok) return fail(res);
   return { ok: true, data: { deleted: true } };
+}
+
+export async function listTestimonialCampaignsAction(): Promise<
+  ActionEnvelope<{ rows: cmsTestimonials.TestimonialCampaign[] }>
+> {
+  const ctx = await requireCmsContext();
+  if (!ctx.ok) return { ok: false, code: ctx.code };
+  const res = await cmsTestimonials.listCampaigns(ctx.ctx.db);
+  if (res.error) return fail(res.error);
+  return { ok: true, data: { rows: res.rows } };
+}
+
+export async function createTestimonialCampaignAction(input: {
+  name: string;
+  slug: string;
+  description?: string;
+}): Promise<ActionEnvelope<{ campaign: cmsTestimonials.TestimonialCampaign }>> {
+  const ctx = await requireCmsContext();
+  if (!ctx.ok) return { ok: false, code: ctx.code };
+  const res = await cmsTestimonials.createCampaign(ctx.ctx.db, input, actorOf(ctx.ctx));
+  if (!res.ok) return fail(res);
+  return { ok: true, data: { campaign: res.campaign } };
+}
+
+export async function revokeTestimonialCampaignAction(
+  id: string,
+): Promise<ActionEnvelope<{ campaign: cmsTestimonials.TestimonialCampaign }>> {
+  const ctx = await requireCmsContext();
+  if (!ctx.ok) return { ok: false, code: ctx.code };
+  const res = await cmsTestimonials.revokeCampaign(ctx.ctx.db, id, actorOf(ctx.ctx));
+  if (!res.ok) return fail(res);
+  return { ok: true, data: { campaign: res.campaign } };
 }

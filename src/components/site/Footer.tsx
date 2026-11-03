@@ -11,6 +11,7 @@ const COLUMNS: { title: string; links: { label: string; href: string; external?:
     links: [
       { label: "Home", href: "#home" },
       { label: "Explore Legislation", href: "#legislation" },
+      { label: "Stories & Testimonials", href: "/testimonials" },
       { label: "About", href: "#about" },
       { label: "The Team", href: "#team" },
       { label: "Contact", href: "#contact" },
