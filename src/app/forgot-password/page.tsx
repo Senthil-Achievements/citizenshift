@@ -60,13 +60,14 @@ export default function ForgotPasswordPage() {
 
   return (
     <AuthDualCard
+      eyebrow="CITIZENSHIFT · ACCOUNT RECOVERY"
       title="Reset Password"
       subtitle={
         <span>
           Remember your password?{" "}
           <Link
             href={AUTH_ROUTES.login}
-            className="font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+            className="font-medium text-berry hover:underline transition-colors"
           >
             Log in
           </Link>
@@ -95,12 +96,12 @@ export default function ForgotPasswordPage() {
 
       {sent ? (
         <div className="space-y-4">
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm text-navy/70 leading-relaxed">
             Check your inbox for a link to reset your password. If it doesn&apos;t appear within a few minutes, check your spam folder.
           </p>
           <Link
             href={AUTH_ROUTES.login}
-            className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-black text-sm font-semibold text-white hover:bg-neutral-800 transition"
+            className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-berry text-sm font-semibold text-paper hover:bg-berry-600 transition shadow-md shadow-berry/20"
           >
             Back to Log In
           </Link>
@@ -110,7 +111,7 @@ export default function ForgotPasswordPage() {
           <div>
             <label
               htmlFor="fp-email"
-              className="block text-xs font-semibold text-gray-700 mb-1.5"
+              className="block text-xs font-mono uppercase tracking-[0.16em] text-navy/60 mb-1.5 font-semibold"
             >
               Email Address
             </label>
@@ -120,8 +121,8 @@ export default function ForgotPasswordPage() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email Address"
-              className="w-full h-11 px-4 text-sm rounded-xl border border-gray-200 bg-white text-gray-900 placeholder:text-gray-300 transition-all focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 hover:border-gray-300"
+              placeholder="you@example.com"
+              className="w-full h-11 px-4 text-sm rounded-xl border border-navy/15 bg-white text-navy placeholder:text-navy/35 transition-all focus:outline-none focus:border-berry focus:ring-2 focus:ring-berry/20 hover:border-navy/30"
             />
           </div>
 
@@ -129,11 +130,11 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={pending}
-              className="w-full h-12 rounded-xl bg-black hover:bg-neutral-800 active:scale-[0.99] text-white text-sm font-semibold tracking-wide shadow-md shadow-black/10 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full h-12 rounded-xl bg-berry hover:bg-berry-600 active:scale-[0.99] text-paper text-sm font-semibold tracking-wide shadow-md shadow-berry/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {pending ? (
                 <>
-                  <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin h-4 w-4 text-paper" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                   </svg>

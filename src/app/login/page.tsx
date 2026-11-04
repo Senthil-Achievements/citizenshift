@@ -117,13 +117,14 @@ function LoginForm() {
 
   return (
     <AuthDualCard
+      eyebrow="CITIZENSHIFT · CIVIC ACCESS"
       title="Welcome Back"
       subtitle={
         <span>
           Don&apos;t have an account?{" "}
           <Link
             href={`${AUTH_ROUTES.signup}${nextRaw ? `?next=${encodeURIComponent(nextRaw)}` : ""}`}
-            className="font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+            className="font-medium text-berry hover:underline transition-colors"
           >
             Create an account
           </Link>
@@ -159,7 +160,7 @@ function LoginForm() {
         <div>
           <label
             htmlFor="login-email"
-            className="block text-xs font-semibold text-gray-700 mb-1.5"
+            className="block text-xs font-mono uppercase tracking-[0.16em] text-navy/60 mb-1.5 font-semibold"
           >
             Email Address
           </label>
@@ -169,11 +170,11 @@ function LoginForm() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email Address"
-            className={`w-full h-11 px-4 text-sm rounded-xl border bg-white text-gray-900 placeholder:text-gray-300 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/20 ${
+            placeholder="you@example.com"
+            className={`w-full h-11 px-4 text-sm rounded-xl border bg-white text-navy placeholder:text-navy/35 transition-all focus:outline-none focus:ring-2 focus:ring-berry/20 ${
               field === "email"
                 ? "border-rose-400 focus:border-rose-500"
-                : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
+                : "border-navy/15 focus:border-berry hover:border-navy/30"
             }`}
           />
         </div>
@@ -182,7 +183,7 @@ function LoginForm() {
         <div>
           <label
             htmlFor="login-password"
-            className="block text-xs font-semibold text-gray-700 mb-1.5"
+            className="block text-xs font-mono uppercase tracking-[0.16em] text-navy/60 mb-1.5 font-semibold"
           >
             Password
           </label>
@@ -193,18 +194,18 @@ function LoginForm() {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className={`w-full h-11 pl-4 pr-11 text-sm rounded-xl border bg-white text-gray-900 placeholder:text-gray-300 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/20 ${
+              placeholder="Enter your password"
+              className={`w-full h-11 pl-4 pr-11 text-sm rounded-xl border bg-white text-navy placeholder:text-navy/35 transition-all focus:outline-none focus:ring-2 focus:ring-berry/20 ${
                 field === "password"
                   ? "border-rose-400 focus:border-rose-500"
-                  : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
+                  : "border-navy/15 focus:border-berry hover:border-navy/30"
               }`}
             />
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
               aria-label={showPassword ? "Hide password" : "Show password"}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-navy/40 hover:text-navy transition"
             >
               {showPassword ? (
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.75">
@@ -227,28 +228,28 @@ function LoginForm() {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black accent-black cursor-pointer"
+              className="w-4 h-4 rounded border-gray-300 text-berry focus:ring-berry accent-berry cursor-pointer"
             />
-            <span className="text-xs text-gray-600">Remember me</span>
+            <span className="text-xs text-navy/70">Remember me</span>
           </label>
           <Link
             href={AUTH_ROUTES.forgotPassword}
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline transition"
+            className="text-xs font-semibold text-berry hover:underline transition"
           >
             Forgot password?
           </Link>
         </div>
 
-        {/* Primary Submit Button */}
+        {/* Primary CitizenShift Berry Button */}
         <div className="pt-2">
           <button
             type="submit"
             disabled={pending}
-            className="w-full h-12 rounded-xl bg-black hover:bg-neutral-800 active:scale-[0.99] text-white text-sm font-semibold tracking-wide shadow-md shadow-black/10 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full h-12 rounded-xl bg-berry hover:bg-berry-600 active:scale-[0.99] text-paper text-sm font-semibold tracking-wide shadow-md shadow-berry/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
             {pending ? (
               <>
-                <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-4 w-4 text-paper" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                 </svg>
@@ -263,9 +264,9 @@ function LoginForm() {
         {/* Divider */}
         <div className="relative my-4 flex items-center justify-center">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200" />
+            <div className="w-full border-t border-navy/10" />
           </div>
-          <span className="relative bg-white px-3 text-xs uppercase tracking-wider text-gray-400">
+          <span className="relative bg-white px-3 text-[11px] font-mono uppercase tracking-wider text-navy/40">
             or
           </span>
         </div>
@@ -275,7 +276,7 @@ function LoginForm() {
           type="button"
           onClick={handleGoogle}
           disabled={googlePending}
-          className="w-full h-11 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 active:scale-[0.99] text-xs sm:text-sm font-medium text-gray-700 shadow-sm transition-all flex items-center justify-center gap-2.5"
+          className="w-full h-11 rounded-xl border border-navy/15 bg-white hover:bg-icy-50 active:scale-[0.99] text-xs sm:text-sm font-medium text-navy shadow-sm transition-all flex items-center justify-center gap-2.5 cursor-pointer"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
