@@ -82,14 +82,12 @@ export function SVGFollower({
       };
 
       const shapeChance = Math.random();
-      // Reduced triangle particles down to rare accents (~3%).
-      // Substantially increased particle volume for circles (~45%) and squares (~32%).
-      if (shapeChance < 0.45) {
+      // Triangles removed per user request for a cleaner, smoother visual trail.
+      // Particle volume allocated across smooth circles and confetti squares.
+      if (shapeChance < 0.52) {
         this.makeCircle(point);
-      } else if (shapeChance < 0.77) {
+      } else if (shapeChance < 0.82) {
         this.makeSquare(point);
-      } else if (shapeChance < 0.80) {
-        this.makeTriangle(point);
       }
 
       this.points.unshift(point);
