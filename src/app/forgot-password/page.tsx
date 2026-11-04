@@ -1,17 +1,8 @@
 "use client";
 
-/**
- * /forgot-password — sends a Supabase password-recovery email.
- *
- * The email's redirect URL points at /reset-password through the central
- * AUTH_ROUTES config, so the destination is never hardcoded here.
- *
- * ⚠️ UNVERIFIED BUILD — no live Supabase project (docs/supabase-configuration-report.md).
- */
-
 import { useState } from "react";
 import Link from "next/link";
-import { AuthShell, AuthSubmit, AuthMessage } from "@/components/auth/AuthShell";
+import { AuthDualCard } from "@/components/auth/AuthDualCard";
 import { getBrowserClient } from "@/lib/supabase/client";
 import { AUTH_ROUTES } from "@/config/auth-routes";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
@@ -55,13 +46,11 @@ export default function ForgotPasswordPage() {
         return;
       }
 
-      // Always the same message regardless of whether the address exists —
-      // never leak which emails are registered.
       setSent(true);
       setTone("info");
-      setMessage(`If ${trimmed} has an account, a reset link is on its way.`);
+      setMessage("If an account exists for that email, we've sent password reset instructions.");
     } catch (err) {
-      console.error("[forgot-password]", err);
+      console.error("[forgot-password] unexpected:", err);
       setTone("error");
       setMessage("Something went wrong. Please try again.");
     } finally {
@@ -70,54 +59,93 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <AuthShell
-      eyebrow="Password reset"
-      title="Reset your password."
-      subtitle="Enter the email on your account and we'll send a secure reset link."
-      footer={
-        <p className="text-sm text-navy/70">
-          Remembered it?{" "}
+    <AuthDualCard
+      title="Reset Password"
+      subtitle={
+        <span>
+          Remember your password?{" "}
           <Link
             href={AUTH_ROUTES.login}
-            className="font-semibold text-berry underline decoration-berry/30 underline-offset-2 hover:decoration-berry"
+            className="font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors"
           >
-            Back to sign in
+            Log in
           </Link>
-        </p>
+        </span>
       }
+      backHref={AUTH_ROUTES.login}
     >
-      {!configured && (
-        <AuthMessage tone="info">Supabase is not configured in this deployment.</AuthMessage>
+      {message && (
+        <div
+          role="status"
+          className={`mb-4 rounded-xl px-4 py-3 text-xs sm:text-sm font-medium transition ${
+            tone === "error"
+              ? "bg-rose-50 text-rose-800 border border-rose-200"
+              : "bg-blue-50 text-blue-800 border border-blue-200"
+          }`}
+        >
+          {message}
+        </div>
       )}
 
-      {message && <AuthMessage tone={tone}>{message}</AuthMessage>}
+      {!configured && (
+        <div className="mb-4 rounded-xl bg-amber-50 px-4 py-2.5 text-xs text-amber-800 border border-amber-200">
+          Supabase credentials are not connected yet. Form runs in preview mode.
+        </div>
+      )}
 
-      {!sent && (
-        <form onSubmit={handleSubmit} noValidate className="mt-4 space-y-4">
+      {sent ? (
+        <div className="space-y-4">
+          <p className="text-sm text-gray-600 leading-relaxed">
+            Check your inbox for a link to reset your password. If it doesn&apos;t appear within a few minutes, check your spam folder.
+          </p>
+          <Link
+            href={AUTH_ROUTES.login}
+            className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-black text-sm font-semibold text-white hover:bg-neutral-800 transition"
+          >
+            Back to Log In
+          </Link>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} noValidate className="space-y-4">
           <div>
-            <label htmlFor="fp-email" className="font-mono text-[10px] uppercase tracking-[0.16em] text-navy/50">
-              Email
+            <label
+              htmlFor="fp-email"
+              className="block text-xs font-semibold text-gray-700 mb-1.5"
+            >
+              Email Address
             </label>
             <input
               id="fp-email"
-              name="email"
               type="email"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1.5 h-12 w-full rounded-xl border hairline bg-paper px-4 text-sm text-navy placeholder:text-navy/35 focus:border-navy/40 focus:outline-none"
-              placeholder="you@example.com"
+              placeholder="Email Address"
+              className="w-full h-11 px-4 text-sm rounded-xl border border-gray-200 bg-white text-gray-900 placeholder:text-gray-300 transition-all focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 hover:border-gray-300"
             />
           </div>
-          <AuthSubmit pending={pending}>Send reset link</AuthSubmit>
+
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={pending}
+              className="w-full h-12 rounded-xl bg-black hover:bg-neutral-800 active:scale-[0.99] text-white text-sm font-semibold tracking-wide shadow-md shadow-black/10 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {pending ? (
+                <>
+                  <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                  </svg>
+                  <span>Sending…</span>
+                </>
+              ) : (
+                "Send Reset Link"
+              )}
+            </button>
+          </div>
         </form>
       )}
-
-      {sent && (
-        <p className="mt-4 text-sm leading-relaxed text-navy/70">
-          The link expires shortly. If it doesn't arrive, check spam, then try again.
-        </p>
-      )}
-    </AuthShell>
+    </AuthDualCard>
   );
 }

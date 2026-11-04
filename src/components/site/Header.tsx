@@ -116,7 +116,7 @@ export default function Header() {
             ))}
             <button
               type="button"
-              onClick={() => setJoinIntent("signin")}
+              onClick={() => window.location.href = "/login"}
               className={`rounded-full border px-4 py-2 text-[13px] font-semibold transition-all ${
                 dark
                   ? "border-paper/30 hover:border-paper hover:bg-paper hover:text-navy"
@@ -137,7 +137,7 @@ export default function Header() {
           <div className="flex items-center gap-2 lg:hidden">
             <button
               type="button"
-              onClick={() => setJoinIntent("signin")}
+              onClick={() => window.location.href = "/login"}
               className={`hidden rounded-full border px-3.5 py-2 text-xs font-semibold sm:block ${
                 dark ? "border-paper/30 text-paper" : "border-navy/25 text-navy"
               }`}
@@ -221,7 +221,7 @@ export default function Header() {
                     type="button"
                     onClick={() => {
                       setMenuOpen(false);
-                      setJoinIntent("signin");
+                      window.location.href = "/login";
                     }}
                     className="rounded-full border border-icy/25 px-5 py-3.5 text-center font-semibold text-icy"
                   >
