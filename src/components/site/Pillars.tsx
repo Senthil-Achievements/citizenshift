@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 
@@ -65,17 +65,34 @@ const PILLARS: PillarSlide[] = [
 
 export default function Pillars() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [maxScroll, setMaxScroll] = useState(0);
 
-  // Link vertical scroll of the 400vh container to horizontal translation
+  const totalSlides = PILLARS.length;
+
+  // Link vertical scroll of the container to horizontal translation
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Exactly translates from 0vw to -300vw across 4 full-screen slides
-  const totalSlides = PILLARS.length;
-  const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${(totalSlides - 1) * 100}vw`]);
+  // Calculate dynamic pixel distance so the last card comfortably finishes in view
+  useEffect(() => {
+    const updateScroll = () => {
+      if (!trackRef.current) return;
+      const scrollWidth = trackRef.current.scrollWidth;
+      const clientWidth = window.innerWidth;
+      const distance = Math.max(0, scrollWidth - clientWidth + 32);
+      setMaxScroll(distance);
+    };
+
+    updateScroll();
+    window.addEventListener("resize", updateScroll);
+    return () => window.removeEventListener("resize", updateScroll);
+  }, []);
+
+  const x = useTransform(scrollYProgress, [0, 1], [0, -maxScroll]);
 
   // Keep track of currently visible slide for counter and tabs
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -106,23 +123,29 @@ export default function Pillars() {
     <section
       ref={containerRef}
       id="method"
-      className="relative h-[400vh] bg-navy-950"
+      className="relative h-[360vh] bg-navy-950 text-paper"
       aria-label="Civic participation mechanisms horizontal scroll"
     >
-      {/* Pinned Viewport Container */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* 1. TOP FLOATING NAVIGATION BAR */}
-        <div className="absolute inset-x-0 top-0 z-30 flex items-center justify-between border-b border-paper/10 bg-gradient-to-b from-navy-950/90 to-transparent px-6 py-5 md:px-12 backdrop-blur-sm">
-          {/* Section Breadcrumbs & Category Tabs */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-6">
-            <div className="hidden lg:flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-paper/60">
-              <span className="text-berry font-bold">01 — 04</span>
-              <span>/</span>
-              <span className="text-paper">The Method</span>
+      {/* Pinned Viewport Container with breathing room top and bottom */}
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden py-4 sm:py-6 md:py-8 select-none">
+        
+        {/* 1. TOP EDITORIAL HEADER & TABS */}
+        <div className="z-30 w-full px-6 sm:px-10 md:px-14 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-berry font-bold">
+              <span>01 — 04</span>
+              <span className="text-paper/40">/</span>
+              <span className="text-paper/70">The Method</span>
             </div>
+            <h2 className="mt-1 font-display text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-paper">
+              Civic participation, engineered.
+            </h2>
+          </div>
 
+          {/* Navigation Controls: Category Pills & Arrow Buttons */}
+          <div className="flex items-center gap-3 sm:gap-5">
             {/* Clickable Slide Category Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+            <div className="hidden md:flex items-center gap-1.5 p-1 rounded-full bg-navy-900/80 border border-paper/10 backdrop-blur-md">
               {PILLARS.map((p, idx) => {
                 const isActive = idx === activeIdx;
                 return (
@@ -130,9 +153,9 @@ export default function Pillars() {
                     key={p.index}
                     type="button"
                     onClick={() => scrollToSlide(idx)}
-                    className={`relative flex items-center gap-2 rounded-full px-3.5 py-1.5 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.16em] transition-all duration-300 ${
+                    className={`relative flex items-center gap-1.5 rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] transition-all duration-300 ${
                       isActive
-                        ? "bg-paper text-navy font-bold shadow-lg"
+                        ? "bg-paper text-navy font-bold shadow-md"
                         : "text-paper/60 hover:text-paper hover:bg-paper/10"
                     }`}
                   >
@@ -142,129 +165,148 @@ export default function Pillars() {
                 );
               })}
             </div>
-          </div>
 
-          {/* Slide Counter (e.g. 01 / 04) */}
-          <div className="flex items-center gap-4 font-mono text-xs tracking-[0.2em] text-paper">
-            <div className="flex items-baseline">
-              <span className="text-icy text-base font-bold">0{activeIdx + 1}</span>
-              <span className="mx-1 text-paper/30">/</span>
-              <span className="text-paper/50">0{totalSlides}</span>
-            </div>
+            {/* Slide Counter (01 / 04) & Arrows */}
+            <div className="flex items-center gap-3 font-mono text-xs tracking-[0.2em] text-paper">
+              <div className="flex items-baseline">
+                <span className="text-icy text-base font-bold">0{activeIdx + 1}</span>
+                <span className="mx-1 text-paper/30">/</span>
+                <span className="text-paper/50">0{totalSlides}</span>
+              </div>
 
-            {/* Scroll Navigation Arrows */}
-            <div className="hidden sm:flex items-center gap-1.5">
-              <button
-                type="button"
-                onClick={prevSlide}
-                disabled={activeIdx === 0}
-                aria-label="Previous mechanism slide"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-paper/20 bg-navy-950/60 text-paper transition-all hover:bg-paper hover:text-navy active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
-              >
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                onClick={nextSlide}
-                disabled={activeIdx === totalSlides - 1}
-                aria-label="Next mechanism slide"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-paper/20 bg-navy-950/60 text-paper transition-all hover:bg-paper hover:text-navy active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
-              >
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={prevSlide}
+                  disabled={activeIdx === 0}
+                  aria-label="Previous mechanism slide"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-paper/20 bg-navy-900/80 text-paper transition-all hover:bg-paper hover:text-navy active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+                >
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={nextSlide}
+                  disabled={activeIdx === totalSlides - 1}
+                  aria-label="Next mechanism slide"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-paper/20 bg-navy-900/80 text-paper transition-all hover:bg-paper hover:text-navy active:scale-95 disabled:opacity-30 disabled:pointer-events-none"
+                >
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* 2. HORIZONTAL SLIDING TRACK */}
-        <motion.div
-          style={{ x }}
-          className="flex h-full w-[400vw] will-change-transform"
-        >
-          {PILLARS.map((p, idx) => (
-            <article
-              key={p.index}
-              className="relative h-screen w-screen flex-shrink-0 flex items-end overflow-hidden"
-              aria-label={`Mechanism ${p.index}: ${p.title}`}
-            >
-              {/* Fullscreen Background Image */}
-              <div className="absolute inset-0">
-                <Image
-                  src={p.image}
-                  alt={p.alt}
-                  fill
-                  priority={idx < 2}
-                  sizes="100vw"
-                  className="object-cover brightness-[0.74] contrast-[1.08] select-none pointer-events-none"
-                />
-              </div>
-
-              {/* Cinematic Vignette Gradients for Text Legibility */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/50 to-transparent" />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/40 to-transparent" />
-              <div className="pointer-events-none absolute inset-0 bg-navy-950/20" />
-
-              {/* Overlayed Text Content */}
-              <div className="relative z-20 flex w-full flex-col justify-end p-8 sm:p-14 md:p-20 lg:p-24 pb-20 sm:pb-24 max-w-5xl">
-                {/* Eyebrow & Meta */}
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.24em] text-berry font-bold px-3.5 py-1.5 rounded-full bg-navy-950/80 border border-berry/40 backdrop-blur-md shadow-sm">
-                    Pillar {p.index}
-                  </span>
-                  <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-icy/90 font-medium drop-shadow">
-                    {p.meta}
-                  </span>
-                </div>
-
-                {/* Big Display Title */}
-                <h2 className="mt-4 font-display text-[clamp(2.5rem,5.5vw,5rem)] font-bold leading-[1.04] tracking-[-0.03em] text-paper drop-shadow-xl">
-                  {p.title}
-                </h2>
-
-                {/* Descriptive Body Copy */}
-                <p className="mt-5 max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed text-paper/85 drop-shadow">
-                  {p.copy}
-                </p>
-
-                {/* Optional Action Link / Scroll Down Hint */}
-                <div className="mt-8 flex flex-wrap items-center gap-6">
-                  {p.href && (
-                    <a
-                      href={p.href}
-                      className="inline-flex items-center gap-3 rounded-full border border-paper/30 bg-paper/10 px-6 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-paper backdrop-blur-sm transition-all duration-300 hover:border-paper hover:bg-paper hover:text-navy"
-                    >
-                      <span>{p.actionText || "Learn More"}</span>
-                      <span>→</span>
-                    </a>
-                  )}
-
-                  {idx === 0 && (
-                    <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-paper/50 animate-pulse">
-                      <span>Scroll down to slide</span>
-                      <span>↓</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </article>
-          ))}
-        </motion.div>
-
-        {/* 3. BOTTOM LINEAR PROGRESS BAR */}
-        <div className="absolute inset-x-0 bottom-0 z-30 h-[4px] bg-paper/15">
+        {/* 2. HORIZONTAL SLIDING CARDS TRACK (Framed, floating cards that do not fill the screen) */}
+        <div className="relative w-full overflow-visible my-auto">
           <motion.div
-            style={{
-              scaleX: scrollYProgress,
-              transformOrigin: "0% 50%",
-            }}
-            className="h-full bg-gradient-to-r from-berry via-icy to-paper will-change-transform"
-          />
+            ref={trackRef}
+            style={{ x }}
+            className="flex items-center gap-6 sm:gap-8 md:gap-10 pl-6 sm:pl-10 md:pl-14 pr-16 sm:pr-24 will-change-transform"
+          >
+            {PILLARS.map((p, idx) => {
+              const isActive = idx === activeIdx;
+              return (
+                <article
+                  key={p.index}
+                  className={`group relative flex-shrink-0 flex flex-col justify-end overflow-hidden rounded-2xl sm:rounded-3xl border border-paper/15 bg-navy-900 transition-all duration-500 w-[84vw] sm:w-[76vw] md:w-[68vw] lg:w-[60vw] max-w-4xl h-[56vh] sm:h-[62vh] md:h-[66vh] max-h-[620px] min-h-[440px] shadow-2xl ${
+                    isActive ? "ring-1 ring-paper/30 shadow-[0_20px_50px_rgba(0,0,0,0.6)]" : "opacity-90"
+                  }`}
+                  aria-label={`Mechanism ${p.index}: ${p.title}`}
+                >
+                  {/* Background Image with Subtle Depth Zoom */}
+                  <div className="absolute inset-0">
+                    <Image
+                      src={p.image}
+                      alt={p.alt}
+                      fill
+                      priority={idx < 2}
+                      sizes="(max-width: 768px) 85vw, 65vw"
+                      className="object-cover brightness-[0.7] contrast-[1.08] select-none pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  </div>
+
+                  {/* Cinematic Vignettes */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/60 to-transparent" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy-950/80 via-navy-950/30 to-transparent" />
+
+                  {/* Top Floating Pillar Badge */}
+                  <div className="absolute top-5 left-6 sm:top-6 sm:left-8 z-20 flex items-center gap-2.5">
+                    <span className="flex items-center gap-2 rounded-full px-3 py-1 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold bg-navy-950/85 border border-paper/20 text-paper backdrop-blur-md shadow-sm">
+                      <span className="text-berry font-bold">{p.index}</span>
+                      <span>{p.category}</span>
+                    </span>
+                    <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.18em] text-paper/70 drop-shadow">
+                      {p.meta}
+                    </span>
+                  </div>
+
+                  {/* Overlayed Text Content */}
+                  <div className="relative z-20 p-6 sm:p-10 md:p-12 pb-7 sm:pb-9 max-w-3xl">
+                    <div className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-berry font-bold drop-shadow">
+                      PILLAR {p.index} • {p.category}
+                    </div>
+
+                    <h3 className="mt-2 font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.08] tracking-[-0.02em] text-paper drop-shadow-xl">
+                      {p.title}
+                    </h3>
+
+                    <p className="mt-3.5 max-w-2xl text-xs sm:text-sm md:text-base leading-relaxed text-paper/85 drop-shadow line-clamp-3 sm:line-clamp-none">
+                      {p.copy}
+                    </p>
+
+                    <div className="mt-6 flex items-center gap-4">
+                      {p.href && (
+                        <a
+                          href={p.href}
+                          className="inline-flex items-center gap-2.5 rounded-full border border-paper/30 bg-paper/15 px-5 py-2 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-paper backdrop-blur-md transition-all duration-300 hover:border-paper hover:bg-paper hover:text-navy active:scale-95"
+                        >
+                          <span>{p.actionText || "Learn More"}</span>
+                          <span>→</span>
+                        </a>
+                      )}
+
+                      {idx === 0 && (
+                        <div className="hidden sm:flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-paper/50">
+                          <span>Scroll to explore</span>
+                          <span>→</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Bottom Accent Highlight Strip */}
+                  <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-berry via-paper/40 to-transparent opacity-80" />
+                </article>
+              );
+            })}
+          </motion.div>
         </div>
+
+        {/* 3. BOTTOM PROGRESS BAR & HELPER */}
+        <div className="z-30 w-full px-6 sm:px-10 md:px-14 flex items-center justify-between gap-4">
+          <div className="flex-1 max-w-md h-[3px] rounded-full bg-paper/15 overflow-hidden">
+            <motion.div
+              style={{
+                scaleX: scrollYProgress,
+                transformOrigin: "0% 50%",
+              }}
+              className="h-full bg-gradient-to-r from-berry via-icy to-paper will-change-transform"
+            />
+          </div>
+
+          <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-paper/50">
+            Mechanism {activeIdx + 1} of {totalSlides}
+          </div>
+        </div>
+
       </div>
     </section>
   );
 }
+
