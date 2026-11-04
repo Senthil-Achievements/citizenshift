@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Marquee } from "@/components/ui/3d-testimonails";
@@ -84,13 +83,13 @@ export const CIVIC_TESTIMONIALS: CivicTestimonial[] = [
 
 function CivicTestimonialCard({ img, name, username, body, location, role }: CivicTestimonial) {
   return (
-    <Card className="w-[280px] shrink-0 border hairline bg-paper/95 backdrop-blur-md shadow-sm transition-all duration-300 hover:border-navy/40 hover:shadow-md">
+    <Card className="w-[280px] shrink-0 border hairline bg-paper shadow-sm transition-transform duration-200 hover:scale-[1.02]">
       <CardContent className="p-4 sm:p-5">
         <div className="flex items-center gap-3">
           <Avatar className="size-10 ring-1 ring-navy/15">
-            <AvatarImage src={img} alt={name} className="object-cover" />
+            <AvatarImage src={img} alt={name} className="object-cover" loading="lazy" />
             <AvatarFallback className="bg-navy/10 text-xs font-bold text-navy">
-              {name.split(" ").map(n => n[0]).join("")}
+              {name.split(" ").map((n) => n[0]).join("")}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col min-w-0">
@@ -112,49 +111,54 @@ function CivicTestimonialCard({ img, name, username, body, location, role }: Civ
 
 export function Testimonials3D() {
   return (
-    <div className="relative mx-auto flex h-[520px] w-full max-w-5xl flex-row items-center justify-center overflow-hidden [perspective:800px] select-none">
-      {/* 3D Tilted container */}
+    <div
+      className="relative mx-auto flex h-[500px] w-full max-w-5xl flex-row items-center justify-center overflow-hidden [perspective:800px] select-none"
+      style={{
+        contain: "layout paint",
+      }}
+    >
+      {/* 3D Tilted container — isolated with transform-gpu */}
       <div
-        className="flex flex-row items-center gap-4 sm:gap-6 will-change-transform"
+        className="flex flex-row items-center gap-4 sm:gap-6 transform-gpu will-change-transform"
         style={{
           transform:
-            "translateX(-60px) translateY(0px) translateZ(-60px) rotateX(16deg) rotateY(-8deg) rotateZ(12deg)",
+            "translateX(-30px) translateY(0px) translateZ(0px) rotateX(14deg) rotateY(-6deg) rotateZ(8deg)",
         }}
       >
         {/* Column 1: Downwards */}
-        <Marquee vertical pauseOnHover repeat={4} className="[--duration:36s]">
+        <Marquee vertical pauseOnHover repeat={2} className="[--duration:36s]">
           {CIVIC_TESTIMONIALS.map((review) => (
             <CivicTestimonialCard key={`col1-${review.username}`} {...review} />
           ))}
         </Marquee>
 
         {/* Column 2: Upwards (reverse) */}
-        <Marquee vertical pauseOnHover reverse repeat={4} className="[--duration:42s]">
+        <Marquee vertical pauseOnHover reverse repeat={2} className="[--duration:42s]">
           {CIVIC_TESTIMONIALS.slice().reverse().map((review) => (
             <CivicTestimonialCard key={`col2-${review.username}`} {...review} />
           ))}
         </Marquee>
 
         {/* Column 3: Downwards */}
-        <Marquee vertical pauseOnHover repeat={4} className="[--duration:38s]">
+        <Marquee vertical pauseOnHover repeat={2} className="hidden sm:flex [--duration:38s]">
           {CIVIC_TESTIMONIALS.map((review) => (
             <CivicTestimonialCard key={`col3-${review.username}`} {...review} />
           ))}
         </Marquee>
 
         {/* Column 4: Upwards (reverse) */}
-        <Marquee vertical pauseOnHover reverse repeat={4} className="hidden sm:flex [--duration:44s]">
+        <Marquee vertical pauseOnHover reverse repeat={2} className="hidden lg:flex [--duration:44s]">
           {CIVIC_TESTIMONIALS.slice().reverse().map((review) => (
             <CivicTestimonialCard key={`col4-${review.username}`} {...review} />
           ))}
         </Marquee>
       </div>
 
-      {/* Gradient Vignette Overlays for seamless 3D edge fade */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-paper via-paper/70 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-paper via-paper/70 to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-paper via-paper/70 to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-28 bg-gradient-to-l from-paper via-paper/70 to-transparent" />
+      {/* Gradient Vignette Overlays for seamless edge fade */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-paper via-paper/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-paper via-paper/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-paper via-paper/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-paper via-paper/80 to-transparent" />
     </div>
   );
 }

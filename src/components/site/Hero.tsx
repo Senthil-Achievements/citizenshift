@@ -28,7 +28,6 @@ export default function Hero() {
   const heroContentRef = useRef<HTMLDivElement>(null);
   const nightRef = useRef<HTMLDivElement>(null);
   const statementRef = useRef<HTMLParagraphElement>(null);
-  const ribbonRef = useRef<HTMLDivElement>(null);
   const [joinOpen, setJoinOpen] = useState(false);
 
   // word reveal waits for the loader curtain
@@ -66,7 +65,6 @@ export default function Hero() {
       const img = imageRef.current;
       const heroContent = heroContentRef.current;
       const statement = statementRef.current;
-      const ribbon = ribbonRef.current;
 
       if (!night) return;
 
@@ -138,16 +136,6 @@ export default function Hero() {
           { y: () => window.innerHeight * 0.16 },
           { y: 0, ease: "none", duration: 0.8 },
           0.2
-        );
-      }
-
-      // Ribbon text drifts horizontally
-      if (ribbon) {
-        timeline.fromTo(
-          ribbon,
-          { xPercent: 28 },
-          { xPercent: 0, ease: "none", duration: 0.7 },
-          0.3
         );
       }
 
@@ -343,15 +331,6 @@ export default function Hero() {
             readable. We translate legislation from Congress and all 50 state
             legislatures into plain language, so the people hold the power.
           </p>
-
-          {/* Ribbon — wide editorial display lettering drifting horizontally on scrub */}
-          <div
-            ref={ribbonRef}
-            aria-hidden="true"
-            className="op__ribbon my-2 select-none overflow-hidden whitespace-nowrap font-display text-[clamp(2.75rem,8.5vw,7.5rem)] font-light italic leading-none tracking-tight text-navy/[0.08]"
-          >
-            Democracy in Plain English
-          </div>
 
           {/* Metadata badges */}
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 font-mono text-[10px] uppercase tracking-[0.22em] text-navy/60 sm:text-[11px]">
