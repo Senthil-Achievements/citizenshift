@@ -82,10 +82,15 @@ export function SVGFollower({
       };
 
       const shapeChance = Math.random();
-      const chance = 0.1;
-      if (shapeChance < chance) this.makeCircle(point);
-      else if (shapeChance < chance * 2) this.makeSquare(point);
-      else if (shapeChance < chance * 3) this.makeTriangle(point);
+      // Reduced triangle particles down to rare accents (~3%).
+      // Substantially increased particle volume for circles (~45%) and squares (~32%).
+      if (shapeChance < 0.45) {
+        this.makeCircle(point);
+      } else if (shapeChance < 0.77) {
+        this.makeSquare(point);
+      } else if (shapeChance < 0.80) {
+        this.makeTriangle(point);
+      }
 
       this.points.unshift(point);
     }
