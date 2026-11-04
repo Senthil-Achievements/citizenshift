@@ -120,6 +120,7 @@ export interface TextLoopProps {
   fontSize?: number;
   fontWeight?: number;
   letterSpacing?: number;
+  fontFamily?: string;
   uppercase?: boolean;
   color?: string;
   ribbon?: boolean;
@@ -152,6 +153,7 @@ export const TextLoop: React.FC<TextLoopProps> = ({
   fontSize = 46,
   fontWeight = 800,
   letterSpacing = 2,
+  fontFamily,
   uppercase = true,
   color,
   ribbon = true,
@@ -218,8 +220,13 @@ export const TextLoop: React.FC<TextLoopProps> = ({
   }, [text, separator, uppercase]);
 
   const textStyle = useMemo(
-    () => ({ fontSize: `${fontSize}px`, fontWeight, letterSpacing: `${letterSpacing}px` }),
-    [fontSize, fontWeight, letterSpacing]
+    () => ({
+      fontSize: `${fontSize}px`,
+      fontWeight,
+      letterSpacing: `${letterSpacing}px`,
+      fontFamily: fontFamily || 'var(--font-mono), monospace',
+    }),
+    [fontSize, fontWeight, letterSpacing, fontFamily]
   );
 
   useIsomorphicLayoutEffect(() => {
