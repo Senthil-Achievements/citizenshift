@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Manrope, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import StardustCursor from "@/components/ui/StardustCursor";
+import { SVGFollower } from "@/components/ui/svg-follower";
 
 const display = Fraunces({
   subsets: ["latin"],
@@ -90,7 +90,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
       <body>
-        <StardustCursor />
+        <SVGFollower
+          colors={["#f43f5e", "#38bdf8", "#fbbf24", "#34d399", "#818cf8"]}
+          removeDelay={350}
+        />
         {children}
         <script
           type="application/ld+json"
