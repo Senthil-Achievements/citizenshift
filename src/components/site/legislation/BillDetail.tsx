@@ -296,7 +296,6 @@ export default function BillDetail({
   return (
     <Shell>
       <div
-        data-reveal
         className="mx-auto max-w-6xl px-4 pb-24 pt-10 sm:px-6 lg:px-8"
       >
         {/* breadcrumb */}

@@ -17,6 +17,7 @@ import { memo } from "react";
 import Link from "next/link";
 import type { Bill } from "@/lib/legislation";
 import { billBullets, billDateLabel, billDetailHref, billDisplayNumber, billTitle, isNew, isPassed } from "@/lib/legislation";
+import { TextDrawLink } from "@/components/ui/draw-random-underline";
 
 function levelChipTone(level: Bill["level"]): string {
   switch (level) {
@@ -106,14 +107,19 @@ function BillCardBase({
           </button>
         </div>
 
-        {/* title — opens the detail page */}
+        {/* title — animated underline on hover/touch, unfolds details inline to prevent blank screen */}
         <h3 className="mt-3 font-display text-lg font-semibold leading-snug text-navy sm:text-xl">
-          <Link
+          <TextDrawLink
+            text={billTitle(bill)}
             href={billDetailHref(bill)}
-            className="u-link decoration-0 hover:text-berry focus-visible:text-berry"
-          >
-            {billTitle(bill)}
-          </Link>
+            onClick={(e) => {
+              e.preventDefault();
+              onToggleExpand();
+            }}
+            className="hover:text-berry focus-visible:text-berry transition-colors cursor-pointer"
+            strokeColor="#c2121f"
+            strokeWidth={8}
+          />
         </h3>
 
         {/* meta — category chip applies the topic filter */}
