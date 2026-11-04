@@ -65,7 +65,7 @@ html.lenis body {
 body {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--color-paper);
   color: var(--color-navy);
   font-family: var(--font-sans);

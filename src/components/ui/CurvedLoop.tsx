@@ -440,3 +440,4 @@ export const CurvedLoop: React.FC<CurvedLoopProps> = ({
 };
 
 export default CurvedLoop;
+
