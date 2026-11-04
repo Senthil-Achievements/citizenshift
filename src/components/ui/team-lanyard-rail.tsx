@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
 export interface LanyardMember {
   id: string;
@@ -126,19 +126,55 @@ function LanyardBadgeItem({
   const [isFlipped, setIsFlipped] = useState(defaultFlipped);
   const tone = TONES[member.tone % TONES.length];
 
-  // Highly elastic spring physics on 2 axes (Y pull-down & X pendulum sway)
-  const dragX = useMotionValue(0);
-  const dragY = useMotionValue(0);
-
-  const springX = useSpring(dragX, { stiffness: 280, damping: 16 });
-  const springY = useSpring(dragY, { stiffness: 320, damping: 14, mass: 0.9 });
+  // Highly responsive 2-axis tactile drag offsets (X pendulum sway & Y pull-down extension)
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
   // Dynamic retractable cord extension length as user pulls down
-  const cordHeight = useTransform(springY, [0, 140], [0, 140]);
-  const strapStretch = useTransform(springY, [0, 140], [1, 1.25]);
-  const rotatePendulum = useTransform(springX, [-50, 50], [-10, 10]);
+  const cordHeight = useTransform(y, [0, 150], [0, 150]);
+  const strapStretch = useTransform(y, [0, 150], [1, 1.25]);
+  const rotatePendulum = useTransform(x, [-60, 60], [-12, 12]);
 
   const [isHovered, setIsHovered] = useState(false);
+  const resetTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Smoothly springs the card back to its exact normal resting position on the rail
+  const returnToNormal = useCallback(() => {
+    animate(x, 0, {
+      type: "spring",
+      stiffness: 280,
+      damping: 18,
+      mass: 0.85,
+    });
+    animate(y, 0, {
+      type: "spring",
+      stiffness: 300,
+      damping: 16,
+      mass: 0.9,
+    });
+  }, [x, y]);
+
+  // Once misaligned, start 3-second countdown to return to normal place
+  const scheduleReset = useCallback(() => {
+    if (resetTimerRef.current) {
+      clearTimeout(resetTimerRef.current);
+    }
+    // Check if misaligned from normal resting place (0, 0)
+    if (Math.abs(x.get()) > 1 || Math.abs(y.get()) > 1) {
+      resetTimerRef.current = setTimeout(() => {
+        returnToNormal();
+      }, 3000); // exactly 3 seconds
+    }
+  }, [x, y, returnToNormal]);
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current) {
+        clearTimeout(resetTimerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="relative flex flex-col items-center select-none flex-shrink-0 group">
@@ -192,25 +228,25 @@ function LanyardBadgeItem({
       {/* 5. The Tactile Badge Card with Real Elastic Recoil & 3D Flip */}
       <motion.div
         style={{
-          x: springX,
-          y: springY,
+          x,
+          y,
           rotateZ: rotatePendulum,
         }}
         drag
         dragConstraints={{ top: 0, bottom: 130, left: -45, right: 45 }}
-        dragElastic={0.7}
+        dragElastic={0.65}
+        onDragStart={() => {
+          if (resetTimerRef.current) {
+            clearTimeout(resetTimerRef.current);
+          }
+        }}
         onDragEnd={() => {
-          dragX.set(0);
-          dragY.set(0);
+          scheduleReset();
         }}
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        animate={{
-          rotateZ: isHovered ? [0, -1.5, 1.5, -0.8, 0] : 0,
-        }}
-        transition={{
-          duration: 1.2,
-          ease: "easeInOut",
+        onMouseLeave={() => {
+          setIsHovered(false);
+          scheduleReset();
         }}
         className="relative z-10 -mt-1 cursor-grab active:cursor-grabbing perspective-[1200px]"
         onClick={() => setIsFlipped((prev) => !prev)}
