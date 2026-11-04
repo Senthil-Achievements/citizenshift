@@ -33,23 +33,23 @@ export default function Ticker() {
           items={CIVIC_HIGHLIGHTS}
           shape="wave"
           curviness={13}
-          speed={52}
+          speed={50}
           direction="forward"
           tilt={0}
-          fontSize={11.5}
+          fontSize={14.5}
           fontWeight={600}
-          letterSpacing={2.6}
+          letterSpacing={2.4}
           fontFamily="var(--font-mono), monospace"
           uppercase={true}
           ribbon={true}
           ribbonColor="#081c30"
-          ribbonWidth={42}
+          ribbonWidth={44}
           color="#f1f8fd"
           edgeFade={0}
           draggable={true}
           scrollBoost={0.35}
           pauseOnHover={true}
-          viewBox="0 210 1200 100"
+          viewBox="0 208 1200 104"
           className="w-full h-full [&_.text-loop-svg]:h-full [&_.text-loop-svg]:w-full"
         />
       </div>

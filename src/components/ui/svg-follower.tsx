@@ -55,7 +55,7 @@ export function SVGFollower({
       this.line = document.createElementNS("http://www.w3.org/2000/svg", "path");
       this.line.style.fill = color;
       this.line.style.stroke = color;
-      this.line.style.strokeWidth = "1";
+      this.line.style.strokeWidth = "1.5";
       this.stage.appendChild(this.line);
     }
 
@@ -132,7 +132,7 @@ export function SVGFollower({
 
     private makeCircle(point: Point) {
       const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      const radius = (Math.abs(point.direction.x) + Math.abs(point.direction.y)) * 1;
+      const radius = Math.max(3, (Math.abs(point.direction.x) + Math.abs(point.direction.y)) * 1.4);
       circle.setAttribute("r", String(radius));
       circle.style.fill = this.color;
       circle.setAttribute("cx", "0");
@@ -141,7 +141,7 @@ export function SVGFollower({
     }
 
     private makeSquare(point: Point) {
-      const size = (Math.abs(point.direction.x) + Math.abs(point.direction.y)) * 1.5;
+      const size = Math.max(5, (Math.abs(point.direction.x) + Math.abs(point.direction.y)) * 1.8);
       const square = document.createElementNS("http://www.w3.org/2000/svg", "rect");
       square.setAttribute("width", String(size));
       square.setAttribute("height", String(size));
@@ -150,7 +150,7 @@ export function SVGFollower({
     }
 
     private makeTriangle(point: Point) {
-      const size = (Math.abs(point.direction.x) + Math.abs(point.direction.y)) * 1.5;
+      const size = Math.max(5, (Math.abs(point.direction.x) + Math.abs(point.direction.y)) * 1.8);
       const triangle = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
       triangle.setAttribute("points", `0,0 ${size},${size / 2} 0,${size}`);
       triangle.style.fill = this.color;
@@ -335,3 +335,4 @@ export function SVGFollower({
 }
 
 export default SVGFollower;
+
