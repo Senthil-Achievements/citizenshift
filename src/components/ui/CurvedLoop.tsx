@@ -68,7 +68,7 @@ const getGeometry = (shape: string, curveAmount: number, fontSize: number, spaci
   const baseline = VIEW_HEIGHT / 2 + fontSize * 0.36;
   if (shape === 'line') return { ...flat, d: `M-100,${baseline} L${VIEW_WIDTH + 100},${baseline}` };
   if (shape === 'wave') return { ...flat, d: wavePath(curveAmount * 0.25, baseline) };
-  return { ...flat, d: `M-100,40 Q500,${40 + curveAmount} 1540,40` };
+  return { ...flat, d: `M-100,40 Q720,${40 + curveAmount} 1540,40` };
 };
 
 export interface CurvedLoopProps {

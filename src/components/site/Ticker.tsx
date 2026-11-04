@@ -3,32 +3,32 @@
 import CurvedLoop from "@/components/ui/CurvedLoop";
 
 /**
- * Ticker — animated civic ribbon powered by React Bits <CurvedLoop />.
- * Sweeping arc marquee with interactive drag, fling physics, and SVG textPath flow.
+ * Ticker — animated civic highlights ribbon.
+ * Sleek, compact typography with interactive drag, fling momentum, and SVG textPath flow.
  */
 export default function Ticker() {
   return (
     <section
-      className="relative w-full max-w-full overflow-hidden border-y border-icy/20 bg-navy-900 text-icy select-none"
-      aria-label="Curved Loop Marquee"
+      className="relative w-full max-w-full overflow-hidden border-y border-icy/20 bg-navy-900 py-1 text-icy select-none"
+      aria-label="Civic Highlights Loop"
     >
       <CurvedLoop
-        marqueeText="Be ✦ Creative ✦ With ✦ React ✦ Bits ✦"
+        marqueeText="Understand Legislation ✦ Track What Matters ✦ 50 States ✦ Congress ✦ Plain Language ✦ One-Tap Advocacy ✦ Nonpartisan ✦"
         shape="arc"
-        speed={2}
-        curveAmount={400}
+        speed={1.8}
+        curveAmount={25}
         direction="left"
-        fontSize={96}
+        fontSize={14}
         fontWeight={700}
-        letterSpacing={0}
+        letterSpacing={2}
         separator=""
         outline={false}
         scrollBoost={0}
-        edgeFade={0}
+        edgeFade={0.08}
         interactive={true}
         pauseOnHover={false}
         separatorColor={null}
-        color={null}
+        color="#e3f3fc"
       />
     </section>
   );
