@@ -15,8 +15,12 @@
   height: auto;
 }
 
-.text-loop-text {
+.text-loop-text,
+.text-loop-text textPath,
+.text-loop-text tspan {
   user-select: none;
+  dominant-baseline: central;
+  alignment-baseline: central;
 }
 
 .text-loop-measure {

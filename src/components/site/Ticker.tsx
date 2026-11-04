@@ -1,50 +1,60 @@
 "use client";
 
-import TextLoop from "@/components/ui/TextLoop";
+import TextLoop, { TextLoopItem } from "@/components/ui/TextLoop";
+
+const CIVIC_HIGHLIGHTS: TextLoopItem[] = [
+  { text: "Understand Legislation", icon: "✦", color: "#f43f5e" },
+  { text: "Track What Matters", icon: "✳", color: "#38bdf8" },
+  { text: "50 States", icon: "★", color: "#f59e0b" },
+  { text: "Congress", icon: "✦", color: "#a855f7" },
+  { text: "Plain Language", icon: "✳", color: "#38bdf8" },
+  { text: "One-Tap Advocacy", icon: "★", color: "#f43f5e" },
+  { text: "Nonpartisan", icon: "✦", color: "#10b981" },
+];
 
 /**
- * Ticker — elegant, high-craft civic highlights ribbon.
- * Features balanced vertical breathing room, authentic IBM Plex Mono typography,
- * luminous icy tracking, and smooth physics-driven motion.
+ * Ticker — premium, playful civic highlights ribbon.
+ * Features a gentle undulating wave, colorful glowing stars,
+ * perfectly centered typography, and responsive interactive drag physics.
  */
 export default function Ticker() {
   return (
     <section
-      className="relative w-full max-w-full overflow-hidden border-y border-white/[0.08] bg-navy-950 select-none before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-icy/25 before:to-transparent after:absolute after:inset-x-0 after:bottom-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-berry/20 after:to-transparent shadow-[0_4px_20px_rgba(0,0,0,0.35)]"
+      className="relative w-full max-w-full overflow-hidden border-y border-white/[0.08] bg-navy-950 py-1.5 select-none before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-icy/30 before:to-transparent after:absolute after:inset-x-0 after:bottom-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-berry/25 after:to-transparent shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
       aria-label="Civic Highlights Loop"
     >
       {/* Soft cinematic vignette fades at screen edges */}
       <div className="pointer-events-none absolute inset-y-0 left-0 w-20 sm:w-36 bg-gradient-to-r from-navy-950 via-navy-950/90 to-transparent z-10" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-20 sm:w-36 bg-gradient-to-l from-navy-950 via-navy-950/90 to-transparent z-10" />
 
-      {/* Balanced, airy height container (40px on mobile, 44px on desktop) */}
-      <div className="relative w-full max-w-full overflow-hidden h-10 sm:h-11 flex items-center">
+      {/* Playful, compact wave ribbon with perfectly centered text */}
+      <div className="relative w-full max-w-full overflow-hidden h-16 sm:h-20 flex items-center justify-center">
         <TextLoop
-          text="Understand Legislation ✦ Track What Matters ✦ 50 States ✦ Congress ✦ Plain Language ✦ One-Tap Advocacy ✦ Nonpartisan"
-          separator="✦"
-          shape="line"
-          speed={48}
+          items={CIVIC_HIGHLIGHTS}
+          shape="wave"
+          curviness={13}
+          speed={52}
           direction="forward"
           tilt={0}
-          fontSize={11}
+          fontSize={11.5}
           fontWeight={600}
-          letterSpacing={2.8}
+          letterSpacing={2.6}
           fontFamily="var(--font-mono), monospace"
           uppercase={true}
           ribbon={true}
-          ribbonColor="#081624"
-          ribbonWidth={44}
-          color="#e8f4fc"
+          ribbonColor="#081c30"
+          ribbonWidth={42}
+          color="#f1f8fd"
           edgeFade={0}
           draggable={true}
-          scrollBoost={0.25}
+          scrollBoost={0.35}
           pauseOnHover={true}
-          viewBox="0 238 1200 44"
-          preserveAspectRatio="xMidYMid slice"
+          viewBox="0 210 1200 100"
           className="w-full h-full [&_.text-loop-svg]:h-full [&_.text-loop-svg]:w-full"
         />
       </div>
     </section>
   );
 }
+
 

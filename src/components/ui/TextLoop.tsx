@@ -108,8 +108,15 @@ const inkOn = (color: string) => {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.2 ? '#120f17' : '#ffffff';
 };
 
+export interface TextLoopItem {
+  text: string;
+  icon?: string;
+  color?: string;
+}
+
 export interface TextLoopProps {
   text?: string;
+  items?: TextLoopItem[];
   shape?: 'wave' | 'circle' | 'infinity' | 'arch' | 'line';
   path?: string;
   speed?: number;
@@ -143,6 +150,7 @@ export interface TextLoopProps {
 
 export const TextLoop: React.FC<TextLoopProps> = ({
   text = 'React ✦ Bits',
+  items,
   shape = 'wave',
   path,
   speed = 90,
@@ -214,10 +222,19 @@ export const TextLoop: React.FC<TextLoopProps> = ({
   const crossDim = !ribbon && !crossColor ? 0.45 : 1;
 
   const unit = useMemo(() => {
+    if (items && items.length > 0) {
+      return items
+        .map((it) => {
+          const t = uppercase ? it.text.toUpperCase() : it.text;
+          const s = it.icon || separator || '✦';
+          return `${t}\u00A0\u00A0${s}\u00A0\u00A0`;
+        })
+        .join('');
+    }
     const base = uppercase ? String(text).toUpperCase() : String(text);
     const gap = separator ? `\u00A0${separator}\u00A0` : '\u00A0\u00A0\u00A0';
     return `${base}${gap}`;
-  }, [text, separator, uppercase]);
+  }, [text, separator, uppercase, items]);
 
   const textStyle = useMemo(
     () => ({
@@ -478,6 +495,30 @@ export const TextLoop: React.FC<TextLoopProps> = ({
   const crossText = unit.repeat(metrics.crossReps);
   const fitLength = metrics.length || undefined;
   const crossFit = metrics.crossLength || undefined;
+
+  const renderTokens = (reps: number) => {
+    if (!items || items.length === 0) return unit.repeat(reps);
+    const elements: React.ReactNode[] = [];
+    for (let r = 0; r < reps; r++) {
+      items.forEach((it, i) => {
+        const key = `${r}-${i}`;
+        const t = uppercase ? it.text.toUpperCase() : it.text;
+        const icon = it.icon || separator || '✦';
+        elements.push(
+          <tspan key={`t-${key}`} fill={color || (ribbon ? '#f1f8fd' : 'currentColor')}>
+            {t}
+          </tspan>
+        );
+        elements.push(
+          <tspan key={`i-${key}`} fill={it.color || '#38bdf8'} fontWeight={800}>
+            {`\u00A0\u00A0${icon}\u00A0\u00A0`}
+          </tspan>
+        );
+      });
+    }
+    return elements;
+  };
+
   const paint = (ink: string, opacity: number) =>
     outline
       ? {
@@ -620,6 +661,17 @@ export const TextLoop: React.FC<TextLoopProps> = ({
           )}
 
           <g transform={mainTransform}>
+            {ribbon && (
+              <path
+                d={d}
+                fill="none"
+                stroke="#38bdf8"
+                strokeOpacity={0.22}
+                strokeWidth={ribbonWidth + 3}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            )}
             <path
               ref={pathRef}
               id={pathId}
@@ -636,12 +688,19 @@ export const TextLoop: React.FC<TextLoopProps> = ({
               style={textStyle}
               {...mainPaint}
               dominantBaseline="central"
+              alignmentBaseline="central"
               aria-hidden="true"
               textLength={fitLength}
               lengthAdjust="spacing"
             >
-              <textPath ref={headRef} href={`#${pathId}`} startOffset={0}>
-                {loopText}
+              <textPath
+                ref={headRef}
+                href={`#${pathId}`}
+                startOffset={0}
+                dominantBaseline="central"
+                alignmentBaseline="central"
+              >
+                {renderTokens(metrics.reps)}
               </textPath>
             </text>
 
@@ -650,12 +709,19 @@ export const TextLoop: React.FC<TextLoopProps> = ({
               style={textStyle}
               {...mainPaint}
               dominantBaseline="central"
+              alignmentBaseline="central"
               aria-hidden="true"
               textLength={fitLength}
               lengthAdjust="spacing"
             >
-              <textPath ref={tailRef} href={`#${pathId}`} startOffset={0}>
-                {loopText}
+              <textPath
+                ref={tailRef}
+                href={`#${pathId}`}
+                startOffset={0}
+                dominantBaseline="central"
+                alignmentBaseline="central"
+              >
+                {renderTokens(metrics.reps)}
               </textPath>
             </text>
           </g>
