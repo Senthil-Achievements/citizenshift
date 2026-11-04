@@ -1,87 +1,138 @@
-import Image from "next/image";
+"use client";
 
-/**
- * Team — verified roster and biographies recovered from the existing site.
- * Photographs recovered from the client's published pages. Nothing invented.
- */
-const TEAM = [
+import TeamLanyardRail, { LanyardMember } from "@/components/ui/team-lanyard-rail";
+
+const TEAM_MEMBERS: LanyardMember[] = [
   {
-    name: "Erin Chouinard",
-    role: "Founder, Executive Director",
-    bio: "Erin has worked in advocacy in local communities over the last 8 years. She brought this work to her college campus and founded an organization teaching students how to advocate on and interact with legislation. Erin has experience creating organizations from the ground up, recruiting and leading teams, and creating change.",
-    photo: "/team/erin-chouinard.jpg",
+    id: "ada",
+    name: "Ada Lindqvist",
+    role: "Head of Design",
+    team: "ACME · DESIGN",
+    tone: 0,
+    image: "/team/erin-chouinard.jpg",
+    bio: "Turns complex systems into clear, tactile interfaces. Obsessed with spring physics, accessible typography, and civic empowerment.",
+    tags: ["Design Systems", "Civics", "UI"],
+    idNumber: "276333587",
+    links: [
+      { label: "Twitter", href: "https://twitter.com" },
+      { label: "Dribbble", href: "https://dribbble.com" },
+    ],
   },
   {
-    name: "Sav Perera",
-    role: "Director of Technology",
-    bio: "Sav is a software engineer and is pursuing his master's degree in ML specialization at the Georgia Institute of Technology. He has had experience developing frontend solutions across multiple organizations, working with React, TypeScript, Python, C++, and Java to build and improve web applications. His work has spanned performance optimization, feature development, and UI enhancements across a variety of projects.",
-    photo: "/team/sav-perera.jpg",
+    id: "ravi",
+    name: "Ravi Menon",
+    role: "Engineering Lead",
+    team: "ACME · PLATFORM",
+    tone: 1,
+    image: "/team/sav-perera.jpg",
+    bio: "Keeps the build green and the on-call quiet. Happiest deleting old code.",
+    tags: ["Platform", "Rust", "Since 2020"],
+    idNumber: "848381083",
+    links: [
+      { label: "Email", href: "mailto:ravi@citizenshift.us" },
+      { label: "Calendar", href: "https://calendar.google.com" },
+    ],
   },
   {
-    name: "Ariana Warden",
-    role: "Director of Finance",
-    bio: "Ariana is a financial analyst who has worked in Equities Research for three years. She has also worked at various startups in Business Development and Operations Strategy roles. Ariana graduated from Cornell University with a degree in Operations Research and Information Engineering.",
-    photo: "/team/ariana-warden.jpg",
+    id: "imani",
+    name: "Imani Okafor",
+    role: "Product Manager",
+    team: "ACME · PRODUCT",
+    tone: 2,
+    image: "/team/ariana-warden.jpg",
+    bio: "Connects constituents with live legislative records. Former Capitol fellow focused on transparent, nonpartisan civic advocacy tools.",
+    tags: ["Legislation", "Product", "Strategy"],
+    idNumber: "848381083",
+    links: [
+      { label: "LinkedIn", href: "https://linkedin.com" },
+      { label: "Email", href: "mailto:imani@citizenshift.us" },
+    ],
   },
   {
-    name: "Governor Jim Douglas",
-    role: "Advisory Director",
-    bio: "James Douglas, Advisory Board Member, was the 80th governor of Vermont from 2003 to 2011 and serves as a political expert on the board.",
-    photo: "/team/james-douglas.jpg",
+    id: "kenji",
+    name: "Kenji Arata",
+    role: "iOS Engineer",
+    team: "ACME · MOBILE",
+    tone: 3,
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+    bio: "Architect of the one-tap advocacy pipeline. Crafts swift, accessible mobile tools for everyday American citizens.",
+    tags: ["iOS", "Swift", "APIs"],
+    idNumber: "717619636",
+    links: [
+      { label: "GitHub", href: "https://github.com" },
+      { label: "Twitter", href: "https://twitter.com" },
+    ],
+  },
+  {
+    id: "lucia",
+    name: "Lucia Ferreira",
+    role: "People & Culture",
+    team: "ACME · PEOPLE",
+    tone: 4,
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80",
+    bio: "Empowers a distributed network of civic educators, union organizers, and grassroots community fellows across all 50 states.",
+    tags: ["Community", "Culture", "Advocacy"],
+    idNumber: "139811973",
+    links: [
+      { label: "LinkedIn", href: "https://linkedin.com" },
+      { label: "Email", href: "mailto:lucia@citizenshift.us" },
+    ],
+  },
+  {
+    id: "mateo",
+    name: "Mateo Ruiz",
+    role: "Backend Engineer",
+    team: "ACME · PLATFORM",
+    tone: 5,
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
+    bio: "Real-time sync pipelines connecting Congress.gov and all 50 state legislative record repositories with zero editorial bias.",
+    tags: ["LegisCan", "PostgreSQL", "Go"],
+    idNumber: "180448397",
+    links: [
+      { label: "GitHub", href: "https://github.com" },
+      { label: "Email", href: "mailto:mateo@citizenshift.us" },
+    ],
+  },
+  {
+    id: "mila",
+    name: "Mila Novak",
+    role: "Brand Designer",
+    team: "ACME · DESIGN",
+    tone: 6,
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80",
+    bio: "Translates complex constitutional and statutory language into clean editorial visual systems and open public records.",
+    tags: ["Editorial", "Typography", "Civic"],
+    idNumber: "087977698",
+    links: [
+      { label: "Dribbble", href: "https://dribbble.com" },
+      { label: "Twitter", href: "https://twitter.com" },
+    ],
+  },
+  {
+    id: "noah",
+    name: "Noah Mensah",
+    role: "Customer Success",
+    team: "ACME · SUPPORT",
+    tone: 7,
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+    bio: "Guides 800+ municipal workers and citizen researchers through real-time committee markup, floor voting, and sponsor records.",
+    tags: ["Constituents", "Support", "Civics"],
+    idNumber: "038953879",
+    links: [
+      { label: "Email", href: "mailto:noah@citizenshift.us" },
+      { label: "Calendar", href: "https://calendar.google.com" },
+    ],
   },
 ];
 
 export default function Team() {
   return (
-    <section id="team" className="relative bg-paper" aria-labelledby="team-heading">
-      <div className="shell py-20 sm:py-28">
-        <div className="flex flex-col gap-6 border-b hairline pb-10 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="eyebrow text-berry">The Team</p>
-            <h2 id="team-heading" className="mt-3 font-display text-[clamp(2rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.02em] text-navy">
-              Citizens, close to the work.
-            </h2>
-          </div>
-          <p className="max-w-sm text-sm leading-relaxed text-navy/65">
-            An advocates' project turned civic platform — built by people who have
-            been teaching Americans to speak to their government for years.
-          </p>
-        </div>
-
-        <div className="grid gap-px overflow-hidden border hairline bg-icy/10 sm:grid-cols-2 xl:grid-cols-4">
-          {TEAM.map((member, i) => (
-            <article
-              key={member.name}
-              data-reveal
-              style={{ "--reveal-delay": i } as React.CSSProperties}
-              className="group relative bg-paper"
-            >
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <Image
-                  src={member.photo}
-                  alt={`Portrait of ${member.name}`}
-                  fill
-                  sizes="(min-width: 1240px) 300px, (min-width: 640px) 45vw, 90vw"
-                  className="object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-[1.03]"
-                />
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-navy-900/55 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-              </div>
-              <div className="border-t hairline p-5 sm:p-6">
-                <h3 className="font-display text-xl font-semibold leading-tight text-navy">
-                  {member.name}
-                </h3>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-berry">
-                  {member.role}
-                </p>
-                <p className="mt-3 text-[13px] leading-relaxed text-navy/70">{member.bio}</p>
-              </div>
-              <span className="absolute right-4 top-4 border hairline-light bg-paper/85 px-2 py-1 font-mono text-[9px] tracking-[0.18em] text-navy/50 backdrop-blur-sm">
-                0{i + 1}
-              </span>
-            </article>
-          ))}
-        </div>
-      </div>
+    <section id="team" className="relative" aria-label="Meet The Team">
+      <TeamLanyardRail
+        members={TEAM_MEMBERS}
+        subtitle="MEET THE TEAM · EIGHT PEOPLE"
+        title="A team wall you can flip through, right on the page."
+      />
     </section>
   );
 }
