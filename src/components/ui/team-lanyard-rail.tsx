@@ -115,7 +115,7 @@ function LinkedInIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-// Single Interactive Lanyard Badge (Scaled up for 4 members)
+// Single Interactive Lanyard Badge with Real Elastic Cord Physics
 function LanyardBadgeItem({
   member,
   defaultFlipped = false,
@@ -126,12 +126,18 @@ function LanyardBadgeItem({
   const [isFlipped, setIsFlipped] = useState(defaultFlipped);
   const tone = TONES[member.tone % TONES.length];
 
-  // Pull-down spring cord physics
+  // Highly elastic spring physics on 2 axes (Y pull-down & X pendulum sway)
+  const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
-  const springY = useSpring(dragY, { stiffness: 450, damping: 24 });
-  const strapStretch = useTransform(springY, [0, 90], [1, 1.4]);
 
-  // Gentle pendulum sway on hover
+  const springX = useSpring(dragX, { stiffness: 280, damping: 16 });
+  const springY = useSpring(dragY, { stiffness: 320, damping: 14, mass: 0.9 });
+
+  // Dynamic retractable cord extension length as user pulls down
+  const cordHeight = useTransform(springY, [0, 140], [0, 140]);
+  const strapStretch = useTransform(springY, [0, 140], [1, 1.25]);
+  const rotatePendulum = useTransform(springX, [-50, 50], [-10, 10]);
+
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -148,51 +154,65 @@ function LanyardBadgeItem({
             scaleY: strapStretch,
             transformOrigin: "top center",
           }}
-          className="relative w-4 h-14 sm:h-16 shadow-md rounded-t-xs"
+          className="relative w-3.5 sm:w-4 h-12 sm:h-14 shadow-md rounded-t-xs"
         >
           {/* Diagonal woven fabric pattern */}
           <div
             className="w-full h-full"
             style={{
-              background: `repeating-linear-gradient(45deg, ${tone.primary}, ${tone.primary} 5px, ${tone.darker} 5px, ${tone.darker} 10px)`,
+              background: `repeating-linear-gradient(45deg, ${tone.primary}, ${tone.primary} 4px, ${tone.darker} 4px, ${tone.darker} 8px)`,
             }}
           />
         </motion.div>
 
-        {/* 3. Retractable Circular Badge Reel */}
+        {/* 3. Retractable Circular Badge Reel (Stays anchored to strap) */}
         <div className="relative z-10 -mt-1 flex flex-col items-center">
           {/* Metal Crimp Clamp */}
-          <div className="w-4.5 h-2 bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 rounded-xs border border-zinc-500/40" />
+          <div className="w-4 h-1.5 bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 rounded-xs border border-zinc-500/40" />
 
           {/* Chrome Reel Casing */}
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-zinc-100 via-zinc-300 to-zinc-500 border border-zinc-400 shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-center my-0.5">
-            <div className="w-3 h-3 rounded-full bg-gradient-to-br from-zinc-400 to-zinc-600 border border-zinc-200/80 shadow-inner flex items-center justify-center">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-800" />
+          <div className="w-6 sm:w-6.5 h-6 sm:h-6.5 rounded-full bg-gradient-to-br from-zinc-100 via-zinc-300 to-zinc-500 border border-zinc-400 shadow-[0_3px_8px_rgba(0,0,0,0.45)] flex items-center justify-center my-0.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-zinc-400 to-zinc-600 border border-zinc-200/80 shadow-inner flex items-center justify-center">
+              <div className="w-1 h-1 rounded-full bg-zinc-800" />
             </div>
           </div>
-
-          {/* Metal Carabiner Clip Hook */}
-          <div className="w-3 h-4 bg-gradient-to-b from-zinc-300 via-zinc-100 to-zinc-500 rounded-b-sm border border-zinc-500/50 -mt-0.5 shadow-xs" />
         </div>
       </div>
 
-      {/* 4. The Tactile Badge Card with 3D Flip & Sway Physics */}
+      {/* 4. Visible Retractable Elastic Cord (Lengthens as card is pulled down) */}
       <motion.div
-        style={{ y: springY }}
-        drag="y"
-        dragConstraints={{ top: 0, bottom: 70 }}
-        dragElastic={0.12}
-        onDragEnd={() => dragY.set(0)}
+        style={{
+          height: cordHeight,
+          width: 2,
+          transformOrigin: "top center",
+        }}
+        className="relative z-10 bg-gradient-to-b from-zinc-500 via-zinc-300 to-zinc-600 shadow-[0_0_2px_rgba(255,255,255,0.6)]"
+      />
+
+      {/* 5. The Tactile Badge Card with Real Elastic Recoil & 3D Flip */}
+      <motion.div
+        style={{
+          x: springX,
+          y: springY,
+          rotateZ: rotatePendulum,
+        }}
+        drag
+        dragConstraints={{ top: 0, bottom: 130, left: -45, right: 45 }}
+        dragElastic={0.7}
+        onDragEnd={() => {
+          dragX.set(0);
+          dragY.set(0);
+        }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         animate={{
-          rotateZ: isHovered ? [0, -1.5, 1.5, -0.7, 0] : 0,
+          rotateZ: isHovered ? [0, -1.5, 1.5, -0.8, 0] : 0,
         }}
         transition={{
           duration: 1.2,
           ease: "easeInOut",
         }}
-        className="relative z-10 -mt-1 cursor-pointer perspective-[1200px]"
+        className="relative z-10 -mt-1 cursor-grab active:cursor-grabbing perspective-[1200px]"
         onClick={() => setIsFlipped((prev) => !prev)}
         role="button"
         tabIndex={0}
@@ -205,7 +225,7 @@ function LanyardBadgeItem({
         aria-label={`ID Badge for ${member.name}. Press to flip.`}
       >
         <div
-          className="relative w-[240px] sm:w-[265px] md:w-[280px] h-[380px] sm:h-[410px] md:h-[430px] transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] [transform-style:preserve-3d] shadow-[0_20px_50px_rgba(0,0,0,0.65)] rounded-2xl"
+          className="relative w-[215px] sm:w-[235px] md:w-[250px] lg:w-[260px] h-[360px] sm:h-[385px] md:h-[405px] transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] [transform-style:preserve-3d] shadow-[0_18px_45px_rgba(0,0,0,0.65)] rounded-2xl"
           style={{
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
           }}
@@ -219,18 +239,18 @@ function LanyardBadgeItem({
           >
             {/* Top Colored Band with Punch Slot */}
             <div
-              className="relative h-20 w-full flex items-start justify-center pt-3"
+              className="relative h-18 w-full flex items-start justify-center pt-2.5"
               style={{
-                background: `repeating-linear-gradient(45deg, ${tone.primary}, ${tone.primary} 9px, ${tone.darker} 9px, ${tone.darker} 18px)`,
+                background: `repeating-linear-gradient(45deg, ${tone.primary}, ${tone.primary} 8px, ${tone.darker} 8px, ${tone.darker} 16px)`,
               }}
             >
               {/* Oval Badge Lanyard Slot Cutout */}
-              <div className="w-8 h-2.5 rounded-full bg-[#0a0d10] border border-black/50 shadow-inner" />
+              <div className="w-7 h-2.5 rounded-full bg-[#0a0d10] border border-black/50 shadow-inner" />
             </div>
 
             {/* Circular Photo Window framed right below top band */}
-            <div className="relative -mt-12 flex justify-center">
-              <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-[3px] border-white/90 shadow-[0_6px_20px_rgba(0,0,0,0.6)] bg-navy-900">
+            <div className="relative -mt-11 flex justify-center">
+              <div className="relative w-22 h-22 sm:w-24 sm:h-24 md:w-26 md:h-26 rounded-full overflow-hidden border-[3px] border-white/90 shadow-[0_5px_18px_rgba(0,0,0,0.6)] bg-navy-900">
                 <Image
                   src={member.image}
                   alt={member.name}
@@ -243,25 +263,25 @@ function LanyardBadgeItem({
 
             {/* Member Details */}
             <div className="px-4 text-center -mt-1 flex-1 flex flex-col justify-center">
-              <h3 className="font-display font-bold text-lg sm:text-xl text-white leading-tight">
+              <h3 className="font-display font-bold text-base sm:text-lg md:text-xl text-white leading-tight">
                 {member.name}
               </h3>
-              <p className="mt-1 font-sans text-xs sm:text-sm text-white/80 font-semibold leading-tight">
+              <p className="mt-1 font-sans text-xs sm:text-[13px] text-white/85 font-semibold leading-tight">
                 {member.role}
               </p>
-              <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+              <p className="mt-1 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-white/45">
                 {member.team}
               </p>
 
               {/* Flip hint pill */}
-              <div className="mt-3 inline-flex items-center justify-center gap-1.5 self-center px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-white/60">
+              <div className="mt-2.5 inline-flex items-center justify-center gap-1.5 self-center px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] sm:text-[10px] font-mono text-white/60">
                 <span>Click to read bio</span>
                 <span className="text-white/80">↻</span>
               </div>
             </div>
 
             {/* Bottom Social Icons Row (Replacing the Barcode) */}
-            <div className="p-3.5 bg-black/45 border-t border-white/10 flex items-center justify-center gap-3">
+            <div className="p-3 bg-black/45 border-t border-white/10 flex items-center justify-center gap-2.5">
               {/* Instagram */}
               <a
                 href={member.socials?.instagram || "#"}
@@ -269,9 +289,9 @@ function LanyardBadgeItem({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${member.name} on Instagram`}
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 group shadow-sm"
+                className="w-8.5 h-8.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 group shadow-sm"
               >
-                <InstagramIcon className="w-4 h-4 text-white/80 group-hover:text-white" />
+                <InstagramIcon className="w-3.5 h-3.5 text-white/80 group-hover:text-white" />
               </a>
 
               {/* Twitter / X */}
@@ -281,9 +301,9 @@ function LanyardBadgeItem({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${member.name} on X / Twitter`}
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 group shadow-sm"
+                className="w-8.5 h-8.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 group shadow-sm"
               >
-                <TwitterXIcon className="w-4 h-4 text-white/80 group-hover:text-white" />
+                <TwitterXIcon className="w-3.5 h-3.5 text-white/80 group-hover:text-white" />
               </a>
 
               {/* LinkedIn */}
@@ -293,18 +313,18 @@ function LanyardBadgeItem({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${member.name} on LinkedIn`}
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 group shadow-sm"
+                className="w-8.5 h-8.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 group shadow-sm"
               >
-                <LinkedInIcon className="w-4 h-4 text-white/80 group-hover:text-white" />
+                <LinkedInIcon className="w-3.5 h-3.5 text-white/80 group-hover:text-white" />
               </a>
             </div>
           </div>
 
           {/* ========================================================
-              BACK OF BADGE (Flipped Face - Perfectly oriented, not mirrored)
+              BACK OF BADGE (Flipped Face - Forward oriented, not mirrored)
              ======================================================== */}
           <div
-            className="absolute inset-0 rounded-2xl overflow-hidden bg-[#101418] border border-white/10 flex flex-col justify-between p-5 [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
+            className="absolute inset-0 rounded-2xl overflow-hidden bg-[#101418] border border-white/10 flex flex-col justify-between p-4 sm:p-5 [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
             style={{
               transform: "rotateY(180deg)",
               backfaceVisibility: "hidden",
@@ -312,31 +332,31 @@ function LanyardBadgeItem({
             }}
           >
             {/* Top Header with Accent Dot */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
               <div>
-                <h4 className="font-display font-bold text-base text-white leading-tight">
+                <h4 className="font-display font-bold text-sm sm:text-base text-white leading-tight">
                   {member.name}
                 </h4>
-                <p className="mt-0.5 font-mono text-[11px] uppercase tracking-wider text-white/70 font-semibold">
+                <p className="mt-0.5 font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-white/70 font-semibold">
                   {member.role}
                 </p>
               </div>
               <div
-                className="w-4 h-4 rounded-full border border-white/20 flex-shrink-0 shadow-sm"
+                className="w-3.5 h-3.5 rounded-full border border-white/20 flex-shrink-0 shadow-sm"
                 style={{ backgroundColor: tone.primary }}
               />
             </div>
 
             {/* Exact Bio Content */}
             <div className="my-auto py-2">
-              <p className="text-xs sm:text-[13px] leading-relaxed text-white/85 font-sans">
+              <p className="text-[11px] sm:text-xs md:text-[12.5px] leading-relaxed text-white/85 font-sans">
                 {member.bio}
               </p>
             </div>
 
             {/* Bottom Footer with Social Icons & Flip-Back Hint */}
-            <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-              {/* Social icons on back too for immediate click access */}
+            <div className="pt-2.5 border-t border-white/10 flex items-center justify-between">
+              {/* Social icons on back */}
               <div className="flex items-center gap-2">
                 <a
                   href={member.socials?.instagram || "#"}
@@ -344,9 +364,9 @@ function LanyardBadgeItem({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${member.name} on Instagram`}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-105 group"
+                  className="w-7.5 h-7.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-105 group"
                 >
-                  <InstagramIcon className="w-3.5 h-3.5 text-white/80 group-hover:text-white" />
+                  <InstagramIcon className="w-3 h-3 text-white/80 group-hover:text-white" />
                 </a>
 
                 <a
@@ -355,9 +375,9 @@ function LanyardBadgeItem({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${member.name} on X / Twitter`}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-105 group"
+                  className="w-7.5 h-7.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-105 group"
                 >
-                  <TwitterXIcon className="w-3.5 h-3.5 text-white/80 group-hover:text-white" />
+                  <TwitterXIcon className="w-3 h-3 text-white/80 group-hover:text-white" />
                 </a>
 
                 <a
@@ -366,9 +386,9 @@ function LanyardBadgeItem({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${member.name} on LinkedIn`}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-105 group"
+                  className="w-7.5 h-7.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white flex items-center justify-center transition-all hover:scale-105 group"
                 >
-                  <LinkedInIcon className="w-3.5 h-3.5 text-white/80 group-hover:text-white" />
+                  <LinkedInIcon className="w-3 h-3 text-white/80 group-hover:text-white" />
                 </a>
               </div>
 
@@ -385,7 +405,7 @@ function LanyardBadgeItem({
   );
 }
 
-// Full Team Lanyard Rail Component (for 4 Leaders)
+// Full Team Lanyard Rail Component with Free, Uncropped Edges
 export default function TeamLanyardRail({
   members,
   title = "A team wall you can flip through, right on the page.",
@@ -404,7 +424,7 @@ export default function TeamLanyardRail({
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-[1400px] px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
         <div className="text-center mb-14 sm:mb-20">
           <p className="font-mono text-xs uppercase tracking-[0.28em] text-white/50 mb-3">
@@ -417,37 +437,38 @@ export default function TeamLanyardRail({
 
         {/* ========================================================
             THE METALLIC RAIL & SUSPENDED LANYARD BADGES
+            Free, uncropped edges with generous side clearances
            ======================================================== */}
         <div className="relative w-full">
-          {/* Scrollable container for mobile; centered for desktop */}
-          <div className="w-full overflow-x-auto pb-10 pt-4 scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none]">
-            <div className="relative min-w-[1040px] px-8 sm:px-12 flex flex-col items-center">
-              {/* 1. Left Wall Mounting Flange Bracket */}
-              <div className="absolute left-4 top-2 z-30 flex flex-col items-center">
+          {/* Scrollable container on mobile; centered with free margins on desktop */}
+          <div className="w-full overflow-x-auto pb-12 pt-4 scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none]">
+            <div className="relative min-w-[1140px] px-12 sm:px-16 md:px-20 flex flex-col items-center">
+              {/* 1. Left Wall Mounting Flange Bracket (Placed comfortably clear of Card 1) */}
+              <div className="absolute left-2 sm:left-4 top-2 z-30 flex flex-col items-center">
                 <div className="w-5 h-9 rounded-sm bg-gradient-to-r from-zinc-700 via-zinc-400 to-zinc-600 border border-zinc-500 shadow-md flex flex-col justify-around py-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
                 </div>
               </div>
 
-              {/* 2. Brushed Aluminum Metal Pipe Rail */}
-              <div className="relative w-full h-3 z-10 mx-6">
+              {/* 2. Brushed Aluminum Metal Pipe Rail (Spans full width with side clearance) */}
+              <div className="relative w-full h-3 z-10 mx-4">
                 {/* Rod shadow */}
                 <div className="absolute -bottom-2 inset-x-0 h-3 bg-black/40 blur-xs rounded-full" />
                 {/* Metallic gradient rod */}
                 <div className="w-full h-full rounded-full bg-gradient-to-b from-zinc-100 via-zinc-300 to-zinc-500 border-t border-b border-zinc-200 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_2px_4px_rgba(0,0,0,0.6)]" />
               </div>
 
-              {/* 3. Right Wall Mounting Flange Bracket */}
-              <div className="absolute right-4 top-2 z-30 flex flex-col items-center">
+              {/* 3. Right Wall Mounting Flange Bracket (Placed comfortably clear of Card 4) */}
+              <div className="absolute right-2 sm:right-4 top-2 z-30 flex flex-col items-center">
                 <div className="w-5 h-9 rounded-sm bg-gradient-to-r from-zinc-600 via-zinc-400 to-zinc-700 border border-zinc-500 shadow-md flex flex-col justify-around py-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
                 </div>
               </div>
 
-              {/* 4. Suspended Badges: 4 Leaders with generous, comfortable spacing */}
-              <div className="relative -mt-3.5 z-20 w-full flex items-start justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-14">
+              {/* 4. Suspended Badges: 4 Leaders with generous, comfortable spacing (Never touching the brackets) */}
+              <div className="relative -mt-3.5 z-20 w-full flex items-start justify-center gap-5 sm:gap-7 md:gap-9 lg:gap-11 px-8 sm:px-12">
                 {members.map((member) => (
                   <LanyardBadgeItem
                     key={member.id}
