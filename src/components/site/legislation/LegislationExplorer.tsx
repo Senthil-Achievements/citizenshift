@@ -17,12 +17,6 @@ import ContactRepDialog from "@/components/site/legislation/ContactRepDialog";
 import type { Bill, LegislationLevel, LegislationResponse } from "@/lib/legislation";
 import { CARD_LIMIT, isPassed, isNew, matchesTopic, shuffle } from "@/lib/legislation";
 import { POLICY_AREAS, US_STATES } from "@/lib/states";
-import { CIVIC_GALLERY_IMAGES } from "@/components/ui/3d-gallery-photography-demo";
-
-const InfiniteGallery = dynamic(
-  () => import("@/components/ui/3d-gallery-photography"),
-  { ssr: false }
-);
 
 type LevelFilter = "All" | LegislationLevel;
 type StatusFilter = "All" | "New" | "Passed";
@@ -51,7 +45,6 @@ export default function LegislationExplorer() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [shareBill, setShareBill] = useState<Bill | null>(null);
   const [contactBill, setContactBill] = useState<Bill | null>(null);
-  const [show3DGallery, setShow3DGallery] = useState(false);
   const [toast, setToast] = useState("");
 
   const showToast = useCallback((message: string) => {
@@ -316,57 +309,8 @@ export default function LegislationExplorer() {
               </svg>
               Discover
             </button>
-
-            <button
-              type="button"
-              onClick={() => setShow3DGallery((prev) => !prev)}
-              title="Toggle 3D Civic Visual Feed"
-              className={`group flex h-12 items-center gap-2 rounded-xl border hairline-light px-4 text-sm font-semibold transition-all ${
-                show3DGallery
-                  ? "border-icy bg-icy text-navy shadow-lg"
-                  : "text-icy hover:border-icy/60 hover:bg-icy/10"
-              }`}
-            >
-              <span className="text-base" aria-hidden="true">🏛️</span>
-              <span className="hidden sm:inline">{show3DGallery ? "Close 3D View" : "3D Gallery"}</span>
-              <span className="sm:hidden">3D</span>
-            </button>
           </div>
         </div>
-
-        {/* Inline Expandable 3D Photographic Gallery */}
-        {show3DGallery && (
-          <div className="mt-6 overflow-hidden rounded-2xl border hairline-light bg-navy-950/90 p-4 sm:p-6 shadow-2xl transition-all">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <span className="eyebrow text-berry">Live 3D Perspective</span>
-                <h3 className="font-display text-lg sm:text-xl font-bold text-paper">
-                  Photographic Record · Capitol & Legislative Halls
-                </h3>
-              </div>
-              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-icy/60">
-                <span>Mouse Wheel / Arrow keys to fly through</span>
-                <button
-                  type="button"
-                  onClick={() => setShow3DGallery(false)}
-                  className="ml-2 rounded-lg border hairline-light px-2.5 py-1 text-paper hover:bg-white/10"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-            <div className="relative h-[340px] sm:h-[440px] w-full rounded-xl overflow-hidden bg-navy-900/60 border border-white/5">
-              <InfiniteGallery
-                images={CIVIC_GALLERY_IMAGES}
-                speed={1.1}
-                zSpacing={3.2}
-                visibleCount={10}
-                falloff={{ near: 0.8, far: 14 }}
-                className="h-full w-full"
-              />
-            </div>
-          </div>
-        )}
 
         {/* filter rail */}
         <div className="no-scrollbar mt-5 overflow-x-auto pb-1">{filterRail}</div>
@@ -458,41 +402,6 @@ export default function LegislationExplorer() {
               ))}
             </div>
           )}
-        </div>
-
-        {/* 3D Civic Photography Gallery Block */}
-        <div className="mt-16 border-t hairline-light pt-12">
-          <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-berry font-bold">
-                Photographic Record · Capitol & Democracy in 3D Motion
-              </p>
-              <h3 className="mt-1 font-display text-2xl font-semibold text-paper sm:text-3xl">
-                The halls where bills become law.
-              </h3>
-            </div>
-            <p className="max-w-md font-mono text-[11px] text-icy/60 uppercase tracking-wider">
-              Scroll wheel or arrow keys to fly through 3D depth · Hover to wave cloth ripples
-            </p>
-          </div>
-
-          <div className="relative h-[400px] sm:h-[480px] w-full overflow-hidden rounded-2xl border hairline-light bg-navy-950/80 shadow-2xl">
-            <InfiniteGallery
-              images={CIVIC_GALLERY_IMAGES}
-              speed={1.1}
-              zSpacing={3.2}
-              visibleCount={10}
-              falloff={{ near: 0.8, far: 14 }}
-              className="h-full w-full"
-            />
-            
-            {/* Interactive hint pill */}
-            <div className="pointer-events-none absolute bottom-4 inset-x-0 flex items-center justify-center">
-              <span className="rounded-full border hairline-light bg-navy-900/80 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-icy/70 backdrop-blur-md">
-                Three.js Cloth Shader · Auto-play resumes after 3s
-              </span>
-            </div>
-          </div>
         </div>
 
         {/* footnote */}

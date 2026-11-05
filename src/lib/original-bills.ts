@@ -55,6 +55,11 @@ export interface OriginalBill {
   originalTextSection: string | null;
   originalTextLinkText: string | null;
   originalTextHref: string | null;
+  bullets?: string[];
+  aiSummary?: {
+    summary?: string;
+    summaryBullets?: string[];
+  };
 }
 
 const PROGRESS_STEPS = [

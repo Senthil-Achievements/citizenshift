@@ -22,6 +22,7 @@ export default function RevealObserver() {
         for (const entry of entries) {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-in");
+            entry.target.setAttribute("data-revealed", "true");
             io.unobserve(entry.target);
           }
         }

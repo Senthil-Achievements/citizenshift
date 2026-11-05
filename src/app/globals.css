@@ -118,7 +118,8 @@ body {
   transition-delay: calc(var(--reveal-delay, 0) * 90ms);
 }
 
-[data-reveal].is-in {
+[data-reveal].is-in,
+[data-reveal][data-revealed="true"] {
   opacity: 1;
   transform: translateY(0);
 }

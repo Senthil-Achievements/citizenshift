@@ -1,5 +1,220 @@
 [
   {
+    "id": "2161502",
+    "bill_number": "H.R. 10951",
+    "title": "No Bets on Wildfires Act",
+    "summary": "To amend the Commodity Exchange Act to prohibit the listing of contracts relating to wildfires.",
+    "full_title": "No Bets on Wildfires Act",
+    "full_summary": "To amend the Commodity Exchange Act to prohibit the listing of contracts relating to wildfires.",
+    "level": "Federal",
+    "jurisdiction": "United States",
+    "status": "Introduced",
+    "policy_area": "Unclassified",
+    "introduced_date": "2026-10-29",
+    "source": "legiscan",
+    "source_id": "2161502",
+    "source_url": "https://www.congress.gov/bill/119th-congress/house-bill/10951",
+    "bullets": [
+      "A registered entity may not list or accept for clearing any wildfire-related agreement, contract, transaction, or swap.",
+      "Covers all wildfire incidents, regardless of cause or method of ignition.",
+      "Imposes a prohibition as added to Section 5c of the Commodity Exchange Act, effective upon enactment."
+    ],
+    "sponsors": [
+      {
+        "people_id": 24001,
+        "party": "D",
+        "name": "George Whitesides",
+        "district": "HD-CA-27",
+        "role": "Rep",
+        "sponsor_order": 1,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://whitesides.house.gov"
+            }
+          }
+        }
+      },
+      {
+        "people_id": 24002,
+        "party": "R",
+        "name": "Vince Fong",
+        "district": "HD-CA-20",
+        "role": "Rep",
+        "sponsor_order": 2,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://fong.house.gov"
+            }
+          }
+        }
+      },
+      {
+        "people_id": 24003,
+        "party": "D",
+        "name": "Andrea Salinas",
+        "district": "HD-OR-6",
+        "role": "Rep",
+        "sponsor_order": 3,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://salinas.house.gov"
+            }
+          }
+        }
+      },
+      {
+        "people_id": 24004,
+        "party": "R",
+        "name": "James Gallagher",
+        "district": "HD-CA-3",
+        "role": "Rep",
+        "sponsor_order": 4,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://gallagher.house.gov"
+            }
+          }
+        }
+      }
+    ],
+    "state": "US"
+  },
+  {
+    "id": "2161540",
+    "bill_number": "H.Res. 1646",
+    "title": "Expressing support for the recognition of November as Bladder Health Awareness Month",
+    "summary": "Supporting the recognition of November as \"Bladder Health Awareness Month\", supporting efforts to increase public education, reduce stigma, and improve access to care for bladder health conditions, and for other purposes.",
+    "full_title": "Expressing support for the recognition of November as Bladder Health Awareness Month",
+    "full_summary": "Supporting the recognition of November as \"Bladder Health Awareness Month\", supporting efforts to increase public education, reduce stigma, and improve access to care for bladder health conditions, and for other purposes.",
+    "level": "Federal",
+    "jurisdiction": "United States",
+    "status": "Introduced",
+    "policy_area": "Health",
+    "introduced_date": "2026-11-02",
+    "source": "legiscan",
+    "source_id": "2161540",
+    "source_url": "https://www.congress.gov/bill/119th-congress/house-resolution/1646",
+    "sponsors": [
+      {
+        "people_id": 22967,
+        "name": "Troy Carter",
+        "party": "D",
+        "district": "HD-LA-2",
+        "sponsor_order": 1,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://troycarter.house.gov"
+            }
+          }
+        }
+      },
+      {
+        "people_id": 24050,
+        "name": "Robert Menendez",
+        "party": "D",
+        "district": "HD-NJ-8",
+        "sponsor_order": 2,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://menendez.house.gov"
+            }
+          }
+        }
+      },
+      {
+        "people_id": 24051,
+        "name": "Richard McCormick",
+        "party": "R",
+        "district": "HD-GA-6",
+        "sponsor_order": 3,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://mccormick.house.gov"
+            }
+          }
+        }
+      },
+      {
+        "people_id": 16466,
+        "name": "Ted Lieu",
+        "party": "D",
+        "district": "HD-CA-36",
+        "sponsor_order": 4,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://lieu.house.gov"
+            }
+          }
+        }
+      },
+      {
+        "people_id": 18301,
+        "name": "Neal Dunn",
+        "party": "R",
+        "district": "HD-FL-2",
+        "sponsor_order": 5,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://dunn.house.gov"
+            }
+          }
+        }
+      },
+      {
+        "people_id": 24052,
+        "name": "Jonathan Jackson",
+        "party": "D",
+        "district": "HD-IL-1",
+        "sponsor_order": 6,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://jonathanjackson.house.gov"
+            }
+          }
+        }
+      },
+      {
+        "people_id": 20108,
+        "name": "Carol Miller",
+        "party": "R",
+        "district": "HD-WV-1",
+        "sponsor_order": 7,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://millercarol.house.gov"
+            }
+          }
+        }
+      },
+      {
+        "people_id": 24053,
+        "name": "Kevin Mullin",
+        "party": "D",
+        "district": "HD-CA-15",
+        "sponsor_order": 8,
+        "bio": {
+          "links": {
+            "official": {
+              "website": "https://mullin.house.gov"
+            }
+          }
+        }
+      }
+    ],
+    "state": "US"
+  },
+  {
     "id": "2161200",
     "bill_number": "HB10898",
     "title": "Locality Pay Adjustment Act",

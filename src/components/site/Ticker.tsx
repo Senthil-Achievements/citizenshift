@@ -14,24 +14,24 @@ const CIVIC_HIGHLIGHTS: TextLoopItem[] = [
 
 /**
  * Ticker — premium, playful civic highlights ribbon.
- * Raised wave baseline with expansive bottom clearance preventing clipping.
+ * Raised wave baseline with generous top/bottom clearance preventing any clipping.
  */
 export default function Ticker() {
   return (
     <section
-      className="relative w-full max-w-full overflow-hidden border-y border-navy/10 bg-paper py-2 select-none shadow-sm"
+      className="relative w-full max-w-full overflow-hidden border-y border-navy/10 bg-paper py-3 sm:py-4 select-none shadow-sm"
       aria-label="Civic Highlights Loop"
     >
       {/* Soft cinematic vignette fades at screen edges */}
       <div className="pointer-events-none absolute inset-y-0 left-0 w-20 sm:w-36 bg-gradient-to-r from-paper via-paper/90 to-transparent z-10" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-20 sm:w-36 bg-gradient-to-l from-paper via-paper/90 to-transparent z-10" />
 
-      {/* Elevated wave ribbon with abundant bottom clearance */}
-      <div className="relative w-full max-w-full overflow-hidden h-16 sm:h-20 flex items-center justify-center">
+      {/* Elevated wave ribbon with balanced optical centering */}
+      <div className="relative w-full max-w-full overflow-hidden h-20 sm:h-24 flex items-center justify-center">
         <TextLoop
           items={CIVIC_HIGHLIGHTS}
           shape="wave"
-          curviness={6}
+          curviness={5}
           speed={48}
           direction="forward"
           tilt={0}
@@ -48,7 +48,7 @@ export default function Ticker() {
           draggable={true}
           scrollBoost={0.35}
           pauseOnHover={true}
-          viewBox="0 212 1200 135"
+          viewBox="0 213 1200 96"
           className="w-full h-full [&_.text-loop-svg]:h-full [&_.text-loop-svg]:w-full"
         />
       </div>

@@ -33,6 +33,8 @@ export interface Bill {
   recommendationReasons?: string[];
   /** initial legislative summary, sometimes bulleted */
   summary_bullets?: string[];
+  sponsors?: any[];
+  bullets?: string[];
 }
 
 export interface LegislationResponse {
@@ -182,7 +184,7 @@ export function billDetailSlug(bill: Bill): string {
 }
 
 export function billDetailHref(bill: Bill): string {
-  return `/explore/bill/${billDetailSlug(bill)}`;
+  return `/bills/${bill.source_id ?? bill.id}`;
 }
 
 /* ---------- Honest, fetch-free meta title for detail routes ---------- */

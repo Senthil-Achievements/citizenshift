@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
 export interface LanyardMember {
   id: string;
@@ -115,66 +114,289 @@ function LinkedInIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-// Single Interactive Lanyard Badge with Real Elastic Cord Physics
+// Single Interactive Lanyard Badge with React Bits Physics-Based Dragging & Swinging
 function LanyardBadgeItem({
   member,
   defaultFlipped = false,
+  index = 0,
 }: {
   member: LanyardMember;
   defaultFlipped?: boolean;
+  index?: number;
 }) {
   const [isFlipped, setIsFlipped] = useState(defaultFlipped);
+  const [isGrabbing, setIsGrabbing] = useState(false);
   const tone = TONES[member.tone % TONES.length];
 
-  // Highly responsive 2-axis tactile drag offsets (X pendulum sway & Y pull-down extension)
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  // DOM element references for high-speed RAF physics transforms
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const strapRef = useRef<HTMLDivElement | null>(null);
+  const cordRef = useRef<HTMLDivElement | null>(null);
 
-  // Dynamic retractable cord extension length as user pulls down
-  const cordHeight = useTransform(y, [0, 150], [0, 150]);
-  const strapStretch = useTransform(y, [0, 150], [1, 1.25]);
-  const rotatePendulum = useTransform(x, [-60, 60], [-12, 12]);
+  // Physics simulation state (extracted directly from React Bits Lanyard mechanics)
+  // Natural pendulum length from rail anchor to badge center
+  const REST_LENGTH = 150;
 
-  const [isHovered, setIsHovered] = useState(false);
-  const resetTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const physicsRef = useRef({
+    // Displacement from resting position (px)
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
 
-  // Smoothly springs the card back to its exact normal resting position on the rail
-  const returnToNormal = useCallback(() => {
-    animate(x, 0, {
-      type: "spring",
-      stiffness: 280,
-      damping: 18,
-      mass: 0.85,
-    });
-    animate(y, 0, {
-      type: "spring",
-      stiffness: 300,
-      damping: 16,
-      mass: 0.9,
-    });
-  }, [x, y]);
+    // 3D rotations in degrees
+    rotX: 0, // pitch (tilt up/down)
+    rotY: 0, // yaw (tilt left/right)
+    rotZ: 0, // roll / pendulum sway
+    vRotX: 0,
+    vRotY: 0,
+    vRotZ: 0,
 
-  // Once misaligned, start 3-second countdown to return to normal place
-  const scheduleReset = useCallback(() => {
-    if (resetTimerRef.current) {
-      clearTimeout(resetTimerRef.current);
-    }
-    // Check if misaligned from normal resting place (0, 0)
-    if (Math.abs(x.get()) > 1 || Math.abs(y.get()) > 1) {
-      resetTimerRef.current = setTimeout(() => {
-        returnToNormal();
-      }, 3000); // exactly 3 seconds
-    }
-  }, [x, y, returnToNormal]);
+    // Drag interaction tracking
+    isDragging: false,
+    hasMovedSignificantly: false,
+    pointerId: -1,
+    startPointerX: 0,
+    startPointerY: 0,
+    currentPointerX: 0,
+    currentPointerY: 0,
+    grabOffsetX: 0,
+    grabOffsetY: 0,
+    startTime: 0,
 
-  // Cleanup timer on unmount
+    // Pointer velocity sampling for throw physics
+    lastPointerX: 0,
+    lastPointerY: 0,
+    lastPointerTime: 0,
+    pointerVx: 0,
+    pointerVy: 0,
+
+    // Organic noise phase offset for gentle idle breeze
+    seed: (index + 1) * 1.618,
+  });
+
+  // Main 60-120fps physics loop
   useEffect(() => {
-    return () => {
-      if (resetTimerRef.current) {
-        clearTimeout(resetTimerRef.current);
+    let animId: number;
+    let lastTime = performance.now();
+
+    const loop = (now: number) => {
+      const dt = Math.min((now - lastTime) / 1000, 0.033);
+      lastTime = now;
+
+      const p = physicsRef.current;
+
+      if (p.isDragging) {
+        // -------------------------------------------------------------
+        // DRAGGING STATE: Follow pointer with elastic spring & 3D tilt
+        // -------------------------------------------------------------
+        const rawTargetX = p.currentPointerX - p.startPointerX;
+        const rawTargetY = p.currentPointerY - p.startPointerY;
+
+        // Soft elastic limits
+        const targetX = Math.max(-240, Math.min(240, rawTargetX));
+        const targetY = Math.max(-90, Math.min(300, rawTargetY));
+
+        // Smooth spring responsiveness to pointer
+        const followSpeed = 22;
+        const dx = targetX - p.x;
+        const dy = targetY - p.y;
+        p.vx = dx * followSpeed;
+        p.vy = dy * followSpeed;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+
+        // Dynamic 3D tilt while dragging:
+        // Angle to anchor
+        const strapAngle = Math.atan2(p.x, p.y + REST_LENGTH) * (180 / Math.PI);
+        const targetRotZ = strapAngle * 0.85 + (p.grabOffsetX / 120) * 8 + p.vx * 0.015;
+        const targetRotX = Math.max(-24, Math.min(24, -p.y * 0.08 - p.vy * 0.015));
+        const targetRotY = Math.max(-28, Math.min(28, p.vx * 0.025 + (p.grabOffsetX / 120) * 14));
+
+        p.rotZ += (targetRotZ - p.rotZ) * Math.min(1, dt * 18);
+        p.rotX += (targetRotX - p.rotX) * Math.min(1, dt * 14);
+        p.rotY += (targetRotY - p.rotY) * Math.min(1, dt * 14);
+      } else {
+        // -------------------------------------------------------------
+        // FREE HANGING / THROWN STATE: Pendulum, Elasticity, Damping & Breeze
+        // -------------------------------------------------------------
+        const hangY = p.y + REST_LENGTH;
+        const hangX = p.x;
+        const hangDist = Math.hypot(hangX, hangY);
+        const angleRad = Math.atan2(hangX, hangY);
+
+        // React Bits Lanyard Physics Props:
+        // Elasticity (spring restore), Gravity (pendulum restore), Damping (friction), Breeze (subtle wind)
+        const kElastic = 48;  // spring restore
+        const kGravity = 960; // pendulum gravity restore
+        const damping = 3.6;  // friction damping
+        const breeze = 0.5;   // ambient air current
+
+        const stretch = hangDist - REST_LENGTH;
+        const radialForce = -kElastic * stretch;
+        const tangentForce = -kGravity * Math.sin(angleRad);
+
+        const sinA = Math.sin(angleRad);
+        const cosA = Math.cos(angleRad);
+        let fx = radialForce * sinA + tangentForce * cosA;
+        let fy = radialForce * cosA - tangentForce * sinA;
+
+        // Downward gravity assist if pushed upward above rail
+        if (p.y < 0) {
+          fy += 1100 * Math.abs(p.y / REST_LENGTH);
+        }
+
+        // Apply velocity damping
+        fx -= damping * p.vx;
+        fy -= damping * p.vy;
+
+        // Idle gentle breeze (organic continuous sway)
+        const timeSec = now / 1000;
+        const windX = breeze * (Math.sin(timeSec * 0.9 + p.seed) * 16 + Math.sin(timeSec * 2.1 + p.seed * 2) * 7);
+        fx += windX;
+
+        // Integrate translation
+        p.vx += fx * dt;
+        p.vy += fy * dt;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+
+        // Angular oscillation for RotZ (pendulum sway)
+        const targetRotZ = (angleRad * (180 / Math.PI)) + Math.sin(timeSec * 0.9 + p.seed) * 1.2 * breeze;
+        const rotSpring = 52;
+        const rotDamping = 4.4;
+        const fRotZ = -rotSpring * (p.rotZ - targetRotZ) - rotDamping * p.vRotZ;
+        p.vRotZ += fRotZ * dt;
+        p.rotZ += p.vRotZ * dt;
+
+        // Angular restoration for pitch (RotX) and yaw (RotY)
+        const fRotX = -55 * p.rotX - 5.0 * p.vRotX;
+        p.vRotX += fRotX * dt;
+        p.rotX += p.vRotX * dt;
+
+        const fRotY = -55 * p.rotY - 5.0 * p.vRotY;
+        p.vRotY += fRotY * dt;
+        p.rotY += p.vRotY * dt;
       }
+
+      // -------------------------------------------------------------
+      // RENDER: Apply exact transformations to DOM elements
+      // -------------------------------------------------------------
+      const strapAngle = Math.atan2(p.x, p.y + REST_LENGTH) * (180 / Math.PI);
+      const hangDist = Math.hypot(p.x, p.y + REST_LENGTH);
+      const strapStretch = Math.max(0.95, Math.min(1.3, hangDist / REST_LENGTH));
+      const cordLen = Math.max(0, p.y * 0.85);
+
+      if (strapRef.current) {
+        strapRef.current.style.transform = `rotate(${strapAngle.toFixed(2)}deg) scaleY(${strapStretch.toFixed(3)})`;
+      }
+
+      if (cordRef.current) {
+        cordRef.current.style.height = `${cordLen.toFixed(1)}px`;
+        cordRef.current.style.transform = `rotate(${strapAngle.toFixed(2)}deg)`;
+      }
+
+      if (cardRef.current) {
+        cardRef.current.style.transform = `translate3d(${p.x.toFixed(2)}px, ${p.y.toFixed(2)}px, 0px) rotateX(${p.rotX.toFixed(2)}deg) rotateY(${p.rotY.toFixed(2)}deg) rotateZ(${p.rotZ.toFixed(2)}deg)`;
+      }
+
+      animId = requestAnimationFrame(loop);
     };
-  }, []);
+
+    animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [REST_LENGTH]);
+
+  // Pointer interaction handlers
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    // Only respond to primary mouse button or touch
+    if (e.button > 0) return;
+
+    const p = physicsRef.current;
+    p.pointerId = e.pointerId;
+    p.isDragging = true;
+    p.hasMovedSignificantly = false;
+    p.startTime = performance.now();
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    p.grabOffsetX = e.clientX - centerX;
+    p.grabOffsetY = e.clientY - centerY;
+
+    p.startPointerX = e.clientX - p.x;
+    p.startPointerY = e.clientY - p.y;
+    p.currentPointerX = e.clientX;
+    p.currentPointerY = e.clientY;
+
+    p.lastPointerX = e.clientX;
+    p.lastPointerY = e.clientY;
+    p.lastPointerTime = performance.now();
+    p.pointerVx = 0;
+    p.pointerVy = 0;
+
+    setIsGrabbing(true);
+    e.currentTarget.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const p = physicsRef.current;
+    if (!p.isDragging || p.pointerId !== e.pointerId) return;
+
+    p.currentPointerX = e.clientX;
+    p.currentPointerY = e.clientY;
+
+    const movedDist = Math.hypot(e.clientX - (p.startPointerX + p.x), e.clientY - (p.startPointerY + p.y));
+    if (movedDist > 6) {
+      p.hasMovedSignificantly = true;
+    }
+
+    // Velocity sampling for throw physics
+    const now = performance.now();
+    const dt = Math.max(0.005, (now - p.lastPointerTime) / 1000);
+    p.pointerVx = (e.clientX - p.lastPointerX) / dt;
+    p.pointerVy = (e.clientY - p.lastPointerY) / dt;
+
+    p.lastPointerX = e.clientX;
+    p.lastPointerY = e.clientY;
+    p.lastPointerTime = now;
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    const p = physicsRef.current;
+    if (!p.isDragging || p.pointerId !== e.pointerId) return;
+
+    const duration = performance.now() - p.startTime;
+
+    // Distinguish between a click to flip and a physical drag/throw
+    if (!p.hasMovedSignificantly && duration < 380) {
+      // Tap / Quick click: flip the badge!
+      setIsFlipped((prev) => !prev);
+    } else {
+      // Throw physics: inject sampled pointer velocity into badge momentum
+      p.vx = Math.max(-1200, Math.min(1200, p.pointerVx * 0.45));
+      p.vy = Math.max(-1200, Math.min(1200, p.pointerVy * 0.45));
+    }
+
+    p.isDragging = false;
+    p.pointerId = -1;
+    setIsGrabbing(false);
+
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {
+      // Ignore if pointer capture was already released
+    }
+  };
+
+  const handlePointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+    const p = physicsRef.current;
+    p.isDragging = false;
+    p.pointerId = -1;
+    setIsGrabbing(false);
+  };
 
   return (
     <div className="relative flex flex-col items-center select-none flex-shrink-0 group">
@@ -184,81 +406,75 @@ function LanyardBadgeItem({
           <div className="w-2 h-2 rounded-full bg-zinc-700/60" />
         </div>
 
-        {/* 2. Braided Textured Lanyard Strap with Stretch Physics */}
-        <motion.div
+        {/* 2. Braided Textured Lanyard Strap with Stretch & Swivel Physics */}
+        <div
+          ref={strapRef}
           style={{
-            scaleY: strapStretch,
             transformOrigin: "top center",
+            willChange: "transform",
           }}
-          className="relative w-3.5 sm:w-4 h-12 sm:h-14 shadow-md rounded-t-xs"
+          className="relative flex flex-col items-center"
         >
-          {/* Diagonal woven fabric pattern */}
-          <div
-            className="w-full h-full"
-            style={{
-              background: `repeating-linear-gradient(45deg, ${tone.primary}, ${tone.primary} 4px, ${tone.darker} 4px, ${tone.darker} 8px)`,
-            }}
-          />
-        </motion.div>
+          <div className="relative w-3.5 sm:w-4 h-12 sm:h-14 shadow-md rounded-t-xs">
+            {/* Diagonal woven fabric pattern */}
+            <div
+              className="w-full h-full"
+              style={{
+                background: `repeating-linear-gradient(45deg, ${tone.primary}, ${tone.primary} 4px, ${tone.darker} 4px, ${tone.darker} 8px)`,
+              }}
+            />
+          </div>
 
-        {/* 3. Retractable Circular Badge Reel (Stays anchored to strap) */}
-        <div className="relative z-10 -mt-1 flex flex-col items-center">
-          {/* Metal Crimp Clamp */}
-          <div className="w-4 h-1.5 bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 rounded-xs border border-zinc-500/40" />
+          {/* 3. Retractable Circular Badge Reel (Anchored to strap) */}
+          <div className="relative z-10 -mt-1 flex flex-col items-center">
+            {/* Metal Crimp Clamp */}
+            <div className="w-4 h-1.5 bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-400 rounded-xs border border-zinc-500/40" />
 
-          {/* Chrome Reel Casing */}
-          <div className="w-6 sm:w-6.5 h-6 sm:h-6.5 rounded-full bg-gradient-to-br from-zinc-100 via-zinc-300 to-zinc-500 border border-zinc-400 shadow-[0_3px_8px_rgba(0,0,0,0.45)] flex items-center justify-center my-0.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-zinc-400 to-zinc-600 border border-zinc-200/80 shadow-inner flex items-center justify-center">
-              <div className="w-1 h-1 rounded-full bg-zinc-800" />
+            {/* Chrome Reel Casing */}
+            <div className="w-6 sm:w-6.5 h-6 sm:h-6.5 rounded-full bg-gradient-to-br from-zinc-100 via-zinc-300 to-zinc-500 border border-zinc-400 shadow-[0_3px_8px_rgba(0,0,0,0.45)] flex items-center justify-center my-0.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-zinc-400 to-zinc-600 border border-zinc-200/80 shadow-inner flex items-center justify-center">
+                <div className="w-1 h-1 rounded-full bg-zinc-800" />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 4. Visible Retractable Elastic Cord (Lengthens as card is pulled down) */}
-      <motion.div
+      {/* 4. Visible Retractable Elastic Cord (Lengthens and angles toward card) */}
+      <div
+        ref={cordRef}
         style={{
-          height: cordHeight,
+          height: 0,
           width: 2,
           transformOrigin: "top center",
+          willChange: "height, transform",
         }}
         className="relative z-10 bg-gradient-to-b from-zinc-500 via-zinc-300 to-zinc-600 shadow-[0_0_2px_rgba(255,255,255,0.6)]"
       />
 
-      {/* 5. The Tactile Badge Card with Real Elastic Recoil & 3D Flip */}
-      <motion.div
-        style={{
-          x,
-          y,
-          rotateZ: rotatePendulum,
-        }}
-        drag
-        dragConstraints={{ top: 0, bottom: 130, left: -45, right: 45 }}
-        dragElastic={0.65}
-        onDragStart={() => {
-          if (resetTimerRef.current) {
-            clearTimeout(resetTimerRef.current);
-          }
-        }}
-        onDragEnd={() => {
-          scheduleReset();
-        }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => {
-          setIsHovered(false);
-          scheduleReset();
-        }}
-        className="relative z-10 -mt-1 cursor-grab active:cursor-grabbing perspective-[1200px]"
-        onClick={() => setIsFlipped((prev) => !prev)}
-        role="button"
+      {/* 5. The Tactile Badge Card with React Bits Lanyard Physics Dragging & 3D Flip */}
+      <div
+        ref={cardRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
         tabIndex={0}
+        role="button"
+        aria-label={`ID Badge for ${member.name}. Drag or throw to swing, or click to flip.`}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             setIsFlipped((prev) => !prev);
           }
         }}
-        aria-label={`ID Badge for ${member.name}. Press to flip.`}
+        style={{
+          touchAction: "none",
+          willChange: "transform",
+        }}
+        className={`relative z-10 -mt-1 select-none perspective-[1200px] transition-[filter] duration-200 ${
+          isGrabbing ? "cursor-grabbing" : "cursor-grab"
+        }`}
       >
         <div
           className="relative w-[215px] sm:w-[235px] md:w-[250px] lg:w-[260px] h-[360px] sm:h-[385px] md:h-[405px] transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] [transform-style:preserve-3d] shadow-[0_18px_45px_rgba(0,0,0,0.65)] rounded-2xl"
@@ -286,7 +502,7 @@ function LanyardBadgeItem({
 
             {/* Circular Photo Window framed right below top band */}
             <div className="relative -mt-11 flex justify-center">
-              <div className="relative w-22 h-22 sm:w-24 sm:h-24 md:w-26 md:h-26 rounded-full overflow-hidden border-[3px] border-white/90 shadow-[0_5px_18px_rgba(0,0,0,0.6)] bg-navy-900">
+              <div className="relative w-22 h-22 sm:w-24 sm:h-24 md:w-26 md:h-26 rounded-full overflow-hidden border-[3px] border-white/90 shadow-[0_5px_18px_rgba(0,0,0,0.6)] bg-navy-900 pointer-events-none">
                 <Image
                   src={member.image}
                   alt={member.name}
@@ -298,7 +514,7 @@ function LanyardBadgeItem({
             </div>
 
             {/* Member Details */}
-            <div className="px-4 text-center -mt-1 flex-1 flex flex-col justify-center">
+            <div className="px-4 text-center -mt-1 flex-1 flex flex-col justify-center pointer-events-none">
               <h3 className="font-display font-bold text-base sm:text-lg md:text-xl text-white leading-tight">
                 {member.name}
               </h3>
@@ -316,12 +532,13 @@ function LanyardBadgeItem({
               </div>
             </div>
 
-            {/* Bottom Social Icons Row (Replacing the Barcode) */}
+            {/* Bottom Social Icons Row */}
             <div className="p-3 bg-black/45 border-t border-white/10 flex items-center justify-center gap-2.5">
               {/* Instagram */}
               <a
                 href={member.socials?.instagram || "#"}
                 onClick={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${member.name} on Instagram`}
@@ -334,6 +551,7 @@ function LanyardBadgeItem({
               <a
                 href={member.socials?.twitter || "#"}
                 onClick={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${member.name} on X / Twitter`}
@@ -346,6 +564,7 @@ function LanyardBadgeItem({
               <a
                 href={member.socials?.linkedin || "#"}
                 onClick={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${member.name} on LinkedIn`}
@@ -357,7 +576,7 @@ function LanyardBadgeItem({
           </div>
 
           {/* ========================================================
-              BACK OF BADGE (Flipped Face - Forward oriented, not mirrored)
+              BACK OF BADGE (Flipped Face - Forward oriented)
              ======================================================== */}
           <div
             className="absolute inset-0 rounded-2xl overflow-hidden bg-[#101418] border border-white/10 flex flex-col justify-between p-4 sm:p-5 [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
@@ -368,7 +587,7 @@ function LanyardBadgeItem({
             }}
           >
             {/* Top Header with Accent Dot */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2.5 pointer-events-none">
               <div>
                 <h4 className="font-display font-bold text-sm sm:text-base text-white leading-tight">
                   {member.name}
@@ -384,7 +603,7 @@ function LanyardBadgeItem({
             </div>
 
             {/* Exact Bio Content */}
-            <div className="my-auto py-2">
+            <div className="my-auto py-2 pointer-events-none">
               <p className="text-[11px] sm:text-xs md:text-[12.5px] leading-relaxed text-white/85 font-sans">
                 {member.bio}
               </p>
@@ -397,6 +616,7 @@ function LanyardBadgeItem({
                 <a
                   href={member.socials?.instagram || "#"}
                   onClick={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${member.name} on Instagram`}
@@ -408,6 +628,7 @@ function LanyardBadgeItem({
                 <a
                   href={member.socials?.twitter || "#"}
                   onClick={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${member.name} on X / Twitter`}
@@ -419,6 +640,7 @@ function LanyardBadgeItem({
                 <a
                   href={member.socials?.linkedin || "#"}
                   onClick={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${member.name} on LinkedIn`}
@@ -429,14 +651,14 @@ function LanyardBadgeItem({
               </div>
 
               {/* Click to flip back */}
-              <div className="flex items-center gap-1 text-[10px] font-mono text-white/50 hover:text-white/80 transition-colors">
+              <div className="flex items-center gap-1 text-[10px] font-mono text-white/50 hover:text-white/80 transition-colors pointer-events-none">
                 <span>Flip</span>
                 <span>↻</span>
               </div>
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -480,7 +702,7 @@ export default function TeamLanyardRail({
           <div className="w-full overflow-x-auto pb-12 pt-4 scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none]">
             <div className="relative min-w-[1140px] px-12 sm:px-16 md:px-20 flex flex-col items-center">
               {/* 1. Left Wall Mounting Flange Bracket (Placed comfortably clear of Card 1) */}
-              <div className="absolute left-2 sm:left-4 top-2 z-30 flex flex-col items-center">
+              <div className="absolute left-2 sm:left-4 top-2 z-30 flex flex-col items-center pointer-events-none">
                 <div className="w-5 h-9 rounded-sm bg-gradient-to-r from-zinc-700 via-zinc-400 to-zinc-600 border border-zinc-500 shadow-md flex flex-col justify-around py-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
@@ -488,7 +710,7 @@ export default function TeamLanyardRail({
               </div>
 
               {/* 2. Brushed Aluminum Metal Pipe Rail (Spans full width with side clearance) */}
-              <div className="relative w-full h-3 z-10 mx-4">
+              <div className="relative w-full h-3 z-10 mx-4 pointer-events-none">
                 {/* Rod shadow */}
                 <div className="absolute -bottom-2 inset-x-0 h-3 bg-black/40 blur-xs rounded-full" />
                 {/* Metallic gradient rod */}
@@ -496,20 +718,21 @@ export default function TeamLanyardRail({
               </div>
 
               {/* 3. Right Wall Mounting Flange Bracket (Placed comfortably clear of Card 4) */}
-              <div className="absolute right-2 sm:right-4 top-2 z-30 flex flex-col items-center">
+              <div className="absolute right-2 sm:right-4 top-2 z-30 flex flex-col items-center pointer-events-none">
                 <div className="w-5 h-9 rounded-sm bg-gradient-to-r from-zinc-600 via-zinc-400 to-zinc-700 border border-zinc-500 shadow-md flex flex-col justify-around py-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
                 </div>
               </div>
 
-              {/* 4. Suspended Badges: 4 Leaders with generous, comfortable spacing (Never touching the brackets) */}
+              {/* 4. Suspended Badges: 4 Leaders with generous, comfortable spacing */}
               <div className="relative -mt-3.5 z-20 w-full flex items-start justify-center gap-5 sm:gap-7 md:gap-9 lg:gap-11 px-8 sm:px-12">
-                {members.map((member) => (
+                {members.map((member, idx) => (
                   <LanyardBadgeItem
                     key={member.id}
                     member={member}
                     defaultFlipped={false}
+                    index={idx}
                   />
                 ))}
               </div>

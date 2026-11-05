@@ -88,8 +88,8 @@ const orgJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
-      <body>
+    <html lang="en" suppressHydrationWarning className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+      <body suppressHydrationWarning>
         <SVGFollower
           colors={["#f43f5e", "#38bdf8", "#fbbf24", "#34d399", "#818cf8"]}
           removeDelay={350}
