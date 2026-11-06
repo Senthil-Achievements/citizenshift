@@ -27,19 +27,19 @@ import verifiedBills from "@/data/verified-bills.json";
 function levelChipTone(level: Bill["level"]): string {
   switch (level) {
     case "Federal":
-      return "border-navy/25 bg-navy text-icy";
+      return "border-navy bg-navy text-white font-bold";
     case "State":
-      return "border-berry/25 bg-berry text-paper";
+      return "border-berry bg-berry text-white font-bold";
     default:
-      return "border-navy/20 bg-icy text-navy";
+      return "border-slate-300 bg-slate-100 text-slate-800 font-bold";
   }
 }
 
 function statusChipTone(bill: Bill): string {
-  if (isPassed(bill)) return "border-icy bg-icy text-navy font-semibold";
-  if (bill.status === "Vetoed" || bill.status === "Failed") return "border-navy/15 text-navy/45 line-through";
-  if (isNew(bill)) return "border-berry bg-berry/8 text-berry";
-  return "border-navy/20 text-navy/70";
+  if (isPassed(bill)) return "border-emerald-300 bg-emerald-50 text-emerald-800 font-bold";
+  if (bill.status === "Vetoed" || bill.status === "Failed") return "border-slate-300 bg-slate-100 text-slate-600 line-through font-semibold";
+  if (isNew(bill) || bill.status === "Introduced") return "border-rose-300 bg-rose-50 text-rose-800 font-bold";
+  return "border-slate-300 bg-slate-50 text-slate-800 font-bold";
 }
 
 interface BillCardProps {
@@ -254,26 +254,28 @@ function BillCardBase({
           />
         </h3>
 
-        {/* meta — category chip applies the topic filter */}
-        <p className="mt-2 flex flex-wrap items-center gap-x-2 font-mono text-[10px] uppercase tracking-[0.16em] text-navy/50">
+        {/* meta — category chip applies the topic filter with high contrast */}
+        <div className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1.5 font-mono text-[11px] uppercase tracking-wider">
           <button
             type="button"
             onClick={() => onFilterTopic(bill.policy_area)}
             title={`Filter the feed by ${bill.policy_area}`}
-            className="chip cursor-pointer border-navy/15 bg-icy-100 text-navy/70 hover:border-navy/40 active:translate-y-0"
+            className="inline-flex items-center rounded-md border border-blue-300 bg-blue-50/90 px-2 py-0.5 text-[11px] font-bold text-blue-950 shadow-2xs transition hover:bg-blue-100 hover:border-blue-400 active:translate-y-0"
           >
             {bill.policy_area}
           </button>
-          <span aria-hidden="true">·</span>
-          <span>Jurisdiction — {bill.jurisdiction}</span>
-          <span aria-hidden="true">·</span>
-          <span>Introduced {billDateLabel(bill)}</span>
-        </p>
+          <span className="text-slate-400 font-black" aria-hidden="true">·</span>
+          <span className="font-bold text-slate-800">JURISDICTION — {bill.jurisdiction}</span>
+          <span className="text-slate-400 font-black" aria-hidden="true">·</span>
+          <span className="font-bold text-slate-800">
+            {bill.status === "Introduced" ? "INTRODUCED" : "LAST ACTION"} {billDateLabel(bill)}
+          </span>
+        </div>
       </div>
 
       {/* summary preview */}
       <div className="flex flex-1 flex-col pl-5 pr-5 sm:pl-6">
-        <p className={`mt-3 text-sm leading-relaxed text-navy/75 ${expanded ? "" : "line-clamp-3"}`}>
+        <p className={`mt-2.5 text-sm sm:text-[14.5px] leading-relaxed text-slate-900 font-medium ${expanded ? "" : "line-clamp-3"}`}>
           {bill.full_summary || bill.summary || bill.aiSummary?.summary}
         </p>
       </div>

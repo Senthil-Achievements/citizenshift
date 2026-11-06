@@ -310,24 +310,24 @@ export default function BillDetail({
         {/* ===== heading ===== */}
         <header className="mt-6 flex flex-col gap-5">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="chip border-navy/25 bg-navy text-icy">{bill.level}</span>
-            <span className="chip border-navy/20 bg-icy text-navy">{bill.policy_area}</span>
+            <span className="chip border-navy bg-navy text-white font-bold">{bill.level}</span>
+            <span className="chip border-blue-300 bg-blue-50 text-blue-950 font-bold">{bill.policy_area}</span>
             <span
               className={`chip ${
                 isPassed(bill)
-                  ? "border-icy bg-icy font-semibold text-navy"
+                  ? "border-emerald-300 bg-emerald-50 text-emerald-800 font-bold"
                   : isNew(bill)
-                    ? "border-berry bg-berry text-paper"
-                    : chipTone
+                    ? "border-berry bg-berry text-white font-bold"
+                    : "border-rose-300 bg-rose-50 text-rose-800 font-bold"
               }`}
             >
               {bill.status}
             </span>
           </div>
-          <h1 className="font-display text-[clamp(1.9rem,4.6vw,3.4rem)] font-semibold leading-[1.04] tracking-[-0.02em] text-navy">
+          <h1 className="font-display text-[clamp(1.9rem,4.6vw,3.4rem)] font-bold leading-[1.04] tracking-[-0.02em] text-slate-900">
             {title}
           </h1>
-          <p className="font-mono text-sm text-navy/70">
+          <p className="font-mono text-sm text-slate-800 font-bold">
             {displayNumber}
             {bill.level === "Federal"
               ? ` · ${(() => {
