@@ -313,6 +313,10 @@ function GalleryScene({
 	// Handle keyboard input
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {
+			const activeTag = (document.activeElement?.tagName || "").toLowerCase();
+			if (activeTag === "input" || activeTag === "textarea" || activeTag === "select") {
+				return;
+			}
 			if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
 				setScrollVelocity((prev) => prev - 2 * speed);
 				setAutoPlay(false);
@@ -571,8 +575,14 @@ export default function InfiniteGallery({
 	onSelect,
 }: InfiniteGalleryProps) {
 	const [webglSupported, setWebglSupported] = useState<boolean | null>(null);
+	const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
 	useEffect(() => {
+		// Check reduced motion preference
+		if (typeof window !== "undefined" && window.matchMedia) {
+			setPrefersReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+		}
+
 		// Check WebGL support
 		try {
 			const canvas = document.createElement('canvas');
@@ -584,7 +594,7 @@ export default function InfiniteGallery({
 		}
 	}, []);
 
-	if (webglSupported === false) {
+	if (webglSupported === false || prefersReducedMotion) {
 		return (
 			<div className={className} style={style}>
 				<FallbackGallery images={images} onSelect={onSelect} />
