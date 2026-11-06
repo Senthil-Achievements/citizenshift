@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { OriginalBill } from "@/lib/original-bills";
 import ContactRepDialog from "@/components/site/legislation/ContactRepDialog";
 import { shareOrCopy } from "@/components/site/legislation/ShareDialog";
+import { TextDrawLink } from "@/components/ui/draw-random-underline";
 
 interface Props {
   bill: OriginalBill;
@@ -184,7 +185,12 @@ export default function BillDetailView({ bill }: Props) {
         {/* Title and Bill Number Header */}
         <div className="mb-6">
           <h1 className="font-display text-2xl font-bold tracking-tight text-navy sm:text-3xl lg:text-[2.25rem] leading-[1.18] [text-wrap:balance]">
-            {bill.title}
+            <TextDrawLink
+              text={bill.title}
+              strokeColor="#c2121f"
+              strokeWidth={8}
+              className="cursor-default"
+            />
           </h1>
           <p className="mt-1 font-mono text-xs font-semibold tracking-wide text-navy/55 sm:text-sm">
             {bill.billNumber}

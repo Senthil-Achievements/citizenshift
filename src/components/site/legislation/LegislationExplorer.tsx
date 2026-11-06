@@ -10,13 +10,42 @@
  */
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BillCard } from "@/components/site/legislation/BillCard";
 import ShareDialog, { shareOrCopy } from "@/components/site/legislation/ShareDialog";
 import ContactRepDialog from "@/components/site/legislation/ContactRepDialog";
 import type { Bill, LegislationLevel, LegislationResponse } from "@/lib/legislation";
-import { CARD_LIMIT, isPassed, isNew, matchesTopic, shuffle } from "@/lib/legislation";
+import {
+  CARD_LIMIT,
+  billDetailHref,
+  billDisplayNumber,
+  billTitle,
+  isPassed,
+  isNew,
+  matchesTopic,
+  shuffle,
+} from "@/lib/legislation";
 import { POLICY_AREAS, US_STATES } from "@/lib/states";
+import { TextDrawLink } from "@/components/ui/draw-random-underline";
+
+const InfiniteGallery = dynamic(
+  () => import("@/components/ui/3d-gallery-photography"),
+  { ssr: false }
+);
+
+const CIVIC_PERSPECTIVE_PHOTOS = [
+  "/photo/dome.jpg",
+  "/photo/hearing.jpg",
+  "/photo/townhall.jpg",
+  "/photo/crowd.jpg",
+  "/photo/hero.jpg",
+  "/images/auth/auth-visual.png",
+  "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1575517111478-7f6afd0973db?auto=format&fit=crop&w=1200&q=80",
+];
 
 type LevelFilter = "All" | LegislationLevel;
 type StatusFilter = "All" | "New" | "Passed";
@@ -37,6 +66,8 @@ export default function LegislationExplorer() {
   const [topic, setTopic] = useState<TopicFilter>("All");
   const [order, setOrder] = useState<"curated" | "newest" | "shuffle">("curated");
   const [shuffledIds, setShuffledIds] = useState<string[] | null>(null);
+  const [viewMode, setViewMode] = useState<"grid" | "3d">("grid");
+  const [selected3DIndex, setSelected3DIndex] = useState(0);
 
   const [data, setData] = useState<LegislationResponse>({ bills: [], availableLevels: ["Federal"] });
   const [loading, setLoading] = useState(true);
@@ -133,6 +164,28 @@ export default function LegislationExplorer() {
     }
     return list.slice(0, CARD_LIMIT);
   }, [data.bills, level, status, topic, order, shuffledIds]);
+
+  const galleryItems = useMemo(() => {
+    if (!visible.length) {
+      return CIVIC_PERSPECTIVE_PHOTOS.map((src, i) => ({
+        src,
+        alt: "Civic Legislative Record",
+        title: "Public Legislative Record",
+        billNumber: `RECORD #${i + 1}`,
+        href: "/#legislation",
+      }));
+    }
+    return visible.map((bill, i) => ({
+      src: CIVIC_PERSPECTIVE_PHOTOS[i % CIVIC_PERSPECTIVE_PHOTOS.length],
+      alt: billTitle(bill),
+      title: billTitle(bill),
+      billNumber: billDisplayNumber(bill),
+      href: billDetailHref(bill),
+      id: bill.source_id ?? bill.id,
+    }));
+  }, [visible]);
+
+  const active3DBill = galleryItems[selected3DIndex % Math.max(1, galleryItems.length)] || galleryItems[0];
 
   const counts = {
     total: data.bills.length,
@@ -315,16 +368,56 @@ export default function LegislationExplorer() {
         {/* filter rail */}
         <div className="no-scrollbar mt-5 overflow-x-auto pb-1">{filterRail}</div>
 
-        {/* result meta */}
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-icy/50">
-          <span aria-live="polite">
-            {loading
-              ? "Reading the record…"
-              : `${searchTerm ? `Search — “${searchTerm}”` : "Feed"} · ${counts.shown} shown / ${counts.total} on file${
-                  order === "shuffle" ? " · shuffled" : order === "newest" ? " · newest first" : ""
-                }`}
-          </span>
-          <span className="hidden sm:block">Source — LegiScan official bill data</span>
+        {/* result meta + view toggle */}
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-icy/50">
+          <div className="flex items-center gap-3">
+            <span aria-live="polite">
+              {loading
+                ? "Reading the record…"
+                : `${searchTerm ? `Search — “${searchTerm}”` : "Feed"} · ${counts.shown} shown / ${counts.total} on file${
+                    order === "shuffle" ? " · shuffled" : order === "newest" ? " · newest first" : ""
+                  }`}
+            </span>
+            <span className="hidden sm:inline text-white/20">|</span>
+            <span className="hidden sm:inline">Source — LegiScan official bill data</span>
+          </div>
+
+          {/* View switcher: Grid Cards vs 3D Perspective */}
+          <div className="flex items-center gap-1.5 rounded-lg border hairline-light bg-navy-800/80 p-1">
+            <button
+              type="button"
+              onClick={() => setViewMode("grid")}
+              className={`flex items-center gap-1.5 rounded-md px-3 py-1 font-mono text-[11px] font-semibold transition-all ${
+                viewMode === "grid"
+                  ? "bg-icy text-navy shadow-xs"
+                  : "text-icy/70 hover:text-paper"
+              }`}
+            >
+              <svg className="size-3" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+              </svg>
+              <span>Grid Cards</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("3d")}
+              className={`flex items-center gap-1.5 rounded-md px-3 py-1 font-mono text-[11px] font-semibold transition-all ${
+                viewMode === "3d"
+                  ? "bg-berry text-paper shadow-xs"
+                  : "text-icy/70 hover:text-paper"
+              }`}
+            >
+              <svg className="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                <line x1="12" y1="22.08" x2="12" y2="12" />
+              </svg>
+              <span>3D Perspective</span>
+            </button>
+          </div>
         </div>
 
         {/* error */}
@@ -337,8 +430,88 @@ export default function LegislationExplorer() {
           </div>
         )}
 
-        {/* grid */}
-        <div id="bill-grid" className="mt-6">
+        {/* VIEW 1: 3D Infinite Gallery Showcase */}
+        {viewMode === "3d" && (
+          <div className="relative mt-6 w-full rounded-2xl overflow-hidden border hairline-light bg-navy-950/90 shadow-2xl">
+            <div className="relative h-[520px] sm:h-[620px] w-full">
+              <InfiniteGallery
+                images={galleryItems}
+                speed={1.1}
+                zSpacing={3.2}
+                visibleCount={Math.min(galleryItems.length, 10)}
+                falloff={{ near: 0.8, far: 14 }}
+                className="h-full w-full"
+                onSelect={(item) => {
+                  if (typeof item !== "string" && item.href) {
+                    window.location.href = item.href;
+                  }
+                }}
+              />
+
+              {/* Header Info Overlay */}
+              <div className="pointer-events-none absolute top-4 inset-x-4 sm:inset-x-6 flex items-center justify-between z-20">
+                <div className="inline-flex items-center gap-2 rounded-full bg-navy-900/85 backdrop-blur-md px-3.5 py-1.5 border hairline-light text-xs font-mono text-icy">
+                  <span className="size-2 rounded-full bg-berry animate-ping inline-block" />
+                  <span>3D Civic Perspective · Scroll or use arrow keys to navigate</span>
+                </div>
+                <div className="hidden sm:flex items-center gap-2 rounded-full bg-navy-900/85 backdrop-blur-md px-3 py-1 border hairline-light text-[11px] font-mono text-icy/70">
+                  <span>Three.js Cloth Shader Waves</span>
+                </div>
+              </div>
+
+              {/* Bottom Featured Bill Interactive Card with Animated Red Underline */}
+              <div className="absolute bottom-5 inset-x-4 sm:inset-x-8 z-30 pointer-events-auto">
+                <div className="mx-auto max-w-2xl rounded-2xl bg-navy-900/90 backdrop-blur-md border hairline-light p-4 sm:p-5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="font-mono text-xs font-bold text-berry tracking-wider">
+                        {active3DBill?.billNumber || "FEATURED BILL"}
+                      </span>
+                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-white/10 text-white/80">
+                        Click title or photo for details
+                      </span>
+                    </div>
+                    <h4 className="font-display font-bold text-base sm:text-xl text-white leading-snug">
+                      <TextDrawLink
+                        text={active3DBill?.title || "Democracy in Action"}
+                        href={active3DBill?.href || "#"}
+                        className="text-white hover:text-rose-400 transition-colors cursor-pointer"
+                        strokeColor="#c2121f"
+                        strokeWidth={8}
+                      />
+                    </h4>
+                  </div>
+                  <Link
+                    href={active3DBill?.href || "#"}
+                    className="shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-berry hover:bg-berry-600 px-5 py-3 text-xs font-mono font-bold uppercase tracking-wider text-paper transition-all shadow-md hover:shadow-lg"
+                  >
+                    <span>View Bill Details</span>
+                    <span>→</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* VIEW 2: Standard 6-Bill Grid Cards (as in screenshot) */}
+        {viewMode === "grid" && (
+          <div id="bill-grid" className="mt-6">
+            {/* Quick 3D Perspective Banner */}
+            <div className="mb-4 flex items-center justify-between rounded-xl bg-navy-800/40 border hairline-light px-4 py-2.5 text-xs text-icy/80 font-mono">
+              <span className="flex items-center gap-2">
+                <span className="size-1.5 rounded-full bg-berry" />
+                <span>Tip: Click any bill title to navigate to its detailed information page.</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => setViewMode("3d")}
+                className="inline-flex items-center gap-1.5 text-berry hover:text-rose-300 font-bold uppercase tracking-wider underline underline-offset-4"
+              >
+                <span>Launch 3D Visual Experience</span>
+                <span>↗</span>
+              </button>
+            </div>
           {loading ? (
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3" aria-busy="true" aria-label="Loading bills">
               {Array.from({ length: 6 }).map((_, i) => (
@@ -403,6 +576,7 @@ export default function LegislationExplorer() {
             </div>
           )}
         </div>
+        )}
 
         {/* footnote */}
         <p className="mt-10 border-t hairline-light pt-5 font-mono text-[10px] uppercase tracking-[0.18em] text-icy/45">

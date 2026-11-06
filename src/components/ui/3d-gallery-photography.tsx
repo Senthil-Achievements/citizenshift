@@ -6,7 +6,16 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
-export type ImageItem = string | { src: string; alt?: string };
+export type ImageItem =
+	| string
+	| {
+			src: string;
+			alt?: string;
+			title?: string;
+			billNumber?: string;
+			href?: string;
+			id?: string | number;
+	  };
 
 export interface FadeSettings {
 	fadeIn: {
@@ -41,6 +50,7 @@ export interface InfiniteGalleryProps {
 	blurSettings?: BlurSettings;
 	className?: string;
 	style?: React.CSSProperties;
+	onSelect?: (item: ImageItem) => void;
 }
 
 interface PlaneData {
@@ -155,11 +165,13 @@ function ImagePlane({
 	position,
 	scale,
 	material,
+	onClick,
 }: {
 	texture: THREE.Texture;
 	position: [number, number, number];
 	scale: [number, number, number];
 	material: THREE.ShaderMaterial;
+	onClick?: () => void;
 }) {
 	const meshRef = useRef<THREE.Mesh>(null);
 	const [isHovered, setIsHovered] = useState(false);
@@ -182,8 +194,18 @@ function ImagePlane({
 			position={position}
 			scale={scale}
 			material={material}
-			onPointerEnter={() => setIsHovered(true)}
-			onPointerLeave={() => setIsHovered(false)}
+			onPointerEnter={() => {
+				setIsHovered(true);
+				if (typeof document !== 'undefined') document.body.style.cursor = 'pointer';
+			}}
+			onPointerLeave={() => {
+				setIsHovered(false);
+				if (typeof document !== 'undefined') document.body.style.cursor = 'auto';
+			}}
+			onClick={(e) => {
+				e.stopPropagation();
+				onClick?.();
+			}}
 		>
 			<planeGeometry args={[1, 1, 32, 32]} />
 		</mesh>
@@ -203,6 +225,7 @@ function GalleryScene({
 		blurOut: { start: 0.9, end: 1.0 },
 		maxBlur: 3.0,
 	},
+	onSelect,
 }: Omit<InfiniteGalleryProps, 'className' | 'style'>) {
 	const [scrollVelocity, setScrollVelocity] = useState(0);
 	const [autoPlay, setAutoPlay] = useState(true);
@@ -482,6 +505,7 @@ function GalleryScene({
 						position={[plane.x, plane.y, worldZ]} // Position planes relative to camera center
 						scale={scale}
 						material={material}
+						onClick={() => onSelect?.(normalizedImages[plane.imageIndex])}
 					/>
 				);
 			})}
@@ -490,7 +514,7 @@ function GalleryScene({
 }
 
 // Fallback component for when WebGL is not available
-function FallbackGallery({ images }: { images: ImageItem[] }) {
+function FallbackGallery({ images, onSelect }: { images: ImageItem[]; onSelect?: (item: ImageItem) => void }) {
 	const normalizedImages = useMemo(
 		() =>
 			images.map((img) =>
@@ -506,12 +530,23 @@ function FallbackGallery({ images }: { images: ImageItem[] }) {
 			</p>
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-h-96 overflow-y-auto w-full">
 				{normalizedImages.map((img, i) => (
-					<img
+					<button
 						key={i}
-						src={img.src || '/placeholder.svg'}
-						alt={img.alt}
-						className="w-full h-32 object-cover rounded-lg border border-white/10"
-					/>
+						type="button"
+						onClick={() => onSelect?.(img)}
+						className="group relative text-left focus:outline-none"
+					>
+						<img
+							src={img.src || '/placeholder.svg'}
+							alt={img.alt}
+							className="w-full h-32 object-cover rounded-lg border border-white/10 group-hover:border-rose-500 transition-colors"
+						/>
+						{img.title && (
+							<p className="mt-1 text-[11px] text-white/80 truncate font-sans group-hover:text-rose-400">
+								{img.title}
+							</p>
+						)}
+					</button>
 				))}
 			</div>
 		</div>
@@ -533,6 +568,7 @@ export default function InfiniteGallery({
 		blurOut: { start: 0.4, end: 0.43 },
 		maxBlur: 8.0,
 	},
+	onSelect,
 }: InfiniteGalleryProps) {
 	const [webglSupported, setWebglSupported] = useState<boolean | null>(null);
 
@@ -551,7 +587,7 @@ export default function InfiniteGallery({
 	if (webglSupported === false) {
 		return (
 			<div className={className} style={style}>
-				<FallbackGallery images={images} />
+				<FallbackGallery images={images} onSelect={onSelect} />
 			</div>
 		);
 	}
@@ -573,6 +609,7 @@ export default function InfiniteGallery({
 						visibleCount={visibleCount}
 						fadeSettings={fadeSettings}
 						blurSettings={blurSettings}
+						onSelect={onSelect}
 					/>
 				</Suspense>
 			</Canvas>
