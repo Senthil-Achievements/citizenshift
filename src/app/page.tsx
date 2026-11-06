@@ -37,9 +37,9 @@ export default function Page() {
 
         {/* 3D Testimonials Marquee Section — Seamless Dark Flow */}
         <section id="stories" className="relative bg-[#060913] py-20 sm:py-28 overflow-hidden text-paper border-none">
-          {/* Ambient Lighting Orbs for seamless single-page animation */}
-          <div className="pointer-events-none absolute -top-24 left-1/4 size-72 rounded-full bg-indigo-600/15 blur-[90px] transform-gpu will-change-transform" aria-hidden="true" />
-          <div className="pointer-events-none absolute -bottom-24 right-1/4 size-72 rounded-full bg-rose-600/15 blur-[90px] transform-gpu will-change-transform" aria-hidden="true" />
+          {/* Ambient Lighting Orbs (Ultra-fast radial gradients) */}
+          <div className="pointer-events-none absolute -top-24 left-1/4 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(79,70,229,0.2)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
+          <div className="pointer-events-none absolute -bottom-24 right-1/4 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.2)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
 
           <div className="shell mb-12 text-center relative z-10">
             <p className="eyebrow text-berry">03 / Civic Feedback · 50 States</p>

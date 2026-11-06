@@ -126,9 +126,9 @@ export default function Pillars() {
       className="relative h-[360vh] bg-[#060913] text-paper border-none"
       aria-label="Civic participation mechanisms horizontal scroll"
     >
-      {/* Seamless Ambient Lighting Orbs */}
-      <div className="pointer-events-none absolute top-1/4 -left-32 size-96 rounded-full bg-cyan-600/10 blur-[120px] transform-gpu will-change-transform" aria-hidden="true" />
-      <div className="pointer-events-none absolute top-3/4 -right-32 size-96 rounded-full bg-rose-600/10 blur-[120px] transform-gpu will-change-transform" aria-hidden="true" />
+      {/* Seamless Ambient Lighting Orbs (Ultra-fast radial gradients) */}
+      <div className="pointer-events-none absolute top-1/4 -left-32 size-96 rounded-full bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.16)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
+      <div className="pointer-events-none absolute top-3/4 -right-32 size-96 rounded-full bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.14)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
 
       {/* Pinned Viewport Container with breathing room top and bottom */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden py-4 sm:py-6 md:py-8 select-none">

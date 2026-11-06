@@ -32,7 +32,7 @@ export default function About() {
           background="#050811"
           blossomColor="#e3c2ff"
           speed={85}
-          petals={180}
+          petals={75}
           wind={32}
           scale={105}
           glow={65}

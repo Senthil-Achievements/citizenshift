@@ -33,9 +33,9 @@ export default function SmoothScroll() {
 
         gsap.registerPlugin(ScrollTrigger);
 
-        // 60+ FPS Pure Smooth Scroll configuration
+        // 60+ FPS Pure Smooth Scroll configuration tuned for low-spec laptops & battery saver
         lenis = new Lenis({
-          lerp: 0.09, // Instant response + butter-smooth interpolation
+          lerp: 0.1, // Snappy response with zero input lag
           wheelMultiplier: 1.0,
           touchMultiplier: 1.0,
           smoothWheel: true,
@@ -51,7 +51,7 @@ export default function SmoothScroll() {
           lenis?.raf(time * 1000);
         };
         gsap.ticker.add(ticker);
-        gsap.ticker.lagSmoothing(0); // Prevents frame drops / stutter on scroll
+        gsap.ticker.lagSmoothing(500, 33); // Absorbs frame rate fluctuations smoothly without stutter
 
         cleanupGsap = () => {
           gsap.ticker.remove(ticker);

@@ -78,7 +78,7 @@ export default function ContactSection() {
           scale: [1, 1.1, 1],
         }}
         transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -top-28 left-1/2 -translate-x-1/2 h-56 w-[680px] rounded-full bg-gradient-to-r from-rose-500/20 via-purple-500/20 to-teal-400/20 blur-[100px] transform-gpu will-change-transform z-0"
+        className="pointer-events-none absolute -top-28 left-1/2 -translate-x-1/2 h-56 w-[680px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.2)_0%,rgba(168,85,247,0.15)_35%,transparent_70%)] transform-gpu will-change-transform z-0"
         aria-hidden="true"
       />
 
@@ -92,9 +92,9 @@ export default function ContactSection() {
         aria-hidden="true"
       />
 
-      {/* Ambient Glow */}
+      {/* Ambient Glow (Ultra-fast radial gradient) */}
       <div
-        className="pointer-events-none absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-berry/10 blur-[130px]"
+        className="pointer-events-none absolute -top-32 right-1/4 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.15)_0%,transparent_70%)] transform-gpu will-change-transform"
         aria-hidden="true"
       />
 

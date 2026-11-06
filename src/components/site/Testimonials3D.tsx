@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Marquee } from "@/components/ui/3d-testimonails";
@@ -83,7 +83,7 @@ export const CIVIC_TESTIMONIALS: CivicTestimonial[] = [
 
 function CivicTestimonialCard({ img, name, username, body, location, role }: CivicTestimonial) {
   return (
-    <Card className="w-[280px] shrink-0 border border-white/10 bg-slate-900/60 backdrop-blur-xl shadow-lg transition-all duration-200 hover:scale-[1.02] hover:border-white/25">
+    <Card className="w-[280px] shrink-0 border border-white/10 bg-[#0c121e] shadow-md transition-transform duration-200 hover:scale-[1.02] hover:border-white/25 transform-gpu will-change-transform">
       <CardContent className="p-4 sm:p-5">
         <div className="flex items-center gap-3">
           <Avatar className="size-10 ring-1 ring-white/20">
@@ -110,19 +110,38 @@ function CivicTestimonialCard({ img, name, username, body, location, role }: Civ
 }
 
 export function Testimonials3D() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.01, rootMargin: "150px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <div
+      ref={containerRef}
       className="relative mx-auto flex h-[500px] w-full max-w-5xl flex-row items-center justify-center overflow-hidden [perspective:800px] select-none"
       style={{
         contain: "layout paint",
       }}
     >
-      {/* 3D Tilted container — isolated with transform-gpu */}
+      {/* 3D Tilted container — isolated with transform-gpu and paused when out of view */}
       <div
         className="flex flex-row items-center gap-4 sm:gap-6 transform-gpu will-change-transform"
         style={{
           transform:
             "translateX(-30px) translateY(0px) translateZ(0px) rotateX(14deg) rotateY(-6deg) rotateZ(8deg)",
+          animationPlayState: isInView ? "running" : "paused",
         }}
       >
         {/* Column 1: Downwards */}

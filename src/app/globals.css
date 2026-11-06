@@ -74,6 +74,12 @@ html.lenis body {
   pointer-events: none;
 }
 
+/* Eliminate hover hit-testing overhead during scroll for locked 60+ FPS */
+html.lenis-scrolling,
+html.lenis-scrolling * {
+  pointer-events: none !important;
+}
+
 body {
   width: 100%;
   max-width: 100%;

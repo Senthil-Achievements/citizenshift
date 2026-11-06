@@ -128,23 +128,23 @@ export default function Donate() {
       className="relative w-full overflow-hidden bg-[#060913] text-white py-14 sm:py-20 lg:py-24 select-none"
       aria-labelledby="donate-heading"
     >
-      {/* Background Animated Atmosphere Glows */}
+      {/* Background Animated Atmosphere Glows (Ultra-fast GPU radial gradients, 0 blur pass) */}
       <motion.div
         animate={{
           scale: [1, 1.15, 1],
-          opacity: [0.08, 0.16, 0.08],
+          opacity: [0.12, 0.22, 0.12],
         }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -top-40 -left-40 size-[600px] rounded-full bg-rose-600/20 blur-[140px] transform-gpu will-change-transform"
+        className="pointer-events-none absolute -top-32 -left-32 size-[520px] rounded-full bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.18)_0%,transparent_70%)] transform-gpu will-change-transform"
         aria-hidden="true"
       />
       <motion.div
         animate={{
           scale: [1.1, 1, 1.1],
-          opacity: [0.06, 0.14, 0.06],
+          opacity: [0.08, 0.18, 0.08],
         }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="pointer-events-none absolute -bottom-40 -right-40 size-[650px] rounded-full bg-sky-600/15 blur-[150px] transform-gpu will-change-transform"
+        className="pointer-events-none absolute -bottom-32 -right-32 size-[540px] rounded-full bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.15)_0%,transparent_70%)] transform-gpu will-change-transform"
         aria-hidden="true"
       />
 
@@ -560,7 +560,7 @@ export default function Donate() {
             PART 2: ANIMATED DONOR TESTIMONIALS
            ======================================================== */}
         <div className="relative mt-16 sm:mt-24 pt-10">
-          {/* Floating Chromatic Ambient Orbs (Matching User's Aesthetic Sketch) */}
+          {/* Floating Chromatic Ambient Orbs (Ultra-fast radial gradients, 0 blur pass) */}
           <div className="pointer-events-none absolute left-1/2 -top-16 -translate-x-1/2 w-full max-w-4xl h-52 overflow-hidden z-0">
             <motion.div
               animate={{
@@ -569,7 +569,7 @@ export default function Donate() {
                 scale: [1, 1.1, 1],
               }}
               transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-[30%] -top-10 size-48 rounded-full bg-indigo-600/25 blur-[65px] transform-gpu will-change-transform"
+              className="absolute left-[30%] -top-10 size-56 rounded-full bg-[radial-gradient(circle_at_center,rgba(79,70,229,0.32)_0%,transparent_70%)] transform-gpu will-change-transform"
               aria-hidden="true"
             />
             <motion.div
@@ -579,7 +579,7 @@ export default function Donate() {
                 scale: [1.06, 0.94, 1.06],
               }}
               transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute left-[45%] -top-16 size-56 rounded-full bg-rose-500/25 blur-[75px] transform-gpu will-change-transform"
+              className="absolute left-[45%] -top-16 size-64 rounded-full bg-[radial-gradient(circle_at_center,rgba(244,63,94,0.3)_0%,transparent_70%)] transform-gpu will-change-transform"
               aria-hidden="true"
             />
             <motion.div
@@ -589,7 +589,7 @@ export default function Donate() {
                 scale: [0.94, 1.1, 0.94],
               }}
               transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-              className="absolute left-[58%] -top-6 size-44 rounded-full bg-teal-400/20 blur-[60px] transform-gpu will-change-transform"
+              className="absolute left-[58%] -top-6 size-52 rounded-full bg-[radial-gradient(circle_at_center,rgba(45,212,191,0.26)_0%,transparent_70%)] transform-gpu will-change-transform"
               aria-hidden="true"
             />
           </div>

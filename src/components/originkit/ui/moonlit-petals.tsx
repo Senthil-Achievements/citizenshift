@@ -797,7 +797,7 @@ export default function NightSceneBacklit(props: NightSceneBacklitProps) {
         let Hd = 0
         let dpr = 1
         const resize = () => {
-            dpr = Math.min(1.25, window.devicePixelRatio || 1)
+            dpr = Math.min(1.0, window.devicePixelRatio || 1)
             Wd = Math.max(1, Math.round(root.offsetWidth * dpr))
             Hd = Math.max(1, Math.round(root.offsetHeight * dpr))
             if (canvas.width !== Wd) canvas.width = Wd
