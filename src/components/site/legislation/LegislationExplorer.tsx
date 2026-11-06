@@ -18,54 +18,6 @@ import type { Bill, LegislationLevel, LegislationResponse } from "@/lib/legislat
 import { CARD_LIMIT, isPassed, isNew, matchesTopic, shuffle } from "@/lib/legislation";
 import { POLICY_AREAS, US_STATES } from "@/lib/states";
 
-const InfiniteGallery = dynamic(
-  () => import("@/components/ui/3d-gallery-photography"),
-  { ssr: false }
-);
-
-const CIVIC_GALLERY_IMAGES = [
-  {
-    src: "/photo/dome.jpg",
-    alt: "United States Capitol Dome",
-    title: "United States Capitol",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80",
-    alt: "Congressional Rotunda and Great Halls",
-    title: "The Public Hall",
-  },
-  {
-    src: "/photo/hearing.jpg",
-    alt: "Congressional Committee Hearings",
-    title: "Committee Hearing",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80",
-    alt: "Civic Monuments and Democracy",
-    title: "Democracy in Action",
-  },
-  {
-    src: "/photo/townhall.jpg",
-    alt: "Constituent Town Hall",
-    title: "Constituent Assembly",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?auto=format&fit=crop&w=1200&q=80",
-    alt: "Public Law & Record",
-    title: "Legislative Records",
-  },
-  {
-    src: "/photo/crowd.jpg",
-    alt: "Citizen Civic Engagement",
-    title: "Civic Participation",
-  },
-  {
-    src: "/photo/hero.jpg",
-    alt: "Legislative Floor Debate",
-    title: "Floor Debate",
-  },
-];
-
 type LevelFilter = "All" | LegislationLevel;
 type StatusFilter = "All" | "New" | "Passed";
 type TopicFilter = string; // "All" | policy area
@@ -278,33 +230,6 @@ export default function LegislationExplorer() {
             A live window into the same record the app reads: federal and state bills,
             plain-language summaries, one-tap advocacy. No account required to begin.
           </p>
-        </div>
-
-        {/* 3D Civic Photography & Public Record in 3D */}
-        <div className="mt-8 overflow-hidden rounded-2xl border hairline-light bg-navy-950/70 shadow-2xl">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b hairline-light bg-navy-900/90 px-5 py-3">
-            <div className="flex items-center gap-2.5">
-              <span className="size-2 rounded-full bg-berry animate-pulse" />
-              <span className="font-mono text-xs uppercase tracking-wider text-paper font-bold">
-                Civic Photography & Legislative Lens in 3D
-              </span>
-              <span className="hidden sm:inline-block font-mono text-[10px] text-icy/50">
-                — Interactive Infinite Gallery
-              </span>
-            </div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-icy/60">
-              Hover to wave · Scroll/drag to traverse · 3D Cloth Shader
-            </span>
-          </div>
-
-          <div className="relative h-64 sm:h-72 w-full">
-            <InfiniteGallery
-              images={CIVIC_GALLERY_IMAGES}
-              speed={1.0}
-              visibleCount={8}
-              className="h-full w-full"
-            />
-          </div>
         </div>
 
         {/* controls */}
