@@ -239,11 +239,15 @@ function BillCardBase({
           </button>
         </div>
 
-        {/* title — animated underline on hover, clicks open detailed bill page */}
+        {/* title — animated underline on hover, clicks expand card details inline on the same page */}
         <h3 className="mt-3 font-display text-lg font-semibold leading-snug text-navy sm:text-xl">
           <TextDrawLink
             text={billTitle(bill)}
-            href={billDetailHref(bill)}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              onToggleExpand();
+            }}
             className="hover:text-berry focus-visible:text-berry transition-colors cursor-pointer"
             strokeColor="#c2121f"
             strokeWidth={8}
