@@ -559,114 +559,185 @@ export default function Donate() {
         {/* ========================================================
             PART 2: ANIMATED DONOR TESTIMONIALS
            ======================================================== */}
-        <div className="mt-16 sm:mt-24 pt-12 border-t border-white/10">
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7 }}
-            className="text-center max-w-3xl mx-auto mb-12 sm:mb-16"
-          >
-            <p className="font-mono text-xs uppercase tracking-[0.25em] text-rose-400 font-semibold mb-3">
+        <div className="relative mt-16 sm:mt-24 pt-12 border-t border-white/10">
+          {/* Floating Chromatic Ambient Orbs (Matching User's Aesthetic Sketch) */}
+          <div className="pointer-events-none absolute left-1/2 -top-16 -translate-x-1/2 w-full max-w-4xl h-52 overflow-hidden z-0">
+            <motion.div
+              animate={{
+                x: [-18, 18, -18],
+                y: [0, -14, 0],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute left-[30%] -top-10 size-48 rounded-full bg-indigo-600/25 blur-[65px] transform-gpu will-change-transform"
+              aria-hidden="true"
+            />
+            <motion.div
+              animate={{
+                x: [18, -18, 18],
+                y: [-12, 10, -12],
+                scale: [1.06, 0.94, 1.06],
+              }}
+              transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute left-[45%] -top-16 size-56 rounded-full bg-rose-500/25 blur-[75px] transform-gpu will-change-transform"
+              aria-hidden="true"
+            />
+            <motion.div
+              animate={{
+                x: [-14, 14, -14],
+                y: [10, -10, 10],
+                scale: [0.94, 1.1, 0.94],
+              }}
+              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+              className="absolute left-[58%] -top-6 size-44 rounded-full bg-teal-400/20 blur-[60px] transform-gpu will-change-transform"
+              aria-hidden="true"
+            />
+          </div>
+
+          <div className="relative z-10 text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55 }}
+              className="inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-xs font-mono uppercase tracking-[0.22em] text-rose-300 backdrop-blur-md shadow-xs mb-4"
+            >
+              <span className="size-1.5 rounded-full bg-rose-400 animate-pulse" />
               VOICES OF IMPACT · 2,840+ GRASSROOTS DONORS
-            </p>
-            <h3 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight">
-              Why Americans choose to fund CitizenShift.
-            </h3>
-            <p className="mt-3 text-sm sm:text-base text-white/70 leading-relaxed font-sans">
+            </motion.div>
+            <motion.h3
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.65, delay: 0.08 }}
+              className="font-display font-bold text-2xl sm:text-4xl lg:text-[2.6rem] text-white tracking-tight leading-tight"
+            >
+              Why Americans choose to{" "}
+              <span className="bg-gradient-to-r from-rose-400 via-pink-300 to-amber-200 bg-clip-text text-transparent italic font-serif">
+                support CitizenShift
+              </span>
+              .
+            </motion.h3>
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.65, delay: 0.16 }}
+              className="mt-3.5 text-sm sm:text-base text-white/70 max-w-2xl mx-auto leading-relaxed font-sans"
+            >
               No corporate PACs. No dark money. Sustained by everyday teachers, veterans, workers,
               and parents across all 50 states who believe legislation belongs to the people.
-            </p>
-          </motion.div>
+            </motion.p>
+          </div>
 
           {/* Staggered Animated Testimonial Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {DONOR_TESTIMONIALS.map((story, idx) => (
-              <motion.div
-                key={story.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{
-                  duration: 0.65,
-                  delay: idx * 0.12,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                whileHover={{
-                  y: -8,
-                  scale: 1.02,
-                  borderColor: "rgba(255,255,255,0.25)",
-                  transition: { duration: 0.25, ease: "easeOut" },
-                }}
-                onMouseEnter={() => setHoveredCard(story.id)}
-                onMouseLeave={() => setHoveredCard(null)}
-                className={`relative rounded-2xl bg-[#14181f]/90 border border-white/10 p-5 sm:p-6 flex flex-col justify-between shadow-lg transition-shadow cursor-default group overflow-hidden ${
-                  hoveredCard === story.id ? "shadow-[0_15px_35px_rgba(0,0,0,0.6)]" : ""
-                }`}
-              >
-                {/* Background Quotation Watermark Accent */}
-                <div
-                  className="pointer-events-none absolute -bottom-4 -right-2 text-7xl font-serif font-black select-none opacity-[0.035] group-hover:opacity-[0.07] transition-opacity"
-                  aria-hidden="true"
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {DONOR_TESTIMONIALS.map((story, idx) => {
+              const isMonthly = story.badge.toLowerCase().includes("champion");
+              return (
+                <motion.div
+                  key={story.id}
+                  initial={{ opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{
+                    duration: 0.65,
+                    delay: idx * 0.12,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  whileHover={{
+                    y: -8,
+                    scale: 1.025,
+                    transition: { duration: 0.25, ease: "easeOut" },
+                  }}
+                  onMouseEnter={() => setHoveredCard(story.id)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                  className={`relative rounded-2xl bg-gradient-to-b from-white/[0.07] via-white/[0.03] to-white/[0.01] backdrop-blur-xl border border-white/10 p-5 sm:p-6 flex flex-col justify-between shadow-xl transition-all duration-300 cursor-default group overflow-hidden ${
+                    hoveredCard === story.id
+                      ? "border-rose-400/40 shadow-[0_20px_45px_-10px_rgba(225,29,72,0.22)]"
+                      : "hover:border-white/20"
+                  }`}
                 >
-                  “
-                </div>
+                  {/* Top Specular Sheen */}
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
-                <div>
-                  {/* Top Header: Badge & Star Rating */}
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full bg-white/10 border border-white/10 text-white/80 font-semibold group-hover:border-white/20 transition-colors">
-                      {story.badge}
-                    </span>
-                    <div className="flex items-center gap-0.5 text-amber-400 text-xs" aria-label="5 stars">
-                      {[...Array(5)].map((_, starIdx) => (
-                        <motion.span
-                          key={starIdx}
-                          initial={{ opacity: 0, scale: 0 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: 0.3 + idx * 0.1 + starIdx * 0.05 }}
-                        >
-                          ★
-                        </motion.span>
-                      ))}
-                    </div>
+                  {/* Background Quotation Watermark Accent */}
+                  <div
+                    className="pointer-events-none absolute -bottom-4 -right-2 text-7xl font-serif font-black select-none opacity-[0.04] group-hover:opacity-[0.09] group-hover:scale-110 transition-all duration-300 text-white"
+                    aria-hidden="true"
+                  >
+                    “
                   </div>
 
-                  {/* Donor Quote */}
-                  <p className="text-xs sm:text-[13px] leading-relaxed text-white/85 font-sans italic group-hover:text-white transition-colors">
-                    &ldquo;{story.quote}&rdquo;
-                  </p>
-                </div>
+                  <div>
+                    {/* Top Header: Badge & Star Rating */}
+                    <div className="flex items-center justify-between mb-4">
+                      {isMonthly ? (
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-200 font-semibold tracking-wider shadow-2xs">
+                          <svg className="size-2.5 text-rose-400" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                          </svg>
+                          {story.badge}
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-200 font-semibold tracking-wider shadow-2xs">
+                          <svg className="size-2.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                          {story.badge}
+                        </span>
+                      )}
 
-                {/* Donor Signature & Contribution Details */}
-                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div
-                      className={`size-8 rounded-full ${story.avatarBg} text-white font-mono text-[11px] font-bold flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform`}
-                    >
-                      {story.avatarText}
+                      <div className="flex items-center gap-0.5 text-amber-300 text-xs drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" aria-label="5 stars">
+                        {[...Array(5)].map((_, starIdx) => (
+                          <motion.span
+                            key={starIdx}
+                            initial={{ opacity: 0, scale: 0 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.25 + idx * 0.08 + starIdx * 0.04 }}
+                          >
+                            ★
+                          </motion.span>
+                        ))}
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs font-bold text-white leading-tight">{story.name}</p>
-                      <p className="text-[10px] text-white/50 leading-tight">{story.location}</p>
-                    </div>
+
+                    {/* Donor Quote */}
+                    <p className="text-xs sm:text-[13px] leading-relaxed text-white/90 font-sans italic group-hover:text-white transition-colors">
+                      &ldquo;{story.quote}&rdquo;
+                    </p>
                   </div>
 
-                  <div className="text-right">
-                    <span
-                      style={{ color: story.accentColor }}
-                      className="text-xs font-mono font-bold block"
-                    >
-                      {story.amount}
-                    </span>
-                    <span className="text-[10px] font-mono text-white/40 block leading-none">
-                      {story.frequency}
-                    </span>
+                  {/* Donor Signature & Contribution Details */}
+                  <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div
+                        className={`size-9 rounded-full ${story.avatarBg} text-white font-mono text-xs font-bold flex items-center justify-center shrink-0 ring-2 ring-white/15 group-hover:ring-white/40 group-hover:scale-105 transition-all shadow-md`}
+                      >
+                        {story.avatarText}
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-white leading-tight">{story.name}</p>
+                        <p className="text-[10px] text-white/55 leading-tight mt-0.5">{story.location}</p>
+                      </div>
+                    </div>
+
+                    <div className="text-right rounded-lg px-2.5 py-1 bg-white/[0.04] border border-white/5">
+                      <span
+                        style={{ color: story.accentColor }}
+                        className="text-xs font-mono font-bold block leading-tight drop-shadow-xs"
+                      >
+                        {story.amount}
+                      </span>
+                      <span className="text-[9px] font-mono uppercase tracking-wider text-white/45 block leading-tight mt-0.5">
+                        {story.frequency}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>
