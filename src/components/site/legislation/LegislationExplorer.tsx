@@ -212,7 +212,7 @@ export default function LegislationExplorer() {
   );
 
   return (
-    <section id="legislation" className="grain relative overflow-hidden bg-navy-900 text-paper" aria-labelledby="legislation-heading">
+    <section id="legislation" className="grain relative overflow-hidden bg-[#060913] text-paper border-none" aria-labelledby="legislation-heading">
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.05]"
         aria-hidden="true"
@@ -405,7 +405,7 @@ export default function LegislationExplorer() {
         </div>
 
         {/* footnote */}
-        <p className="mt-10 border-t hairline-light pt-5 font-mono text-[10px] uppercase tracking-[0.18em] text-icy/45">
+        <p className="mt-8 pt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-icy/45">
           Every card above is a real bill from the public record. Summaries are
           translation aids, not legal advice · Bill data via LegiScan
         </p>

@@ -46,8 +46,8 @@ export default function About() {
             minHeight: "100%",
           }}
         />
-        {/* Specular glassy vignette & ambient depth overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060913]/85 via-[#060913]/35 to-[#060913]/90" />
+        {/* Specular glassy vignette & ambient depth overlays (Seamless transition top & bottom) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#060913] via-[#060913]/30 to-[#060913]" />
         <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/20 to-black/75" />
         <div className="grain pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
       </div>

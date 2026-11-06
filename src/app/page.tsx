@@ -29,22 +29,26 @@ export default function Page() {
       <ScrollProgress />
       <Header />
 
-      <main id="main">
+      <main id="main" className="bg-[#060913]">
         <Hero />
         <Ticker />
         <Pillars />
         <LegislationExplorer />
 
-        {/* 3D Testimonials Marquee Section */}
-        <section id="stories" className="relative border-t hairline bg-paper py-20 sm:py-28 overflow-hidden">
-          <div className="shell mb-12 text-center">
+        {/* 3D Testimonials Marquee Section — Seamless Dark Flow */}
+        <section id="stories" className="relative bg-[#060913] py-20 sm:py-28 overflow-hidden text-paper border-none">
+          {/* Ambient Lighting Orbs for seamless single-page animation */}
+          <div className="pointer-events-none absolute -top-24 left-1/4 size-72 rounded-full bg-indigo-600/15 blur-[90px] transform-gpu will-change-transform" aria-hidden="true" />
+          <div className="pointer-events-none absolute -bottom-24 right-1/4 size-72 rounded-full bg-rose-600/15 blur-[90px] transform-gpu will-change-transform" aria-hidden="true" />
+
+          <div className="shell mb-12 text-center relative z-10">
             <p className="eyebrow text-berry">03 / Civic Feedback · 50 States</p>
-            <h2 className="mt-3 font-display text-[clamp(2rem,4.5vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.02em] text-navy">
+            <h2 className="mt-3 font-display text-[clamp(2rem,4.5vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.02em] text-white">
               Democracy in motion,
               <br />
               voiced by the people.
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-navy/70">
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/70">
               Constituents, educators, union organizers, and researchers across the nation who rely on
               CitizenShift for open legislative tracking and one-tap advocacy.
             </p>
@@ -52,10 +56,10 @@ export default function Page() {
 
           <Testimonials3D />
 
-          <div className="mt-10 text-center">
+          <div className="mt-10 text-center relative z-10">
             <Link
               href="/testimonials"
-              className="inline-flex items-center gap-3 rounded-full border border-navy/20 bg-navy/5 px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.2em] text-navy transition-all duration-300 hover:border-navy hover:bg-navy hover:text-paper"
+              className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.2em] text-white transition-all duration-300 hover:border-white hover:bg-white hover:text-navy shadow-sm"
             >
               <span>Explore All Community Stories</span>
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>

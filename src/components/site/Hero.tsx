@@ -178,10 +178,10 @@ export default function Hero() {
   });
 
   return (
-    <div id="opening" className="relative bg-navy-900">
+    <div id="opening" className="relative bg-[#060913]">
       {/* 1. Sticky Hero Container (pinned at top while the curved dome section rises over it) */}
       <div className="op__hold sticky top-0 z-0 h-[100svh] min-h-[580px] w-full overflow-hidden">
-        <section id="home" className="atmos grain relative isolate flex h-full min-h-[100svh] flex-col overflow-hidden bg-navy-900 text-paper">
+        <section id="home" className="atmos grain relative isolate flex h-full min-h-[100svh] flex-col overflow-hidden bg-[#060913] text-paper">
           {/* Backdrop image of the Capitol dome + atmospheric vignette */}
           <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
             <div

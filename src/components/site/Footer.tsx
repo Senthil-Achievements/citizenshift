@@ -43,7 +43,7 @@ export default function Footer() {
         columns={COLUMNS}
         preset="night"
         palette={{
-          background: "#081724", // CitizenShift Navy-900
+          background: "#060913", // Seamless CitizenShift Deep Midnight
           ink: "#e3f3fc",        // Icy paper ink
           warm: "#c2121f",       // CitizenShift Berry red on hover/push
         }}
@@ -54,7 +54,7 @@ export default function Footer() {
         height="560px"
         backToTop={true}
         interactive={true}
-        className="border-t hairline-light"
+        className="border-none"
       />
     </div>
   );

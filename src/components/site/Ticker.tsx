@@ -19,7 +19,7 @@ const CIVIC_HIGHLIGHTS: TextLoopItem[] = [
 export default function Ticker() {
   return (
     <section
-      className="relative w-full max-w-full overflow-hidden border-y border-navy/10 bg-paper py-3 sm:py-4 select-none shadow-sm"
+      className="relative w-full max-w-full overflow-hidden bg-paper py-3 sm:py-4 select-none border-none"
       aria-label="Civic Highlights Loop"
     >
       {/* Soft cinematic vignette fades at screen edges */}

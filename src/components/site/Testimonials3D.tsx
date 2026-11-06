@@ -83,25 +83,25 @@ export const CIVIC_TESTIMONIALS: CivicTestimonial[] = [
 
 function CivicTestimonialCard({ img, name, username, body, location, role }: CivicTestimonial) {
   return (
-    <Card className="w-[280px] shrink-0 border hairline bg-paper shadow-sm transition-transform duration-200 hover:scale-[1.02]">
+    <Card className="w-[280px] shrink-0 border border-white/10 bg-slate-900/60 backdrop-blur-xl shadow-lg transition-all duration-200 hover:scale-[1.02] hover:border-white/25">
       <CardContent className="p-4 sm:p-5">
         <div className="flex items-center gap-3">
-          <Avatar className="size-10 ring-1 ring-navy/15">
+          <Avatar className="size-10 ring-1 ring-white/20">
             <AvatarImage src={img} alt={name} className="object-cover" loading="lazy" />
-            <AvatarFallback className="bg-navy/10 text-xs font-bold text-navy">
+            <AvatarFallback className="bg-white/10 text-xs font-bold text-white">
               {name.split(" ").map((n) => n[0]).join("")}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col min-w-0">
-            <figcaption className="text-sm font-semibold text-navy truncate flex items-center gap-1.5">
+            <figcaption className="text-sm font-semibold text-white truncate flex items-center gap-1.5">
               <span>{name}</span>
             </figcaption>
-            <p className="text-[11px] font-mono uppercase tracking-wider text-navy/55 truncate">
+            <p className="text-[11px] font-mono uppercase tracking-wider text-white/50 truncate">
               {role} · {location}
             </p>
           </div>
         </div>
-        <blockquote className="mt-3.5 text-xs leading-relaxed text-navy/80 line-clamp-3">
+        <blockquote className="mt-3.5 text-xs leading-relaxed text-white/80 line-clamp-3">
           “{body}”
         </blockquote>
       </CardContent>
@@ -154,11 +154,11 @@ export function Testimonials3D() {
         </Marquee>
       </div>
 
-      {/* Gradient Vignette Overlays for seamless edge fade */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-paper via-paper/80 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-paper via-paper/80 to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-paper via-paper/80 to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-paper via-paper/80 to-transparent" />
+      {/* Seamless Edge Vignettes into Midnight Canvas */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#060913] via-[#060913]/85 to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#060913] via-[#060913]/85 to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-[#060913] via-[#060913]/85 to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-28 bg-gradient-to-l from-[#060913] via-[#060913]/85 to-transparent z-10" />
     </div>
   );
 }

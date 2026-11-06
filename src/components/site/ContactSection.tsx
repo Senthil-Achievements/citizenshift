@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 const EMAIL = "erin.chouinard@citizenshift.us";
 const PHONE = "+1 (212) 555-0199";
@@ -65,9 +66,22 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative w-full bg-[#071120] py-20 sm:py-28 text-paper overflow-hidden scroll-mt-24 border-t hairline-light"
+      className="relative w-full bg-[#060913] py-20 sm:py-28 text-paper overflow-hidden scroll-mt-24 border-none"
       aria-labelledby="contact-heading"
     >
+      {/* Seamless Connecting Aurora Glow from Donate Section */}
+      <motion.div
+        animate={{
+          x: [-24, 24, -24],
+          y: [-10, 10, -10],
+          opacity: [0.12, 0.22, 0.12],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute -top-28 left-1/2 -translate-x-1/2 h-56 w-[680px] rounded-full bg-gradient-to-r from-rose-500/20 via-purple-500/20 to-teal-400/20 blur-[100px] transform-gpu will-change-transform z-0"
+        aria-hidden="true"
+      />
+
       {/* Background Dot Matrix */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.05]"

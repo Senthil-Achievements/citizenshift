@@ -125,7 +125,7 @@ export default function Donate() {
   return (
     <section
       id="donate"
-      className="relative w-full overflow-hidden bg-[#0a0c10] text-white py-14 sm:py-20 lg:py-24 select-none"
+      className="relative w-full overflow-hidden bg-[#060913] text-white py-14 sm:py-20 lg:py-24 select-none"
       aria-labelledby="donate-heading"
     >
       {/* Background Animated Atmosphere Glows */}
@@ -559,7 +559,7 @@ export default function Donate() {
         {/* ========================================================
             PART 2: ANIMATED DONOR TESTIMONIALS
            ======================================================== */}
-        <div className="relative mt-16 sm:mt-24 pt-12 border-t border-white/10">
+        <div className="relative mt-16 sm:mt-24 pt-10">
           {/* Floating Chromatic Ambient Orbs (Matching User's Aesthetic Sketch) */}
           <div className="pointer-events-none absolute left-1/2 -top-16 -translate-x-1/2 w-full max-w-4xl h-52 overflow-hidden z-0">
             <motion.div

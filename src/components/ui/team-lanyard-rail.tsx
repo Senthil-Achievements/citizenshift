@@ -671,13 +671,19 @@ export default function TeamLanyardRail({
   className = "",
 }: TeamLanyardRailProps) {
   return (
-    <section className={`relative w-full bg-[#080b0e] py-16 sm:py-24 overflow-hidden select-none ${className}`}>
-      {/* Background Dot Grid */}
+    <section className={`relative w-full bg-[#060913] py-16 sm:py-24 overflow-hidden select-none border-none ${className}`}>
+      {/* Floating Ambient Aurora Glow Bridging About & Team */}
+      <div className="pointer-events-none absolute -top-28 left-1/3 size-80 rounded-full bg-cyan-500/10 blur-[110px] transform-gpu will-change-transform" aria-hidden="true" />
+      <div className="pointer-events-none absolute -bottom-28 right-1/4 size-80 rounded-full bg-rose-500/10 blur-[110px] transform-gpu will-change-transform" aria-hidden="true" />
+
+      {/* Background Dot Grid with Feathered Vertical Fade */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.07]"
         style={{
           backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)",
           backgroundSize: "24px 24px",
+          maskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
         }}
         aria-hidden="true"
       />
