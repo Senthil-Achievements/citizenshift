@@ -127,7 +127,7 @@ export default function BillDetailView({ bill }: Props) {
   };
 
   return (
-    <div className="relative isolate min-h-screen bg-[#f7f5f0] pb-24 pt-6 text-navy">
+    <div className="relative isolate min-h-screen bg-[#f1f5f9] pb-24 pt-6 text-slate-950 antialiased">
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (
@@ -136,7 +136,7 @@ export default function BillDetailView({ bill }: Props) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-navy/15 bg-navy px-5 py-2.5 text-xs font-semibold text-paper shadow-lg flex items-center gap-2"
+            className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-slate-700 bg-slate-950 px-5 py-2.5 text-xs font-bold text-white shadow-2xl flex items-center gap-2"
           >
             <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
             {toastMessage}
@@ -149,7 +149,7 @@ export default function BillDetailView({ bill }: Props) {
         <div className="mb-4 flex items-center justify-between">
           <Link
             href="/explore"
-            className="group inline-flex items-center gap-2 rounded-full border border-navy/15 bg-white px-4 py-1.5 text-xs font-semibold text-navy transition-all duration-200 hover:border-navy/40 hover:-translate-y-px active:translate-y-0 shadow-xs"
+            className="group inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-1.5 text-xs font-bold text-slate-900 transition-all duration-200 hover:border-slate-600 hover:-translate-y-px active:translate-y-0 shadow-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -158,10 +158,10 @@ export default function BillDetailView({ bill }: Props) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2.2"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="transition-transform duration-200 group-hover:-translate-x-0.5"
+              className="transition-transform duration-200 group-hover:-translate-x-0.5 text-slate-800"
             >
               <path d="m15 18-6-6 6-6" />
             </svg>
@@ -169,14 +169,14 @@ export default function BillDetailView({ bill }: Props) {
           </Link>
 
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center rounded-md border border-navy/15 bg-navy px-2.5 py-0.5 text-xs font-semibold text-paper">
+            <span className="inline-flex items-center rounded-md border border-slate-800 bg-slate-950 px-3 py-1 text-xs font-bold text-white shadow-xs">
               {bill.level}
             </span>
-            <span className="inline-flex items-center gap-1 rounded-md border border-navy/15 bg-white px-2.5 py-0.5 text-xs font-medium text-navy shadow-xs">
+            <span className="inline-flex items-center gap-1 rounded-md border border-blue-300/80 bg-blue-50 px-3 py-1 text-xs font-bold text-blue-950 shadow-xs">
               <span aria-hidden="true">{bill.emoji || "📄"}</span> {bill.policyArea}
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-md border border-berry/30 bg-berry/10 px-2.5 py-0.5 text-xs font-bold text-berry">
-              <span className="size-1.5 rounded-full bg-berry" />
+            <span className="inline-flex items-center gap-1.5 rounded-md border border-rose-300 bg-rose-50 px-3 py-1 text-xs font-bold text-rose-700 shadow-xs">
+              <span className="size-2 rounded-full bg-rose-600 shadow-xs" />
               {bill.status}
             </span>
           </div>
@@ -184,20 +184,20 @@ export default function BillDetailView({ bill }: Props) {
 
         {/* Title and Bill Number Header */}
         <div className="mb-6">
-          <h1 className="font-display text-2xl font-bold tracking-tight text-navy sm:text-3xl lg:text-[2.25rem] leading-[1.18] [text-wrap:balance]">
+          <h1 className="font-display text-2xl font-black tracking-tight text-slate-950 sm:text-3xl lg:text-[2.25rem] leading-[1.18] [text-wrap:balance]">
             <TextDrawLink
               text={bill.title}
-              strokeColor="#c2121f"
-              strokeWidth={8}
+              strokeColor="#dc2626"
+              strokeWidth={9}
               className="cursor-default"
             />
           </h1>
-          <p className="mt-1 font-mono text-xs font-semibold tracking-wide text-navy/55 sm:text-sm">
+          <p className="mt-2 font-mono text-xs font-bold uppercase tracking-wider text-slate-800 sm:text-sm">
             {bill.billNumber}
           </p>
         </div>
 
-        {/* Action Bar (Exact match to Image 2) */}
+        {/* Action Bar (Exact match to Image 2 with 4K contrast) */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -205,13 +205,13 @@ export default function BillDetailView({ bill }: Props) {
           className="mb-6 flex flex-wrap items-center gap-2 sm:gap-3"
         >
           {/* Upvote / Downvote Pill */}
-          <div className="inline-flex items-center rounded-full border border-navy/15 bg-white px-3 py-1 text-xs font-semibold text-navy shadow-xs">
+          <div className="inline-flex items-center rounded-full border border-slate-300 bg-white px-3.5 py-1 text-xs font-bold text-slate-950 shadow-sm">
             <button
               type="button"
               onClick={handleUpvote}
               aria-label="Upvote bill"
               className={`flex items-center gap-1.5 px-1 py-0.5 rounded transition-colors ${
-                userVote === "up" ? "text-emerald-700 font-bold" : "hover:text-emerald-600 text-navy/75"
+                userVote === "up" ? "text-emerald-700 font-black" : "hover:text-emerald-600 text-slate-800"
               }`}
             >
               <svg
@@ -221,21 +221,22 @@ export default function BillDetailView({ bill }: Props) {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2.4"
+                strokeWidth="2.8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                className="text-emerald-600"
               >
                 <path d="m18 15-6-6-6 6" />
               </svg>
               <span>{upvotes}</span>
             </button>
-            <span className="mx-1 h-3.5 w-px bg-navy/15" />
+            <span className="mx-1.5 h-4 w-px bg-slate-300" />
             <button
               type="button"
               onClick={handleDownvote}
               aria-label="Downvote bill"
               className={`flex items-center gap-1.5 px-1 py-0.5 rounded transition-colors ${
-                userVote === "down" ? "text-rose-700 font-bold" : "hover:text-rose-600 text-navy/75"
+                userVote === "down" ? "text-rose-700 font-black" : "hover:text-rose-600 text-slate-800"
               }`}
             >
               <svg
@@ -245,9 +246,10 @@ export default function BillDetailView({ bill }: Props) {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2.4"
+                strokeWidth="2.8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                className="text-rose-600"
               >
                 <path d="m6 9 6 6 6-6" />
               </svg>
@@ -259,7 +261,7 @@ export default function BillDetailView({ bill }: Props) {
           <button
             type="button"
             onClick={() => setCommentsOpen(!commentsOpen)}
-            className="inline-flex items-center gap-1.5 rounded-full border border-navy/15 bg-white px-3.5 py-1.5 text-xs font-semibold text-navy shadow-xs transition hover:border-navy/40 hover:bg-gray-50 active:translate-y-px"
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-4 py-1.5 text-xs font-bold text-slate-900 shadow-sm transition hover:border-slate-500 hover:bg-slate-50 active:translate-y-px"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -268,10 +270,10 @@ export default function BillDetailView({ bill }: Props) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-navy/60"
+              className="text-slate-700"
             >
               <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
             </svg>
@@ -282,7 +284,7 @@ export default function BillDetailView({ bill }: Props) {
           <button
             type="button"
             onClick={handleSave}
-            className="inline-flex items-center gap-1.5 rounded-full border border-navy/15 bg-white px-3.5 py-1.5 text-xs font-semibold text-navy shadow-xs transition hover:border-navy/40 hover:bg-gray-50 active:translate-y-px"
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-4 py-1.5 text-xs font-bold text-slate-900 shadow-sm transition hover:border-slate-500 hover:bg-slate-50 active:translate-y-px"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -291,10 +293,10 @@ export default function BillDetailView({ bill }: Props) {
               viewBox="0 0 24 24"
               fill={isSaved ? "currentColor" : "none"}
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className={isSaved ? "text-berry" : "text-navy/60"}
+              className={isSaved ? "text-rose-600" : "text-slate-700"}
             >
               <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
             </svg>
@@ -305,7 +307,7 @@ export default function BillDetailView({ bill }: Props) {
           <button
             type="button"
             onClick={handleShare}
-            className="inline-flex items-center gap-1.5 rounded-full border border-navy/15 bg-white px-3.5 py-1.5 text-xs font-semibold text-navy shadow-xs transition hover:border-navy/40 hover:bg-gray-50 active:translate-y-px"
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-4 py-1.5 text-xs font-bold text-slate-900 shadow-sm transition hover:border-slate-500 hover:bg-slate-50 active:translate-y-px"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -314,10 +316,10 @@ export default function BillDetailView({ bill }: Props) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-navy/60"
+              className="text-slate-700"
             >
               <circle cx="18" cy="5" r="3" />
               <circle cx="6" cy="12" r="3" />
@@ -328,11 +330,11 @@ export default function BillDetailView({ bill }: Props) {
             <span>Share</span>
           </button>
 
-          {/* Contact Your Rep Button (Dark teal background as in Image 2) */}
+          {/* Contact Your Rep Button (OLED obsidian deep green-teal) */}
           <button
             type="button"
             onClick={() => setContactOpen(true)}
-            className="ml-auto inline-flex items-center gap-2 rounded-full bg-[#133238] px-4 py-1.5 text-xs font-bold text-white shadow-xs transition hover:bg-[#1a444c] active:translate-y-px"
+            className="ml-auto inline-flex items-center gap-2 rounded-full bg-[#0a2328] hover:bg-[#061519] border border-[#133238] px-4.5 py-1.5 text-xs font-black text-white shadow-md transition-all active:translate-y-px"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -341,7 +343,7 @@ export default function BillDetailView({ bill }: Props) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -360,10 +362,10 @@ export default function BillDetailView({ bill }: Props) {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="mb-6 overflow-hidden rounded-2xl border border-navy/15 bg-white p-5 shadow-sm"
+              className="mb-6 overflow-hidden rounded-2xl border border-slate-300 bg-white p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
             >
-              <h3 className="font-display text-lg font-semibold text-navy">Constituent Community Notes</h3>
-              <p className="mt-1 text-xs text-navy/60">
+              <h3 className="font-display text-xl font-black text-slate-950">Constituent Community Notes</h3>
+              <p className="mt-1 text-xs font-bold text-slate-600">
                 Discuss this bill directly with verified citizens in your jurisdiction.
               </p>
 
@@ -373,11 +375,11 @@ export default function BillDetailView({ bill }: Props) {
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
                   placeholder="Share your perspective on this legislation..."
-                  className="flex-1 rounded-full border border-navy/20 px-4 py-2 text-xs text-navy placeholder:text-navy/40 focus:border-navy focus:outline-none"
+                  className="flex-1 rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-950 placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:outline-none"
                 />
                 <button
                   type="submit"
-                  className="rounded-full bg-navy px-4 py-2 text-xs font-bold text-paper hover:bg-navy/90"
+                  className="rounded-full bg-slate-950 px-5 py-2 text-xs font-black text-white hover:bg-black transition-colors"
                 >
                   Post Note
                 </button>
@@ -385,12 +387,12 @@ export default function BillDetailView({ bill }: Props) {
 
               <div className="mt-4 space-y-3">
                 {comments.map((c) => (
-                  <div key={c.id} className="rounded-xl border border-navy/10 bg-icy-50/50 p-3.5 text-xs">
+                  <div key={c.id} className="rounded-xl border border-slate-200 bg-slate-50 p-3.5 text-xs">
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-navy">{c.author}</span>
-                      <span className="font-mono text-[10px] text-navy/40">{c.time}</span>
+                      <span className="font-black text-slate-950">{c.author}</span>
+                      <span className="font-mono text-[10px] font-bold text-slate-500">{c.time}</span>
                     </div>
-                    <p className="mt-1 text-navy/75 leading-relaxed">{c.text}</p>
+                    <p className="mt-1.5 font-medium text-slate-900 leading-relaxed">{c.text}</p>
                   </div>
                 ))}
               </div>
@@ -398,106 +400,111 @@ export default function BillDetailView({ bill }: Props) {
           )}
         </AnimatePresence>
 
-        {/* Card 1: Facts, Sponsors & Progress Stepper (Image 2) */}
+        {/* Card 1: Facts, Sponsors & Progress Stepper (4K OLED High Contrast) */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: 0.05 }}
-          className="rounded-2xl border border-navy/10 bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] sm:p-7"
+          className="rounded-2xl border border-slate-300 bg-white p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] sm:p-7"
         >
           <div className="grid gap-6 md:grid-cols-[1fr_1.7fr]">
             {/* Left Column: Facts */}
             <div className="flex flex-col justify-start space-y-5 text-sm">
               {/* Jurisdiction */}
-              <div className="flex items-start gap-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-5 shrink-0 text-navy/50 mt-0.5"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                  <path d="M2 12h20" />
-                </svg>
+              <div className="flex items-start gap-3.5">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 text-blue-600 shadow-xs">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                    <path d="M2 12h20" />
+                  </svg>
+                </div>
                 <div>
-                  <p className="font-semibold text-navy">Jurisdiction</p>
-                  <p className="text-navy/65">{bill.jurisdiction}</p>
+                  <p className="text-[11px] font-black uppercase tracking-wider text-slate-500">Jurisdiction</p>
+                  <p className="mt-0.5 text-base font-black text-slate-950">{bill.jurisdiction}</p>
                 </div>
               </div>
 
               {/* Introduced */}
-              <div className="flex items-start gap-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-5 shrink-0 text-navy/50 mt-0.5"
-                >
-                  <rect width="18" height="18" x="3" y="4" rx="2" />
-                  <line x1="16" x2="16" y1="2" y2="6" />
-                  <line x1="8" x2="8" y1="2" y2="6" />
-                  <line x1="3" x2="21" y1="10" y2="10" />
-                </svg>
+              <div className="flex items-start gap-3.5">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-amber-200 bg-amber-50 text-amber-600 shadow-xs">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect width="18" height="18" x="3" y="4" rx="2" />
+                    <line x1="16" x2="16" y1="2" y2="6" />
+                    <line x1="8" x2="8" y1="2" y2="6" />
+                    <line x1="3" x2="21" y1="10" y2="10" />
+                  </svg>
+                </div>
                 <div>
-                  <p className="font-semibold text-navy">Introduced</p>
-                  <p className="text-navy/65">{bill.introducedDate}</p>
+                  <p className="text-[11px] font-black uppercase tracking-wider text-slate-500">Introduced</p>
+                  <p className="mt-0.5 text-base font-black text-slate-950">{bill.introducedDate}</p>
                 </div>
               </div>
 
               {/* Current Status */}
-              <div className="flex items-start gap-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-5 shrink-0 text-navy/50 mt-0.5"
-                >
-                  <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
-                  <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
-                  <path d="M7 21h10" />
-                  <path d="M12 3v18" />
-                  <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
-                </svg>
+              <div className="flex items-start gap-3.5">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-600 shadow-xs">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+                    <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+                    <path d="M7 21h10" />
+                    <path d="M12 3v18" />
+                    <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+                  </svg>
+                </div>
                 <div>
-                  <p className="font-semibold text-navy">Current Status</p>
-                  <p className="text-navy/65">{bill.currentStatus}</p>
+                  <p className="text-[11px] font-black uppercase tracking-wider text-slate-500">Current Status</p>
+                  <p className="mt-0.5 text-base font-black text-slate-950">{bill.currentStatus}</p>
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Sponsors (Circled in Image 2) */}
-            <section className="rounded-xl border border-navy/10 bg-[#faf8f5]/60 p-4 sm:p-5">
-              <h2 className="mb-4 font-display text-xl font-semibold leading-snug text-navy">
-                Sponsors{" "}
-                <span className="text-sm font-normal text-navy/50">
-                  ({bill.sponsors?.length || 0})
+            {/* Right Column: Sponsors (Circled section with high OLED contrast) */}
+            <section className="rounded-xl border border-slate-300 bg-slate-50/90 p-5 shadow-xs">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-display text-xl font-black text-slate-950">
+                  Sponsors
+                </h2>
+                <span className="inline-flex items-center rounded-full border border-slate-300 bg-white px-2.5 py-0.5 text-xs font-black text-slate-800 shadow-xs">
+                  {bill.sponsors?.length || 0}
                 </span>
-              </h2>
+              </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 {bill.sponsors && bill.sponsors.length > 0 ? (
                   bill.sponsors.map((s, i) => (
                     <div key={`${s.name}-${i}`} className="flex items-start gap-3">
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-navy/10 bg-icy-100 text-xs font-bold text-navy">
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 text-xs font-black text-white shadow-sm ring-2 ring-white">
                         {s.initials}
                       </span>
                       <div className="min-w-0 text-sm">
@@ -505,7 +512,7 @@ export default function BillDetailView({ bill }: Props) {
                           href={s.href || `https://www.congress.gov/search?q=${encodeURIComponent(s.name)}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 font-semibold text-navy hover:text-berry hover:underline transition-colors"
+                          className="inline-flex items-center gap-1 font-black text-slate-950 hover:text-blue-600 hover:underline transition-colors"
                         >
                           <span className="truncate">{s.name}</span>
                           <svg
@@ -515,24 +522,24 @@ export default function BillDetailView({ bill }: Props) {
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
-                            strokeWidth="2.2"
+                            strokeWidth="2.4"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            className="size-3.5 shrink-0 text-navy/45"
+                            className="size-3.5 shrink-0 text-slate-500"
                           >
                             <path d="M7 7h10v10" />
                             <path d="M7 17 17 7" />
                           </svg>
                         </a>
-                        <p className="text-xs text-navy/55">{s.meta}</p>
-                        <p className="mt-0.5 text-[10px] uppercase font-mono tracking-wider text-navy/45">
+                        <p className="text-xs font-bold text-slate-700">{s.meta}</p>
+                        <p className="mt-0.5 text-[10px] uppercase font-mono font-black tracking-wider text-rose-600">
                           {s.role}
                         </p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-xs text-navy/50 sm:col-span-2">
+                  <p className="text-xs font-bold text-slate-600 sm:col-span-2">
                     Official sponsor details pending entry in the legislative record.
                   </p>
                 )}
@@ -540,22 +547,26 @@ export default function BillDetailView({ bill }: Props) {
             </section>
           </div>
 
-          {/* Stepper: Legislative Progress (Exact 6 steps as in Image 2) */}
-          <div className="mt-8 pt-6 border-t border-navy/10">
-            <div className="grid grid-cols-6 gap-1.5 sm:gap-2">
+          {/* Stepper: Legislative Progress (4K OLED Glowing Track) */}
+          <div className="mt-8 pt-6 border-t border-slate-300">
+            <div className="grid grid-cols-6 gap-2 sm:gap-2.5">
               {bill.progressSteps.map((step, i) => {
                 const isActive = i === 0; // "Introduced" is active
                 return (
                   <div key={step} className="min-w-0 text-center">
                     <span
                       aria-hidden="true"
-                      className={`block h-2 rounded-full transition-all duration-300 ${
-                        isActive ? "bg-berry" : "bg-navy/15"
+                      className={`block rounded-full transition-all duration-300 ${
+                        isActive
+                          ? "h-2.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-500 shadow-[0_0_14px_rgba(225,29,72,0.6)] ring-1 ring-rose-500"
+                          : "h-2.5 bg-slate-200 border border-slate-300/60"
                       }`}
                     />
                     <span
-                      className={`mt-2.5 block break-words text-[10px] sm:text-xs leading-tight ${
-                        isActive ? "font-bold text-navy" : "text-navy/50"
+                      className={`mt-2.5 block break-words leading-tight ${
+                        isActive
+                          ? "text-xs font-black text-slate-950"
+                          : "text-xs font-bold text-slate-600"
                       }`}
                     >
                       {step}
@@ -567,25 +578,25 @@ export default function BillDetailView({ bill }: Props) {
           </div>
         </motion.div>
 
-        {/* Card 2: Summary Card (Image 2) */}
+        {/* Card 2: Summary Card (4K OLED Contrast) */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: 0.1 }}
-          className="mt-6 rounded-2xl border border-navy/10 bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] sm:p-7"
+          className="mt-6 rounded-2xl border border-slate-300 bg-white p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] sm:p-7"
         >
-          <h2 className="font-display text-xl font-semibold text-navy">Summary</h2>
-          <p className="mt-3 text-sm leading-relaxed text-navy/75 sm:text-[15px]">
+          <h2 className="font-display text-2xl font-black text-slate-950 tracking-tight">Summary</h2>
+          <p className="mt-3 text-[15px] sm:text-base leading-relaxed text-slate-900 font-medium">
             {bill.summary}
           </p>
 
-          {/* Bullet points (Wildfire bill bullets from Image 1) */}
+          {/* Bullet points with vivid glowing ruby markers */}
           {bullets && bullets.length > 0 && (
-            <div className="mt-4 border-t border-navy/10 pt-4">
-              <ul className="space-y-2.5">
+            <div className="mt-5 border-t border-slate-200 pt-5">
+              <ul className="space-y-3">
                 {bullets.map((b, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-navy/80">
-                    <span className="mt-2.5 h-0.5 w-3.5 shrink-0 bg-berry rounded-full" aria-hidden="true" />
+                  <li key={i} className="flex items-start gap-3 text-sm sm:text-[15px] leading-relaxed text-slate-950 font-semibold">
+                    <span className="mt-2.5 h-1.5 w-3.5 shrink-0 bg-rose-600 shadow-[0_0_8px_rgba(225,29,72,0.6)] rounded-full" aria-hidden="true" />
                     <span>{b}</span>
                   </li>
                 ))}
@@ -593,24 +604,24 @@ export default function BillDetailView({ bill }: Props) {
             </div>
           )}
 
-          {/* Adjacent inline-flex controls (Exact match to Image 2) */}
+          {/* Adjacent inline-flex controls */}
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={() => setAiSummaryOpen(!aiSummaryOpen)}
-              className="inline-flex items-center gap-2 rounded-full border border-navy/15 bg-white px-5 py-2.5 text-xs font-semibold text-navy transition-all duration-200 hover:border-navy/40 hover:bg-gray-50 active:translate-y-px shadow-xs sm:text-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-400 bg-white px-5 py-2.5 text-xs sm:text-sm font-black text-slate-950 transition-all duration-200 hover:border-slate-900 hover:bg-slate-100 active:translate-y-px shadow-xs"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="15"
-                height="15"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-berry"
+                className="text-rose-600"
               >
                 <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
               </svg>
@@ -620,7 +631,7 @@ export default function BillDetailView({ bill }: Props) {
             <button
               type="button"
               onClick={() => setContactOpen(true)}
-              className="inline-flex items-center gap-2 rounded-full bg-[#133238] px-5 py-2.5 text-xs font-bold text-white transition-all duration-200 hover:bg-[#1a444c] active:translate-y-px shadow-xs sm:text-sm"
+              className="inline-flex items-center gap-2 rounded-full bg-slate-950 hover:bg-black px-5 py-2.5 text-xs sm:text-sm font-black text-white transition-all duration-200 active:translate-y-px shadow-md"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -629,7 +640,7 @@ export default function BillDetailView({ bill }: Props) {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
@@ -650,30 +661,30 @@ export default function BillDetailView({ bill }: Props) {
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className="overflow-hidden"
               >
-                <div className="mt-5 rounded-xl border border-navy/15 bg-icy-50/70 p-5">
+                <div className="mt-5 rounded-xl border border-slate-300 bg-gradient-to-br from-rose-50/60 via-slate-50 to-blue-50/50 p-5 shadow-inner">
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex size-2 rounded-full bg-berry" />
-                    <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-navy/70">
+                    <span className="inline-flex size-2 rounded-full bg-rose-600 shadow-[0_0_8px_rgba(225,29,72,0.8)]" />
+                    <p className="font-mono text-[11px] font-black uppercase tracking-wider text-rose-700">
                       Plain-Language Civic Analysis · Powered by CitizenShift AI
                     </p>
                   </div>
-                  <h4 className="mt-2 font-display text-base font-semibold text-navy">
+                  <h4 className="mt-2 font-display text-lg font-black text-slate-950">
                     What does this bill mean for you?
                   </h4>
-                  <p className="mt-2 text-xs leading-relaxed text-navy/75">
-                    This measure directly addresses public interest by establishing regulatory guardrails under the Commodity Exchange Act.
+                  <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-900 font-medium">
+                    This measure directly addresses public interest by establishing regulatory guardrails under federal law.
                     It ensures registered trading platforms cannot offer speculative derivative or prediction contracts on natural disasters like wildfires, removing perverse financial incentives and reinforcing public safety.
                   </p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2 text-xs">
-                    <div className="rounded-lg border border-navy/10 bg-white p-3">
-                      <span className="font-semibold text-navy">Who is affected:</span>
-                      <p className="mt-1 text-navy/65">
+                  <div className="mt-3.5 grid gap-2.5 sm:grid-cols-2 text-xs">
+                    <div className="rounded-xl border border-slate-300 bg-white p-3.5 shadow-xs">
+                      <span className="font-black text-slate-950">Who is affected:</span>
+                      <p className="mt-1 font-semibold text-slate-800">
                         Commodity trading exchanges, financial institutions, and emergency response communities.
                       </p>
                     </div>
-                    <div className="rounded-lg border border-navy/10 bg-white p-3">
-                      <span className="font-semibold text-navy">Constituent Action:</span>
-                      <p className="mt-1 text-navy/65">
+                    <div className="rounded-xl border border-slate-300 bg-white p-3.5 shadow-xs">
+                      <span className="font-black text-slate-950">Constituent Action:</span>
+                      <p className="mt-1 font-semibold text-slate-800">
                         Use the “Contact Your Rep” button above to voice your support or concerns directly to your federal representative.
                       </p>
                     </div>
@@ -684,23 +695,23 @@ export default function BillDetailView({ bill }: Props) {
           </AnimatePresence>
         </motion.div>
 
-        {/* Card 3: Original Bill Text (Image 2) */}
+        {/* Card 3: Original Bill Text (4K OLED Contrast) */}
         {bill.originalTextSection && (
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.15 }}
-            className="mt-6 rounded-2xl border border-navy/10 bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] sm:p-7"
+            className="mt-6 rounded-2xl border border-slate-300 bg-white p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] sm:p-7"
           >
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <h2 className="font-display text-xl font-semibold text-navy">
+              <h2 className="font-display text-xl font-black text-slate-950">
                 {bill.originalTextSection}
               </h2>
               <a
                 href={bill.originalTextHref || `https://www.congress.gov/search?q=${encodeURIComponent(bill.billNumber)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-navy/15 bg-white px-5 py-2.5 text-xs font-semibold text-navy transition-all duration-200 hover:border-navy/40 hover:bg-gray-50 active:translate-y-px shadow-xs sm:text-sm"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-400 bg-slate-950 text-white px-5 py-2.5 text-xs sm:text-sm font-black transition-all duration-200 hover:bg-black active:translate-y-px shadow-sm"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -709,10 +720,10 @@ export default function BillDetailView({ bill }: Props) {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="2.4"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="size-4 shrink-0 text-navy/60"
+                  className="size-4 shrink-0 text-white"
                 >
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <polyline points="14 2 14 8 20 8" />
@@ -728,10 +739,10 @@ export default function BillDetailView({ bill }: Props) {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2.2"
+                  strokeWidth="2.4"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="text-navy/45"
+                  className="text-slate-300"
                 >
                   <path d="M7 7h10v10" />
                   <path d="M7 17 17 7" />

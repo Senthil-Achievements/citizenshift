@@ -317,13 +317,13 @@ function BillCardBase({
                     </svg>
                     <span>{upvotes}</span>
                   </button>
-                  <span className="mx-1 h-3.5 w-px bg-navy/15" />
+                  <span className="mx-1.5 h-3.5 w-px bg-slate-300" />
                   <button
                     type="button"
                     onClick={handleDownvote}
                     aria-label="Downvote"
                     className={`flex items-center gap-1.5 px-1 py-0.5 rounded transition-colors ${
-                      userVote === "down" ? "text-rose-700 font-bold" : "hover:text-rose-600 text-navy/75"
+                      userVote === "down" ? "text-rose-700 font-black" : "hover:text-rose-600 text-slate-800"
                     }`}
                   >
                     <svg
@@ -333,9 +333,10 @@ function BillCardBase({
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2.4"
+                      strokeWidth="2.8"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      className="text-rose-600"
                     >
                       <path d="m6 9 6 6 6-6" />
                     </svg>
@@ -347,7 +348,7 @@ function BillCardBase({
                 <button
                   type="button"
                   onClick={handleSave}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-navy/15 bg-white px-3 py-1 text-xs font-semibold text-navy shadow-xs transition hover:border-navy/40"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3.5 py-1 text-xs font-bold text-slate-900 shadow-xs transition hover:border-slate-500 hover:bg-slate-50"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -356,10 +357,10 @@ function BillCardBase({
                     viewBox="0 0 24 24"
                     fill={isSaved ? "currentColor" : "none"}
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.4"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className={isSaved ? "text-berry" : "text-navy/60"}
+                    className={isSaved ? "text-rose-600" : "text-slate-700"}
                   >
                     <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
                   </svg>
@@ -370,7 +371,7 @@ function BillCardBase({
                 <button
                   type="button"
                   onClick={onShare}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-navy/15 bg-white px-3 py-1 text-xs font-semibold text-navy shadow-xs transition hover:border-navy/40"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3.5 py-1 text-xs font-bold text-slate-900 shadow-xs transition hover:border-slate-500 hover:bg-slate-50"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -379,10 +380,10 @@ function BillCardBase({
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.4"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="text-navy/60"
+                    className="text-slate-700"
                   >
                     <circle cx="18" cy="5" r="3" />
                     <circle cx="6" cy="12" r="3" />
@@ -397,7 +398,7 @@ function BillCardBase({
                 <button
                   type="button"
                   onClick={onContact}
-                  className="ml-auto inline-flex items-center gap-1.5 rounded-full bg-[#133238] px-3.5 py-1 text-xs font-bold text-white shadow-xs transition hover:bg-[#1b444c]"
+                  className="ml-auto inline-flex items-center gap-1.5 rounded-full bg-slate-950 px-4 py-1 text-xs font-black text-white shadow-sm transition hover:bg-black"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -406,7 +407,7 @@ function BillCardBase({
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.4"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
@@ -417,97 +418,102 @@ function BillCardBase({
                 </button>
               </div>
 
-              {/* Facts & Sponsors Grid (Image 2 style) */}
-              <div className="grid gap-6 md:grid-cols-[1fr_1.7fr] rounded-xl border border-navy/10 bg-white p-5 shadow-xs">
+              {/* Facts & Sponsors Grid (4K OLED High Contrast) */}
+              <div className="grid gap-6 md:grid-cols-[1fr_1.7fr] rounded-2xl border border-slate-300 bg-white p-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                 {/* Left Column: Facts */}
                 <div className="flex flex-col justify-start space-y-4 text-xs sm:text-sm">
-                  <div className="flex items-start gap-2.5">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="size-4.5 shrink-0 text-navy/50 mt-0.5"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                      <path d="M2 12h20" />
-                    </svg>
+                  <div className="flex items-start gap-3">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-blue-200 bg-blue-50 text-blue-600 shadow-xs">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                        <path d="M2 12h20" />
+                      </svg>
+                    </div>
                     <div>
-                      <p className="font-semibold text-navy">Jurisdiction</p>
-                      <p className="text-navy/65">{bill.jurisdiction}</p>
+                      <p className="text-[11px] font-black uppercase tracking-wider text-slate-500">Jurisdiction</p>
+                      <p className="mt-0.5 text-sm sm:text-base font-black text-slate-950">{bill.jurisdiction}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-2.5">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="size-4.5 shrink-0 text-navy/50 mt-0.5"
-                    >
-                      <rect width="18" height="18" x="3" y="4" rx="2" />
-                      <line x1="16" x2="16" y1="2" y2="6" />
-                      <line x1="8" x2="8" y1="2" y2="6" />
-                      <line x1="3" x2="21" y1="10" y2="10" />
-                    </svg>
+                  <div className="flex items-start gap-3">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-amber-200 bg-amber-50 text-amber-600 shadow-xs">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect width="18" height="18" x="3" y="4" rx="2" />
+                        <line x1="16" x2="16" y1="2" y2="6" />
+                        <line x1="8" x2="8" y1="2" y2="6" />
+                        <line x1="3" x2="21" y1="10" y2="10" />
+                      </svg>
+                    </div>
                     <div>
-                      <p className="font-semibold text-navy">Introduced</p>
-                      <p className="text-navy/65">{billDateLabel(bill)}</p>
+                      <p className="text-[11px] font-black uppercase tracking-wider text-slate-500">Introduced</p>
+                      <p className="mt-0.5 text-sm sm:text-base font-black text-slate-950">{billDateLabel(bill)}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-2.5">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="size-4.5 shrink-0 text-navy/50 mt-0.5"
-                    >
-                      <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
-                      <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
-                      <path d="M7 21h10" />
-                      <path d="M12 3v18" />
-                      <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
-                    </svg>
+                  <div className="flex items-start gap-3">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-600 shadow-xs">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+                        <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+                        <path d="M7 21h10" />
+                        <path d="M12 3v18" />
+                        <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+                      </svg>
+                    </div>
                     <div>
-                      <p className="font-semibold text-navy">Current Status</p>
-                      <p className="text-navy/65">{bill.status}</p>
+                      <p className="text-[11px] font-black uppercase tracking-wider text-slate-500">Current Status</p>
+                      <p className="mt-0.5 text-sm sm:text-base font-black text-slate-950">{bill.status}</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Right Column: Sponsors (Image 2 circled section) */}
-                <section className="rounded-lg border border-navy/10 bg-[#faf8f5]/60 p-4">
-                  <h4 className="mb-3 font-display text-base sm:text-lg font-semibold leading-snug text-navy">
-                    Sponsors{" "}
-                    <span className="text-xs font-normal text-navy/50">
-                      ({sponsors.length})
+                {/* Right Column: Sponsors */}
+                <section className="rounded-xl border border-slate-300 bg-slate-50/90 p-4 sm:p-5 shadow-xs">
+                  <div className="mb-3 flex items-center justify-between">
+                    <h4 className="font-display text-base sm:text-lg font-black text-slate-950">
+                      Sponsors
+                    </h4>
+                    <span className="inline-flex items-center rounded-full border border-slate-300 bg-white px-2 py-0.5 text-[11px] font-black text-slate-800 shadow-xs">
+                      {sponsors.length}
                     </span>
-                  </h4>
+                  </div>
 
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="grid gap-3.5 sm:grid-cols-2">
                     {sponsors.length > 0 ? (
                       sponsors.map((s, i) => (
                         <div key={`${s.name}-${i}`} className="flex items-start gap-2.5">
-                          <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-navy/10 bg-icy-100 text-[10px] font-bold text-navy">
+                          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 text-[11px] font-black text-white shadow-sm ring-2 ring-white">
                             {s.initials}
                           </span>
                           <div className="min-w-0 text-xs">
@@ -515,34 +521,34 @@ function BillCardBase({
                               href={s.href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 font-semibold text-navy hover:text-berry hover:underline transition-colors"
+                              className="inline-flex items-center gap-1 font-black text-slate-950 hover:text-blue-600 hover:underline transition-colors"
                             >
                               <span className="truncate">{s.name}</span>
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                width="11"
-                                height="11"
+                                width="12"
+                                height="12"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                strokeWidth="2.2"
+                                strokeWidth="2.4"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                className="size-3 shrink-0 text-navy/40"
+                                className="size-3 shrink-0 text-slate-500"
                               >
                                 <path d="M7 7h10v10" />
                                 <path d="M7 17 17 7" />
                               </svg>
                             </a>
-                            <p className="text-[11px] text-navy/55">{s.party} · {s.district}</p>
-                            <p className="text-[9px] uppercase font-mono tracking-wider text-navy/40">
+                            <p className="text-[11px] font-bold text-slate-700">{s.party} · {s.district}</p>
+                            <p className="mt-0.5 text-[10px] uppercase font-mono font-black tracking-wider text-rose-600">
                               {s.role}
                             </p>
                           </div>
                         </div>
                       ))
                     ) : (
-                      <p className="text-xs text-navy/50 sm:col-span-2">
+                      <p className="text-xs font-bold text-slate-600 sm:col-span-2">
                         Sponsor roster recorded officially in congressional records.
                       </p>
                     )}
@@ -550,8 +556,8 @@ function BillCardBase({
                 </section>
               </div>
 
-              {/* 6-step Legislative Progress Stepper (Image 2) */}
-              <div className="rounded-xl border border-navy/10 bg-white p-4 shadow-xs">
+              {/* 6-step Legislative Progress Stepper (4K OLED Glowing Track) */}
+              <div className="rounded-2xl border border-slate-300 bg-white p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                 <div className="grid grid-cols-6 gap-1.5 sm:gap-2">
                   {PROGRESS_STEPS.map((step, i) => {
                     const isActive = i === 0;
@@ -559,13 +565,17 @@ function BillCardBase({
                       <div key={step} className="min-w-0 text-center">
                         <span
                           aria-hidden="true"
-                          className={`block h-2 rounded-full transition-all duration-300 ${
-                            isActive ? "bg-berry" : "bg-navy/15"
+                          className={`block rounded-full transition-all duration-300 ${
+                            isActive
+                              ? "h-2.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-500 shadow-[0_0_12px_rgba(225,29,72,0.6)] ring-1 ring-rose-500"
+                              : "h-2.5 bg-slate-200 border border-slate-300/60"
                           }`}
                         />
                         <span
-                          className={`mt-2 block break-words text-[9px] sm:text-[11px] leading-tight ${
-                            isActive ? "font-bold text-navy" : "text-navy/50"
+                          className={`mt-2 block break-words leading-tight ${
+                            isActive
+                              ? "text-[10px] sm:text-xs font-black text-slate-950"
+                              : "text-[10px] sm:text-xs font-bold text-slate-600"
                           }`}
                         >
                           {step}
@@ -577,17 +587,17 @@ function BillCardBase({
               </div>
 
               {/* Official Summary & Bullets */}
-              <div className="rounded-xl border border-navy/10 bg-white p-5 shadow-xs">
-                <h4 className="font-display text-base font-semibold text-navy">Summary</h4>
-                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-navy/75">
+              <div className="rounded-2xl border border-slate-300 bg-white p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+                <h4 className="font-display text-lg font-black text-slate-950 tracking-tight">Summary</h4>
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-900 font-medium">
                   {bill.full_summary || bill.summary}
                 </p>
 
                 {bullets.length > 0 && (
-                  <ul className="mt-3.5 space-y-2 border-t hairline pt-3">
+                  <ul className="mt-4 space-y-2.5 border-t border-slate-200 pt-3.5">
                     {bullets.map((b, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed text-navy/80">
-                        <span className="mt-2 h-0.5 w-3 shrink-0 bg-berry rounded-full" aria-hidden="true" />
+                      <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed text-slate-950 font-semibold">
+                        <span className="mt-2 h-1.5 w-3.5 shrink-0 bg-rose-600 shadow-[0_0_8px_rgba(225,29,72,0.6)] rounded-full" aria-hidden="true" />
                         <span>{b}</span>
                       </li>
                     ))}
@@ -595,23 +605,23 @@ function BillCardBase({
                 )}
 
                 {/* Actions: AI summary & Contact Rep */}
-                <div className="mt-4 flex flex-wrap items-center gap-2.5">
+                <div className="mt-5 flex flex-wrap items-center gap-3">
                   <button
                     type="button"
                     onClick={() => setAiSummaryOpen(!aiSummaryOpen)}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-navy/15 bg-white px-4 py-2 text-xs font-semibold text-navy transition hover:border-navy/40 hover:bg-gray-50 shadow-xs"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-slate-400 bg-white px-4 py-2 text-xs font-black text-slate-950 transition hover:border-slate-900 hover:bg-slate-100 shadow-xs"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="13"
-                      height="13"
+                      width="14"
+                      height="14"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2"
+                      strokeWidth="2.4"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="text-berry"
+                      className="text-rose-600"
                     >
                       <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
                     </svg>
@@ -621,7 +631,7 @@ function BillCardBase({
                   <button
                     type="button"
                     onClick={onContact}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-[#133238] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#1a444c] shadow-xs"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-slate-950 hover:bg-black px-4.5 py-2 text-xs font-black text-white transition shadow-sm"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -630,7 +640,7 @@ function BillCardBase({
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2"
+                      strokeWidth="2.4"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     >
@@ -651,14 +661,14 @@ function BillCardBase({
                       transition={{ duration: 0.3 }}
                       className="overflow-hidden"
                     >
-                      <div className="mt-3.5 rounded-lg border border-navy/15 bg-icy-50/70 p-4 text-xs">
+                      <div className="mt-4 rounded-xl border border-slate-300 bg-gradient-to-br from-rose-50/60 via-slate-50 to-blue-50/50 p-4 text-xs shadow-inner">
                         <div className="flex items-center gap-1.5">
-                          <span className="size-1.5 rounded-full bg-berry" />
-                          <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-navy/70">
+                          <span className="size-2 rounded-full bg-rose-600 shadow-[0_0_8px_rgba(225,29,72,0.8)]" />
+                          <span className="font-mono text-[10px] font-black uppercase tracking-wider text-rose-700">
                             CitizenShift Civic AI Summary
                           </span>
                         </div>
-                        <p className="mt-1.5 text-navy/80 leading-relaxed">
+                        <p className="mt-2 text-slate-900 font-medium leading-relaxed">
                           This bill establishes consumer protections under federal law to prevent financial contracts and speculation from conflicting with public safety. It ensures regulatory clarity upon enactment.
                         </p>
                       </div>
@@ -668,15 +678,15 @@ function BillCardBase({
               </div>
 
               {/* Original Bill Text Button */}
-              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-navy/10 bg-white p-4 shadow-xs">
-                <span className="font-display text-sm font-semibold text-navy">
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-300 bg-white p-4.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+                <span className="font-display text-sm sm:text-base font-black text-slate-950">
                   Original Bill Text
                 </span>
                 <a
                   href={bill.source_url || `https://www.congress.gov/search?q=${encodeURIComponent(bill.bill_number)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-navy/15 bg-white px-4 py-1.5 text-xs font-semibold text-navy hover:border-navy/40 hover:bg-gray-50 transition shadow-xs"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-400 bg-slate-950 text-white px-4.5 py-2 text-xs font-black hover:bg-black transition shadow-xs"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -685,10 +695,10 @@ function BillCardBase({
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.4"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="text-navy/60"
+                    className="text-white"
                   >
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                     <polyline points="14 2 14 8 20 8" />
@@ -701,10 +711,10 @@ function BillCardBase({
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.4"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="text-navy/40"
+                    className="text-slate-300"
                   >
                     <path d="M7 7h10v10" />
                     <path d="M7 17 17 7" />
@@ -713,7 +723,7 @@ function BillCardBase({
               </div>
 
               {/* Record metadata */}
-              <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-navy/40">
+              <p className="font-mono text-[10px] uppercase font-bold tracking-[0.16em] text-slate-500">
                 RECORD № {String(bill.source_id ?? bill.id)} · SOURCE {bill.source.toUpperCase()} · STATUS {bill.status.toUpperCase()}
               </p>
             </div>
