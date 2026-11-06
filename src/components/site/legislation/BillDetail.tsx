@@ -12,6 +12,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   type Bill,
   billDateLabel,
@@ -308,7 +309,12 @@ export default function BillDetail({
         </p>
 
         {/* ===== heading ===== */}
-        <header className="mt-6 flex flex-col gap-5">
+        <motion.header
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="mt-6 flex flex-col gap-5"
+        >
           <div className="flex flex-wrap items-center gap-2">
             <span className="chip border-navy bg-navy text-white font-bold">{bill.level}</span>
             <span className="chip border-blue-300 bg-blue-50 text-blue-950 font-bold">{bill.policy_area}</span>
@@ -344,10 +350,12 @@ export default function BillDetail({
 
           {/* action bar */}
           <div className="flex flex-wrap items-center gap-3">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
               type="button"
               onClick={() => setShareOpen(true)}
-              className="flex h-11 items-center gap-2 rounded-full border hairline bg-paper px-5 text-sm font-semibold text-navy transition hover:border-navy/40"
+              className="flex h-11 items-center gap-2 rounded-full border hairline bg-paper px-5 text-sm font-semibold text-navy transition hover:border-navy/40 shadow-xs"
             >
               <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <circle cx="11" cy="2.5" r="1.8" stroke="currentColor" strokeWidth="1.2" />
@@ -356,25 +364,33 @@ export default function BillDetail({
                 <path d="M4.7 6.2l4.6-2.6M4.7 7.8l4.6 2.6" stroke="currentColor" strokeWidth="1.2" />
               </svg>
               Share
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.04, y: -1 }}
+              whileTap={{ scale: 0.96 }}
               type="button"
               onClick={() => setContactOpen(true)}
-              className="flex h-11 items-center gap-2 rounded-full bg-berry px-5 text-sm font-bold text-paper transition hover:bg-berry-600"
+              className="flex h-11 items-center gap-2 rounded-full bg-berry px-5 text-sm font-bold text-paper transition hover:bg-berry-600 shadow-xs"
             >
               <svg width="14" height="11" viewBox="0 0 16 12" fill="none" aria-hidden="true">
                 <rect x="1" y="1" width="14" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
                 <path d="M1.5 2l6.5 5 6.5-5" stroke="currentColor" strokeWidth="1.2" />
               </svg>
               Contact Your Rep
-            </button>
+            </motion.button>
           </div>
-        </header>
+        </motion.header>
 
         {/* ===== bill information + sponsor ===== */}
         <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* bill information */}
-          <section data-reveal className="border hairline bg-paper lg:col-span-7">
+          <motion.section
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.38, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            data-reveal
+            className="border hairline bg-paper lg:col-span-7 transition-shadow hover:shadow-xs"
+          >
             <h2 className="border-b hairline px-6 py-4 font-display text-lg font-semibold text-navy">
               Bill information
             </h2>
@@ -385,16 +401,22 @@ export default function BillDetail({
                 ["Current status", bill.status || "—"],
                 ["Chamber", parsed?.chamber ?? "—"],
               ].map(([k, v]) => (
-                <div key={k} className="bg-paper p-5">
+                <div key={k} className="bg-paper p-5 transition-colors hover:bg-icy-50/50">
                   <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-navy/45">{k}</dt>
                   <dd className="mt-1.5 text-sm font-medium text-navy">{v}</dd>
                 </div>
               ))}
             </dl>
-          </section>
+          </motion.section>
 
           {/* sponsor */}
-          <section data-reveal className="border hairline bg-paper lg:col-span-5">
+          <motion.section
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.38, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            data-reveal
+            className="border hairline bg-paper lg:col-span-5 transition-shadow hover:shadow-xs"
+          >
             <h2 className="border-b hairline px-6 py-4 font-display text-lg font-semibold text-navy">
               Sponsor
             </h2>
@@ -441,20 +463,32 @@ export default function BillDetail({
                 </a>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* progress */}
-          <section data-reveal className="min-w-0 border hairline bg-paper lg:col-span-12">
+          <motion.section
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.38, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            data-reveal
+            className="min-w-0 border hairline bg-paper lg:col-span-12 transition-shadow hover:shadow-xs"
+          >
             <h2 className="border-b hairline px-6 py-4 font-display text-lg font-semibold text-navy">
               Legislative progress
             </h2>
             <div className="px-4 py-6 sm:px-6">
               <ProgressTimeline bill={bill} />
             </div>
-          </section>
+          </motion.section>
 
           {/* summaries */}
-          <section data-reveal className="border hairline bg-paper lg:col-span-12">
+          <motion.section
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.38, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            data-reveal
+            className="border hairline bg-paper lg:col-span-12 transition-shadow hover:shadow-xs"
+          >
             <h2 className="border-b hairline px-6 py-4 font-display text-lg font-semibold text-navy">
               Summary
             </h2>
@@ -495,10 +529,16 @@ export default function BillDetail({
                 </p>
               )}
             </div>
-          </section>
+          </motion.section>
 
           {/* ===== original bill text ===== */}
-          <section data-reveal className="border hairline bg-paper lg:col-span-12">
+          <motion.section
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.38, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            data-reveal
+            className="border hairline bg-paper lg:col-span-12 transition-shadow hover:shadow-xs"
+          >
             <h2 className="border-b hairline px-6 py-4 font-display text-lg font-semibold text-navy">
               Original Bill Text
             </h2>
@@ -512,15 +552,17 @@ export default function BillDetail({
                     Text version — {bill.status || "Introduced"} · Format — {legiscanRef ? "source page (HTML)" : "as published by source"} · {bill.level} record
                   </p>
                 </div>
-                <Link
-                  href={viewerHref}
-                  className="flex h-12 shrink-0 items-center gap-2 rounded-full bg-berry px-6 text-sm font-bold text-paper transition hover:bg-berry-600"
-                >
-                  Read Original Text
-                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                    <path d="M1 7h11M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
-                </Link>
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
+                  <Link
+                    href={viewerHref}
+                    className="flex h-12 shrink-0 items-center gap-2 rounded-full bg-berry px-6 text-sm font-bold text-paper transition hover:bg-berry-600 shadow-xs"
+                  >
+                    Read Original Text
+                    <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M1 7h11M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" />
+                    </svg>
+                  </Link>
+                </motion.div>
               </div>
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-navy/70">
                 Open the original legislative document inside CitizenShift — with a
@@ -553,7 +595,7 @@ export default function BillDetail({
                 Verified {new Date(state.retrievedAt).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })} · Record № {String(bill.source_id ?? bill.id)} · source {bill.source}
               </p>
             </div>
-          </section>
+          </motion.section>
         </div>
       </div>
 

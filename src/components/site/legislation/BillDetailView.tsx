@@ -146,27 +146,34 @@ export default function BillDetailView({ bill }: Props) {
 
       <div className="mx-auto max-w-[920px] px-4 sm:px-6">
         {/* Navigation row */}
-        <div className="mb-4 flex items-center justify-between">
-          <Link
-            href="/explore"
-            className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-900 shadow-xs"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="transition-transform duration-200 group-hover:-translate-x-0.5 text-slate-500"
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35 }}
+          className="mb-4 flex items-center justify-between"
+        >
+          <motion.div whileHover={{ x: -2 }} whileTap={{ scale: 0.96 }}>
+            <Link
+              href="/explore"
+              className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-900 shadow-xs"
             >
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-            <span>Back to Feed</span>
-          </Link>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="transition-transform duration-200 group-hover:-translate-x-0.5 text-slate-500"
+              >
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+              <span>Back to Feed</span>
+            </Link>
+          </motion.div>
 
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center rounded-md border border-navy/20 bg-navy px-2.5 py-0.5 text-xs font-semibold text-white shadow-xs">
@@ -180,10 +187,15 @@ export default function BillDetailView({ bill }: Props) {
               {bill.status}
             </span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Title and Bill Number Header */}
-        <div className="mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.05 }}
+          className="mb-6"
+        >
           <h1 className="font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-[2rem] leading-snug [text-wrap:balance]">
             <TextDrawLink
               text={bill.title}
@@ -195,18 +207,19 @@ export default function BillDetailView({ bill }: Props) {
           <p className="mt-2 font-mono text-xs font-semibold uppercase tracking-wider text-slate-600 sm:text-sm">
             {bill.billNumber}
           </p>
-        </div>
+        </motion.div>
 
         {/* Action Bar */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.35, delay: 0.1 }}
           className="mb-6 flex flex-wrap items-center gap-2 sm:gap-2.5"
         >
           {/* Upvote / Downvote Pill */}
           <div className="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-800 shadow-xs">
-            <button
+            <motion.button
+              whileTap={{ scale: 0.88 }}
               type="button"
               onClick={handleUpvote}
               aria-label="Upvote bill"
@@ -214,7 +227,9 @@ export default function BillDetailView({ bill }: Props) {
                 userVote === "up" ? "text-emerald-700 font-bold" : "hover:text-emerald-600 text-slate-700"
               }`}
             >
-              <svg
+              <motion.svg
+                animate={userVote === "up" ? { y: [-2, 0], scale: [1.2, 1] } : {}}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 xmlns="http://www.w3.org/2000/svg"
                 width="14"
                 height="14"
@@ -227,11 +242,19 @@ export default function BillDetailView({ bill }: Props) {
                 className="text-emerald-600"
               >
                 <path d="m18 15-6-6-6 6" />
-              </svg>
-              <span>{upvotes}</span>
-            </button>
+              </motion.svg>
+              <motion.span
+                key={upvotes}
+                initial={{ y: -4, opacity: 0.5 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                {upvotes}
+              </motion.span>
+            </motion.button>
             <span className="mx-1 h-3.5 w-px bg-slate-200" />
-            <button
+            <motion.button
+              whileTap={{ scale: 0.88 }}
               type="button"
               onClick={handleDownvote}
               aria-label="Downvote bill"
@@ -239,7 +262,9 @@ export default function BillDetailView({ bill }: Props) {
                 userVote === "down" ? "text-rose-700 font-bold" : "hover:text-rose-600 text-slate-700"
               }`}
             >
-              <svg
+              <motion.svg
+                animate={userVote === "down" ? { y: [2, 0], scale: [1.2, 1] } : {}}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 xmlns="http://www.w3.org/2000/svg"
                 width="14"
                 height="14"
@@ -252,16 +277,25 @@ export default function BillDetailView({ bill }: Props) {
                 className="text-rose-600"
               >
                 <path d="m6 9 6 6 6-6" />
-              </svg>
-              <span>{downvotes}</span>
-            </button>
+              </motion.svg>
+              <motion.span
+                key={downvotes}
+                initial={{ y: 4, opacity: 0.5 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                {downvotes}
+              </motion.span>
+            </motion.button>
           </div>
 
           {/* Comments count button */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.92 }}
             type="button"
             onClick={() => setCommentsOpen(!commentsOpen)}
-            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 shadow-xs transition hover:border-slate-300 hover:text-slate-900 active:translate-y-px"
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 shadow-xs transition hover:border-slate-300 hover:text-slate-900"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -278,15 +312,19 @@ export default function BillDetailView({ bill }: Props) {
               <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
             </svg>
             <span>{comments.length}</span>
-          </button>
+          </motion.button>
 
           {/* Save button */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.92 }}
             type="button"
             onClick={handleSave}
-            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 shadow-xs transition hover:border-slate-300 hover:text-slate-900 active:translate-y-px"
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 shadow-xs transition hover:border-slate-300 hover:text-slate-900"
           >
-            <svg
+            <motion.svg
+              animate={isSaved ? { scale: [1.3, 1] } : {}}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
               xmlns="http://www.w3.org/2000/svg"
               width="13"
               height="13"
@@ -299,15 +337,17 @@ export default function BillDetailView({ bill }: Props) {
               className={isSaved ? "text-rose-600" : "text-slate-500"}
             >
               <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
-            </svg>
+            </motion.svg>
             <span>{isSaved ? "Saved" : "Save"}</span>
-          </button>
+          </motion.button>
 
           {/* Share button */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.92 }}
             type="button"
             onClick={handleShare}
-            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 shadow-xs transition hover:border-slate-300 hover:text-slate-900 active:translate-y-px"
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 shadow-xs transition hover:border-slate-300 hover:text-slate-900"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -328,13 +368,15 @@ export default function BillDetailView({ bill }: Props) {
               <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
             </svg>
             <span>Share</span>
-          </button>
+          </motion.button>
 
           {/* Contact Your Rep Button */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.04, y: -1 }}
+            whileTap={{ scale: 0.96 }}
             type="button"
             onClick={() => setContactOpen(true)}
-            className="ml-auto inline-flex items-center gap-2 rounded-full bg-[#133238] hover:bg-[#1a444c] px-4 py-1.5 text-xs font-semibold text-white shadow-xs transition active:translate-y-px"
+            className="ml-auto inline-flex items-center gap-2 rounded-full bg-[#133238] hover:bg-[#1a444c] px-4 py-1.5 text-xs font-semibold text-white shadow-xs transition"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -351,7 +393,7 @@ export default function BillDetailView({ bill }: Props) {
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
             </svg>
             <span>Contact Your Rep</span>
-          </button>
+          </motion.button>
         </motion.div>
 
         {/* Comments Section Drawer (collapsible) */}
@@ -404,15 +446,19 @@ export default function BillDetailView({ bill }: Props) {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: 0.05 }}
-          className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs sm:p-7"
+          transition={{ duration: 0.38, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs sm:p-7 transition-shadow hover:shadow-sm"
         >
           <div className="grid gap-6 md:grid-cols-[1fr_1.7fr]">
             {/* Left Column: Facts */}
             <div className="flex flex-col justify-start space-y-4 text-sm">
               {/* Jurisdiction */}
-              <div className="flex items-start gap-3">
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-blue-100 bg-blue-50 text-blue-600">
+              <motion.div
+                whileHover={{ x: 3 }}
+                transition={{ type: "spring", stiffness: 350, damping: 22 }}
+                className="flex items-start gap-3 group cursor-default"
+              >
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-blue-100 bg-blue-50 text-blue-600 transition-transform group-hover:scale-110">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -433,11 +479,15 @@ export default function BillDetailView({ bill }: Props) {
                   <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Jurisdiction</p>
                   <p className="mt-0.5 text-sm sm:text-base font-bold text-slate-900">{bill.jurisdiction}</p>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Introduced */}
-              <div className="flex items-start gap-3">
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-amber-100 bg-amber-50 text-amber-600">
+              <motion.div
+                whileHover={{ x: 3 }}
+                transition={{ type: "spring", stiffness: 350, damping: 22 }}
+                className="flex items-start gap-3 group cursor-default"
+              >
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-amber-100 bg-amber-50 text-amber-600 transition-transform group-hover:scale-110">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -459,11 +509,15 @@ export default function BillDetailView({ bill }: Props) {
                   <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Introduced</p>
                   <p className="mt-0.5 text-sm sm:text-base font-bold text-slate-900">{bill.introducedDate}</p>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Current Status */}
-              <div className="flex items-start gap-3">
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600">
+              <motion.div
+                whileHover={{ x: 3 }}
+                transition={{ type: "spring", stiffness: 350, damping: 22 }}
+                className="flex items-start gap-3 group cursor-default"
+              >
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600 transition-transform group-hover:scale-110">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -486,7 +540,7 @@ export default function BillDetailView({ bill }: Props) {
                   <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Current Status</p>
                   <p className="mt-0.5 text-sm sm:text-base font-bold text-slate-900">{bill.currentStatus}</p>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
             {/* Right Column: Sponsors */}
@@ -503,7 +557,14 @@ export default function BillDetailView({ bill }: Props) {
               <div className="grid gap-3.5 sm:grid-cols-2">
                 {bill.sponsors && bill.sponsors.length > 0 ? (
                   bill.sponsors.map((s, i) => (
-                    <div key={`${s.name}-${i}`} className="flex items-start gap-2.5">
+                    <motion.div
+                      key={`${s.name}-${i}`}
+                      initial={{ opacity: 0, scale: 0.94 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.15 + i * 0.05 }}
+                      whileHover={{ y: -2 }}
+                      className="flex items-start gap-2.5 rounded-lg p-1.5 transition-colors hover:bg-white"
+                    >
                       <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-xs font-bold text-slate-800 shadow-2xs">
                         {s.initials}
                       </span>
@@ -536,7 +597,7 @@ export default function BillDetailView({ bill }: Props) {
                           {s.role}
                         </p>
                       </div>
-                    </div>
+                    </motion.div>
                   ))
                 ) : (
                   <p className="text-xs text-slate-500 sm:col-span-2">
@@ -554,15 +615,20 @@ export default function BillDetailView({ bill }: Props) {
                 const isActive = i === 0; // "Introduced" is active
                 return (
                   <div key={step} className="min-w-0 text-center">
-                    <span
-                      aria-hidden="true"
-                      className={`block rounded-full transition-all duration-300 ${
-                        isActive
-                          ? "h-2 bg-berry shadow-xs"
-                          : "h-2 bg-slate-200"
-                      }`}
-                    />
-                    <span
+                    <div className="relative h-2 w-full overflow-hidden rounded-full bg-slate-200">
+                      {isActive && (
+                        <motion.span
+                          initial={{ width: 0 }}
+                          animate={{ width: "100%" }}
+                          transition={{ duration: 0.7, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-berry via-rose-500 to-berry shadow-xs"
+                        />
+                      )}
+                    </div>
+                    <motion.span
+                      initial={{ opacity: 0, y: 3 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.15 + i * 0.04 }}
                       className={`mt-2 block break-words text-[10px] sm:text-xs leading-tight ${
                         isActive
                           ? "font-bold text-slate-900"
@@ -570,7 +636,7 @@ export default function BillDetailView({ bill }: Props) {
                       }`}
                     >
                       {step}
-                    </span>
+                    </motion.span>
                   </div>
                 );
               })}
@@ -582,7 +648,7 @@ export default function BillDetailView({ bill }: Props) {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: 0.1 }}
+          transition={{ duration: 0.38, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
           className="mt-6 rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs sm:p-7"
         >
           <h2 className="font-display text-xl font-bold text-slate-900">Summary</h2>
@@ -595,10 +661,16 @@ export default function BillDetailView({ bill }: Props) {
             <div className="mt-4 border-t border-slate-100 pt-4">
               <ul className="space-y-2.5">
                 {bullets.map((b, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-800">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-berry rounded-full" aria-hidden="true" />
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 + i * 0.05 }}
+                    className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-800"
+                  >
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-berry rounded-full animate-pulse" aria-hidden="true" />
                     <span>{b}</span>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
@@ -606,10 +678,12 @@ export default function BillDetailView({ bill }: Props) {
 
           {/* Adjacent inline-flex controls */}
           <div className="mt-5 flex flex-wrap items-center gap-2.5">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
               type="button"
               onClick={() => setAiSummaryOpen(!aiSummaryOpen)}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50 active:translate-y-px shadow-xs"
+              className="group inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50 shadow-xs"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -621,17 +695,19 @@ export default function BillDetailView({ bill }: Props) {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-berry"
+                className="text-berry transition-transform duration-300 group-hover:rotate-12"
               >
                 <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
               </svg>
               <span>{aiSummaryOpen ? "Hide Plain-Language Summary" : "Generate plain-language summary"}</span>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03, y: -1 }}
+              whileTap={{ scale: 0.96 }}
               type="button"
               onClick={() => setContactOpen(true)}
-              className="inline-flex items-center gap-2 rounded-full bg-[#133238] hover:bg-[#1a444c] px-4.5 py-2 text-xs sm:text-sm font-semibold text-white transition active:translate-y-px shadow-xs"
+              className="inline-flex items-center gap-2 rounded-full bg-[#133238] hover:bg-[#1a444c] px-4.5 py-2 text-xs sm:text-sm font-semibold text-white transition shadow-xs"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -648,7 +724,7 @@ export default function BillDetailView({ bill }: Props) {
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
               </svg>
               <span>Contact Your Rep</span>
-            </button>
+            </motion.button>
           </div>
 
           {/* AI Plain Language Summary Drawer */}
@@ -663,7 +739,7 @@ export default function BillDetailView({ bill }: Props) {
               >
                 <div className="mt-4 rounded-xl border border-slate-200 bg-icy-50/70 p-4 sm:p-5">
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex size-2 rounded-full bg-berry" />
+                    <span className="inline-flex size-2 rounded-full bg-berry animate-ping" />
                     <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-600">
                       Plain-Language Civic Analysis · Powered by CitizenShift AI
                     </p>
@@ -700,18 +776,20 @@ export default function BillDetailView({ bill }: Props) {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.15 }}
-            className="mt-6 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs sm:p-6"
+            transition={{ duration: 0.38, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-6 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs sm:p-6 transition-shadow hover:shadow-sm"
           >
             <div className="flex flex-wrap items-center justify-between gap-4">
               <h2 className="font-display text-base sm:text-lg font-bold text-slate-900">
                 {bill.originalTextSection}
               </h2>
-              <a
+              <motion.a
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 href={bill.originalTextHref || `https://www.congress.gov/search?q=${encodeURIComponent(bill.billNumber)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white text-slate-800 px-4 py-2 text-xs sm:text-sm font-semibold transition hover:border-slate-400 hover:bg-slate-50 active:translate-y-px shadow-xs"
+                className="group/link inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white text-slate-800 px-4 py-2 text-xs sm:text-sm font-semibold transition hover:border-slate-400 hover:bg-slate-50 shadow-xs"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -742,12 +820,12 @@ export default function BillDetailView({ bill }: Props) {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="text-slate-400"
+                  className="text-slate-400 transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
                 >
                   <path d="M7 7h10v10" />
                   <path d="M7 17 17 7" />
                 </svg>
-              </a>
+              </motion.a>
             </div>
           </motion.div>
         )}
