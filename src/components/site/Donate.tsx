@@ -135,7 +135,7 @@ export default function Donate() {
           opacity: [0.08, 0.16, 0.08],
         }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute -top-40 -left-40 size-[600px] rounded-full bg-rose-600/20 blur-[140px]"
+        className="pointer-events-none absolute -top-40 -left-40 size-[600px] rounded-full bg-rose-600/20 blur-[140px] transform-gpu will-change-transform"
         aria-hidden="true"
       />
       <motion.div
@@ -144,7 +144,7 @@ export default function Donate() {
           opacity: [0.06, 0.14, 0.06],
         }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="pointer-events-none absolute -bottom-40 -right-40 size-[650px] rounded-full bg-sky-600/15 blur-[150px]"
+        className="pointer-events-none absolute -bottom-40 -right-40 size-[650px] rounded-full bg-sky-600/15 blur-[150px] transform-gpu will-change-transform"
         aria-hidden="true"
       />
 

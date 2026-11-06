@@ -8,10 +8,10 @@ import { useEffect, useRef } from "react"
 /** Tuning values. Stripped at publish; the tuned values are baked in here. */
 const ADVANCED_DEFAULTS = {
     seed: 7,
-    flowers: 11000,
+    flowers: 3500,
     flowerSize: 6,
-    clumpSize: 11,
-    twigs: 30,
+    clumpSize: 9,
+    twigs: 24,
     crownReach: 100,
     branchColor: "#3E3539",
     highlight: 100,
@@ -797,7 +797,7 @@ export default function NightSceneBacklit(props: NightSceneBacklitProps) {
         let Hd = 0
         let dpr = 1
         const resize = () => {
-            dpr = Math.min(2, window.devicePixelRatio || 1)
+            dpr = Math.min(1.25, window.devicePixelRatio || 1)
             Wd = Math.max(1, Math.round(root.offsetWidth * dpr))
             Hd = Math.max(1, Math.round(root.offsetHeight * dpr))
             if (canvas.width !== Wd) canvas.width = Wd
@@ -806,6 +806,25 @@ export default function NightSceneBacklit(props: NightSceneBacklitProps) {
         const ro = new ResizeObserver(resize)
         ro.observe(root)
         resize()
+
+        let isVisible = false
+        const io = new IntersectionObserver(
+            ([entry]) => {
+                const nowVisible = entry.isIntersecting
+                if (nowVisible !== isVisible) {
+                    isVisible = nowVisible
+                    if (isVisible) {
+                        last = performance.now()
+                        cancelAnimationFrame(raf)
+                        raf = requestAnimationFrame(frame)
+                    } else {
+                        cancelAnimationFrame(raf)
+                    }
+                }
+            },
+            { threshold: 0.01, rootMargin: "180px 0px" }
+        )
+        io.observe(root)
 
         const mq = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null
         const reduced = !!(mq && mq.matches)
@@ -884,6 +903,7 @@ export default function NightSceneBacklit(props: NightSceneBacklitProps) {
         let t = 0
         let raf = 0
         const frame = (now: number) => {
+            if (!isVisible || document.hidden) return
             raf = requestAnimationFrame(frame)
             const dt = last < 0 ? 0 : Math.min((now - last) / 1000, 0.05)
             last = now
@@ -1241,11 +1261,23 @@ export default function NightSceneBacklit(props: NightSceneBacklitProps) {
                 ctx.globalAlpha = 1
             }
         }
-        raf = requestAnimationFrame(frame)
+
+        const onVis = () => {
+            if (document.hidden) {
+                cancelAnimationFrame(raf)
+            } else if (isVisible) {
+                last = performance.now()
+                cancelAnimationFrame(raf)
+                raf = requestAnimationFrame(frame)
+            }
+        }
+        document.addEventListener("visibilitychange", onVis)
 
         return () => {
             cancelAnimationFrame(raf)
+            io.disconnect()
             ro.disconnect()
+            document.removeEventListener("visibilitychange", onVis)
             root.removeEventListener("pointermove", onMove)
             root.removeEventListener("pointerenter", onMove)
             root.removeEventListener("pointerleave", onLeave)

@@ -21,7 +21,6 @@ export default function SmoothScroll() {
     let cleanupGsap: (() => void) | null = null;
 
     if (!reduced) {
-      let rafId = 0;
       let disposed = false;
 
       (async () => {
@@ -34,28 +33,33 @@ export default function SmoothScroll() {
 
         gsap.registerPlugin(ScrollTrigger);
 
+        // 60+ FPS Pure Smooth Scroll configuration
         lenis = new Lenis({
-          duration: 1.05,
-          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          lerp: 0.09, // Instant response + butter-smooth interpolation
+          wheelMultiplier: 1.0,
+          touchMultiplier: 1.0,
           smoothWheel: true,
-          touchMultiplier: 1.4,
+          syncTouch: false, // Let native touch run at hardware 120Hz
+          autoRaf: false, // Driven synchronously via GSAP ticker
         });
         window.__lenis = lenis;
 
+        // Synchronize Lenis and GSAP ScrollTrigger in the exact same render cycle
         lenis.on("scroll", ScrollTrigger.update);
-        const raf = (time: number) => {
-          lenis?.raf(time);
-          rafId = requestAnimationFrame(raf);
+
+        const ticker = (time: number) => {
+          lenis?.raf(time * 1000);
         };
-        rafId = requestAnimationFrame(raf);
+        gsap.ticker.add(ticker);
+        gsap.ticker.lagSmoothing(0); // Prevents frame drops / stutter on scroll
 
         cleanupGsap = () => {
-          cancelAnimationFrame(rafId);
+          gsap.ticker.remove(ticker);
           lenis?.destroy();
           window.__lenis = null;
         };
 
-        // Bias anchor navigation through Lenis when available.
+        // Bias anchor navigation smoothly through Lenis when available.
         onAnchor = (e: MouseEvent) => {
           const link = (e.target as HTMLElement).closest?.('a[href^="#"]');
           if (!link) return;
@@ -65,7 +69,7 @@ export default function SmoothScroll() {
           if (!target) return;
           e.preventDefault();
           history.replaceState(null, "", id);
-          if (lenis) lenis.scrollTo(target as HTMLElement, { offset: -10, duration: 1.2 });
+          if (lenis) lenis.scrollTo(target as HTMLElement, { offset: -24, duration: 1.0 });
           else target.scrollIntoView({ behavior: "smooth", block: "start" });
         };
         document.addEventListener("click", onAnchor);

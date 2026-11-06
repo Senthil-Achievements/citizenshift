@@ -150,6 +150,29 @@ export function VantaBirds({
     cfg.backgroundAlpha,
   ]);
 
+  // Pause WebGL rendering when hero is scrolled out of view for 60+ FPS scroll performance
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+
+    let isVisible = true;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting;
+        if (visible !== isVisible) {
+          isVisible = visible;
+          const canvas = el.querySelector("canvas");
+          if (canvas) {
+            canvas.style.display = isVisible ? "block" : "none";
+          }
+        }
+      },
+      { threshold: 0.01, rootMargin: "120px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [isReady]);
+
   return (
     <div
       ref={containerRef}

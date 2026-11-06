@@ -100,7 +100,7 @@ export default function Hero() {
           trigger: night,
           start: "top bottom",
           end: "top top",
-          scrub: 0.4,
+          scrub: true,
           invalidateOnRefresh: true,
           onRefresh: (self) => {
             measure();
