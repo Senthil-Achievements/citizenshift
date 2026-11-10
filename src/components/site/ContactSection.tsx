@@ -215,21 +215,6 @@ export default function ContactSection() {
             PART 1: HERO TOP BAR & KINETIC HEADLINE (MATCHING IMAGE)
            ======================================================== */}
         <div className="relative mb-12 sm:mb-16">
-          {/* Top row: Section Number "04." and 3 Interactive Status Dots */}
-          <div className="flex items-center justify-between pb-4 sm:pb-6">
-            <div className="flex items-baseline gap-2 font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-neutral-900">
-              <span>04.</span>
-              <span className="size-2.5 sm:size-3 bg-neutral-900 inline-block mb-1 sm:mb-2 animate-pulse" />
-            </div>
-
-            {/* 3 Interactive Editorial Dots */}
-            <div className="flex flex-col gap-2.5 items-center cursor-pointer group" title="Section navigator">
-              <span className="size-2.5 rounded-full bg-neutral-900 transition-transform group-hover:scale-125" />
-              <span className="size-2.5 rounded-full bg-neutral-900/40 transition-transform group-hover:scale-125 group-hover:bg-neutral-900" />
-              <span className="size-2.5 rounded-full bg-neutral-900/40 transition-transform group-hover:scale-125 group-hover:bg-neutral-900" />
-            </div>
-          </div>
-
           {/* Kinetic Headline with Vibrant Pink/Coral Highlighter Strip */}
           <div className="relative">
             {/* The Signature Vibrant Pink Highlighter Bar */}
