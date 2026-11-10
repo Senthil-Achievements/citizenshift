@@ -15,6 +15,92 @@ const PHONE = "+1 (212) 555-0199";
 const ADDRESS = "375 Lexington Ave, New York, NY";
 const LINKEDIN_URL = "https://www.linkedin.com/company/citizenshift/posts/?feedView=all";
 
+export interface SocialPlatform {
+  id: string;
+  name: string;
+  handle: string;
+  url: string;
+  badge: string;
+  icon: (className?: string) => React.ReactNode;
+}
+
+export const SOCIAL_PLATFORMS: SocialPlatform[] = [
+  {
+    id: "instagram",
+    name: "INSTAGRAM",
+    handle: "@CITIZENSHIFT",
+    url: "https://instagram.com/citizenshift", // Ready for user's custom link
+    badge: "INSTAGRAM",
+    icon: (cls = "size-4") => (
+      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" strokeWidth="2.5" />
+      </svg>
+    ),
+  },
+  {
+    id: "twitter",
+    name: "X (TWITTER)",
+    handle: "@CITIZENSHIFT",
+    url: "https://x.com/citizenshift", // Ready for user's custom link
+    badge: "X / TWITTER",
+    icon: (cls = "size-4") => (
+      <svg className={cls} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+    ),
+  },
+  {
+    id: "facebook",
+    name: "FACEBOOK",
+    handle: "@CITIZENSHIFT",
+    url: "https://facebook.com/citizenshift", // Ready for user's custom link
+    badge: "FACEBOOK",
+    icon: (cls = "size-4") => (
+      <svg className={cls} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      </svg>
+    ),
+  },
+  {
+    id: "linkedin",
+    name: "LINKEDIN",
+    handle: "@CITIZENSHIFT",
+    url: LINKEDIN_URL,
+    badge: "LINKEDIN",
+    icon: (cls = "size-4") => (
+      <svg className={cls} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+      </svg>
+    ),
+  },
+  {
+    id: "youtube",
+    name: "YOUTUBE",
+    handle: "@CITIZENSHIFT",
+    url: "https://youtube.com/@citizenshift", // Ready for user's custom link
+    badge: "YOUTUBE",
+    icon: (cls = "size-4") => (
+      <svg className={cls} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+      </svg>
+    ),
+  },
+  {
+    id: "threads",
+    name: "THREADS",
+    handle: "@CITIZENSHIFT",
+    url: "https://threads.net/@citizenshift", // Ready for user's custom link
+    badge: "THREADS",
+    icon: (cls = "size-4") => (
+      <svg className={cls} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.186 24C5.464 24 0 18.625 0 12.012 0 5.4 5.464.025 12.186.025c3.272 0 6.33 1.258 8.61 3.543l-2.457 2.493c-1.636-1.636-3.824-2.535-6.153-2.535-4.78 0-8.68 3.864-8.68 8.486 0 4.621 3.9 8.485 8.68 8.485 3.828 0 6.55-2.28 7.027-5.592H12.186v-3.4h10.457c.106.634.16 1.285.16 1.956 0 6.612-4.52 11.039-10.617 11.039z" />
+      </svg>
+    ),
+  },
+];
+
 const TOPICS = [
   "✦ Legislative Tracking",
   "✦ 50-State Records",
@@ -540,18 +626,41 @@ export default function ContactSection() {
            ======================================================== */}
         <div className="relative rounded-2xl sm:rounded-3xl bg-white border border-neutral-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] p-6 sm:p-10 md:p-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            {/* Left: Brand Badge Stamp */}
+            {/* Left: Brand Badge Stamp & Social Bar */}
             <div className="lg:col-span-4 flex flex-col justify-between">
-              <a
-                href="#home"
-                className="inline-block self-start border-2 border-neutral-950 px-4 py-2 font-mono font-black text-base sm:text-lg tracking-widest text-neutral-950 hover:bg-neutral-950 hover:text-white transition-all shadow-sm"
-              >
-                CITIZENSHIFT
-              </a>
+              <div>
+                <a
+                  href="#home"
+                  className="inline-block self-start border-2 border-neutral-950 px-4 py-2 font-mono font-black text-base sm:text-lg tracking-widest text-neutral-950 hover:bg-neutral-950 hover:text-white transition-all shadow-sm"
+                >
+                  CITIZENSHIFT
+                </a>
 
-              <p className="mt-6 font-mono text-[11px] text-neutral-400 uppercase tracking-widest leading-relaxed">
-                NONPARTISAN 501(c)(3) PLATFORM FOR OPEN CIVIC TRACKING ACROSS ALL 50 STATES.
-              </p>
+                <p className="mt-6 font-mono text-[11px] text-neutral-400 uppercase tracking-widest leading-relaxed">
+                  NONPARTISAN 501(c)(3) PLATFORM FOR OPEN CIVIC TRACKING ACROSS ALL 50 STATES.
+                </p>
+              </div>
+
+              {/* Quick Social Platforms Icon Bar */}
+              <div className="mt-8 pt-6 border-t border-neutral-100">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-neutral-400 mb-3 font-semibold">
+                  OFFICIAL SOCIAL PLATFORMS
+                </p>
+                <div className="flex flex-wrap items-center gap-2.5">
+                  {SOCIAL_PLATFORMS.map((platform) => (
+                    <a
+                      key={platform.id}
+                      href={platform.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`${platform.name} · ${platform.handle}`}
+                      className="size-10 rounded-full border border-neutral-200 bg-neutral-50 flex items-center justify-center text-neutral-700 hover:text-neutral-950 hover:bg-white hover:border-neutral-950 hover:shadow-md hover:scale-110 active:scale-95 transition-all cursor-pointer group"
+                    >
+                      {platform.icon("size-4.5 transition-transform group-hover:scale-110")}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Right: Ruled Directory Rows with Click-to-Copy */}
@@ -619,18 +728,26 @@ export default function ContactSection() {
                   </div>
                 </div>
 
-                {/* LinkedIn / Social */}
-                <a
-                  href={LINKEDIN_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center justify-between py-4 cursor-pointer hover:translate-x-1.5 transition-transform"
-                >
-                  <span className="font-mono text-xs sm:text-sm font-semibold text-neutral-800 group-hover:text-neutral-950 transition-colors">
-                    LINKEDIN · @CITIZENSHIFT
-                  </span>
-                  <span className="size-2 rounded-full bg-neutral-900 group-hover:scale-150 transition-transform" />
-                </a>
+                {/* Social Platforms Directory Rows */}
+                {SOCIAL_PLATFORMS.map((platform) => (
+                  <a
+                    key={platform.id}
+                    href={platform.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between py-4 cursor-pointer hover:translate-x-1.5 transition-transform"
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <span className="text-neutral-500 group-hover:text-neutral-950 transition-colors">
+                        {platform.icon("size-4.5")}
+                      </span>
+                      <span className="font-mono text-xs sm:text-sm font-semibold text-neutral-800 group-hover:text-neutral-950 transition-colors">
+                        {platform.name} · {platform.handle}
+                      </span>
+                    </div>
+                    <span className="size-2 rounded-full bg-neutral-900 group-hover:scale-150 transition-transform" />
+                  </a>
+                ))}
               </div>
             </div>
           </div>

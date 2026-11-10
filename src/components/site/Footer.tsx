@@ -53,6 +53,24 @@ export default function Footer() {
           href: "mailto:erin.chouinard@citizenshift.us?subject=CitizenShift%20Inquiry",
         },
         {
+          label: "Instagram",
+          href: "https://instagram.com/citizenshift",
+          target: "_blank",
+          rel: "noopener noreferrer",
+        },
+        {
+          label: "Twitter / X",
+          href: "https://x.com/citizenshift",
+          target: "_blank",
+          rel: "noopener noreferrer",
+        },
+        {
+          label: "Facebook",
+          href: "https://facebook.com/citizenshift",
+          target: "_blank",
+          rel: "noopener noreferrer",
+        },
+        {
           label: "LinkedIn",
           href: "https://www.linkedin.com/company/citizenshift/posts/?feedView=all",
           target: "_blank",
