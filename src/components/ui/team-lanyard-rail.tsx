@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export interface LanyardMember {
   id: string;
@@ -670,44 +671,74 @@ export default function TeamLanyardRail({
   subtitle = "MEET THE TEAM · FOUR LEADERS",
   className = "",
 }: TeamLanyardRailProps) {
+  const runwayRef = useRef<HTMLDivElement>(null);
+
+  // Pinned Horizontal Scroll driven by vertical scroll progress
+  const { scrollYProgress } = useScroll({
+    target: runwayRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Calculate horizontal translation across the leaders
+  const x = useTransform(scrollYProgress, [0, 1], ["5%", "-38%"]);
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ["25%", "100%"]);
+
   return (
-    <section className={`relative w-full bg-[#060913] py-16 sm:py-24 overflow-hidden select-none border-none ${className}`}>
-      {/* Floating Ambient Aurora Glow Bridging About & Team (Ultra-fast radial gradients) */}
-      <div className="pointer-events-none absolute -top-28 left-1/3 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.18)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
-      <div className="pointer-events-none absolute -bottom-28 right-1/4 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(244,63,94,0.16)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
+    <div ref={runwayRef} className={`relative h-[220vh] w-full select-none ${className}`}>
+      {/* Sticky Fullscreen Stage */}
+      <section className="sticky top-0 h-screen w-full bg-[#060913] flex flex-col justify-center overflow-hidden border-none">
+        {/* Floating Ambient Aurora Glow Bridging About & Team (Ultra-fast radial gradients) */}
+        <div className="pointer-events-none absolute -top-28 left-1/3 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.18)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
+        <div className="pointer-events-none absolute -bottom-28 right-1/4 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(244,63,94,0.16)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
 
-      {/* Background Dot Grid with Feathered Vertical Fade */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.07]"
-        style={{
-          backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-          maskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
-        }}
-        aria-hidden="true"
-      />
+        {/* Background Dot Grid with Feathered Vertical Fade */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+            maskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
+          }}
+          aria-hidden="true"
+        />
 
-      <div className="relative mx-auto max-w-[1400px] px-4 sm:px-8 lg:px-12">
-        {/* Section Header */}
-        <div className="text-center mb-14 sm:mb-20">
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-white/50 mb-3">
-            {subtitle}
-          </p>
-          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white max-w-3xl mx-auto leading-tight">
-            {title}
-          </h2>
-        </div>
+        <div className="relative mx-auto max-w-[1400px] px-4 sm:px-8 lg:px-12 w-full">
+          {/* Section Header with Horizontal Track Pill */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-12">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sky-400 font-mono text-[10px] sm:text-[11px] uppercase tracking-widest mb-3">
+                <span className="size-1.5 rounded-full bg-sky-400 animate-pulse" />
+                <span>Leadership Rail · Horizontal Scroll Experience</span>
+              </div>
+              <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+                {title}
+              </h2>
+            </div>
 
-        {/* ========================================================
-            THE METALLIC RAIL & SUSPENDED LANYARD BADGES
-            Free, uncropped edges with generous side clearances
-           ======================================================== */}
-        <div className="relative w-full">
-          {/* Scrollable container on mobile; centered with free margins on desktop */}
-          <div className="w-full overflow-x-auto pb-12 pt-4 scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none]">
-            <div className="relative min-w-[1140px] px-12 sm:px-16 md:px-20 flex flex-col items-center">
-              {/* 1. Left Wall Mounting Flange Bracket (Placed comfortably clear of Card 1) */}
+            {/* Scroll Indicator & Progress */}
+            <div className="flex flex-col items-start sm:items-end gap-1.5 shrink-0">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/50">
+                [ 4 Leaders · Scroll to glide across rail ]
+              </span>
+              <div className="w-40 sm:w-48 h-1 rounded-full bg-white/10 overflow-hidden">
+                <motion.div
+                  style={{ width: progressWidth }}
+                  className="h-full bg-gradient-to-r from-sky-400 via-rose-500 to-amber-400 rounded-full"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================================
+              THE METALLIC RAIL & SUSPENDED LANYARD BADGES (HORIZONTAL GLIDE)
+             ======================================================== */}
+          <div className="relative w-full overflow-hidden">
+            <motion.div
+              style={{ x }}
+              className="relative min-w-[1550px] pb-10 pt-2 flex flex-col items-start will-change-transform transform-gpu"
+            >
+              {/* 1. Left Wall Mounting Flange Bracket */}
               <div className="absolute left-2 sm:left-4 top-2 z-30 flex flex-col items-center pointer-events-none">
                 <div className="w-5 h-9 rounded-sm bg-gradient-to-r from-zinc-700 via-zinc-400 to-zinc-600 border border-zinc-500 shadow-md flex flex-col justify-around py-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
@@ -715,15 +746,13 @@ export default function TeamLanyardRail({
                 </div>
               </div>
 
-              {/* 2. Brushed Aluminum Metal Pipe Rail (Spans full width with side clearance) */}
+              {/* 2. Brushed Aluminum Metal Pipe Rail */}
               <div className="relative w-full h-3 z-10 mx-4 pointer-events-none">
-                {/* Rod shadow */}
                 <div className="absolute -bottom-2 inset-x-0 h-3 bg-black/40 blur-xs rounded-full" />
-                {/* Metallic gradient rod */}
                 <div className="w-full h-full rounded-full bg-gradient-to-b from-zinc-100 via-zinc-300 to-zinc-500 border-t border-b border-zinc-200 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_2px_4px_rgba(0,0,0,0.6)]" />
               </div>
 
-              {/* 3. Right Wall Mounting Flange Bracket (Placed comfortably clear of Card 4) */}
+              {/* 3. Right Wall Mounting Flange Bracket */}
               <div className="absolute right-2 sm:right-4 top-2 z-30 flex flex-col items-center pointer-events-none">
                 <div className="w-5 h-9 rounded-sm bg-gradient-to-r from-zinc-600 via-zinc-400 to-zinc-700 border border-zinc-500 shadow-md flex flex-col justify-around py-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
@@ -731,8 +760,8 @@ export default function TeamLanyardRail({
                 </div>
               </div>
 
-              {/* 4. Suspended Badges: 4 Leaders with generous, comfortable spacing */}
-              <div className="relative -mt-3.5 z-20 w-full flex items-start justify-center gap-5 sm:gap-7 md:gap-9 lg:gap-11 px-8 sm:px-12">
+              {/* 4. Suspended Badges: 4 Leaders with Generous Stage Clearances */}
+              <div className="relative -mt-3.5 z-20 w-full flex items-start justify-start gap-8 sm:gap-12 md:gap-16 lg:gap-20 px-12 sm:px-16">
                 {members.map((member, idx) => (
                   <LanyardBadgeItem
                     key={member.id}
@@ -742,10 +771,10 @@ export default function TeamLanyardRail({
                   />
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

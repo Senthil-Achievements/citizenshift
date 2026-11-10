@@ -10,6 +10,8 @@ import Ticker from "@/components/site/Ticker";
 import Pillars from "@/components/site/Pillars";
 import LegislationExplorer from "@/components/site/legislation/LegislationExplorer";
 import Testimonials3D from "@/components/site/Testimonials3D";
+import CivicHorizontalScroll from "@/components/site/CivicHorizontalScroll";
+import { ScrollStackContainer, ScrollStackItem } from "@/components/motion/ScrollStack";
 import About from "@/components/site/About";
 import Team from "@/components/site/Team";
 import Donate from "@/components/site/Donate";
@@ -35,44 +37,84 @@ export default function Page() {
         <Pillars />
         <LegislationExplorer />
 
-        {/* 3D Testimonials Marquee Section — Seamless Dark Flow */}
-        <section id="stories" className="scroll-mt-20 relative bg-[#060913] py-20 sm:py-28 overflow-hidden text-paper border-none">
-          {/* Ambient Lighting Orbs (Ultra-fast radial gradients) */}
-          <div className="pointer-events-none absolute -top-24 left-1/4 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(79,70,229,0.2)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
-          <div className="pointer-events-none absolute -bottom-24 right-1/4 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.2)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
-
-          <div className="shell mb-12 text-center relative z-10">
-            <p className="eyebrow text-berry">03 / Civic Feedback · 50 States</p>
-            <h2 className="mt-3 font-display text-[clamp(2rem,4.5vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.02em] text-white">
-              Democracy in motion,
-              <br />
-              voiced by the people.
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/70">
-              Constituents, educators, union organizers, and researchers across the nation who rely on
-              CitizenShift for open legislative tracking and one-tap advocacy.
-            </p>
-          </div>
-
-          <Testimonials3D />
-
-          <div className="mt-10 text-center relative z-10">
-            <Link
-              href="/testimonials"
-              className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.2em] text-white transition-all duration-300 hover:border-white hover:bg-white hover:text-navy shadow-sm"
+        {/* ========================================================
+            SCROLL STACK & HORIZONTAL SCROLL SUITE
+            Starts from Civic Feedback to Footer
+           ======================================================== */}
+        <ScrollStackContainer>
+          {/* STACK LAYER 1: Civic Feedback + Horizontal 50-State Voices Stream */}
+          <ScrollStackItem index={0} total={6} className="bg-[#060913]">
+            <section
+              id="stories"
+              tabIndex={-1}
+              className="scroll-mt-20 relative bg-[#060913] pt-20 sm:pt-28 pb-10 overflow-hidden text-paper border-none select-none focus:outline-none"
             >
-              <span>Explore All Community Stories</span>
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </Link>
-          </div>
-        </section>
+              {/* Ambient Lighting Orbs (Ultra-fast radial gradients) */}
+              <div
+                className="pointer-events-none absolute -top-24 left-1/4 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(79,70,229,0.2)_0%,transparent_70%)] transform-gpu will-change-transform"
+                aria-hidden="true"
+              />
+              <div
+                className="pointer-events-none absolute -bottom-24 right-1/4 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.2)_0%,transparent_70%)] transform-gpu will-change-transform"
+                aria-hidden="true"
+              />
 
-        <About />
-        <Team />
-        <Donate />
-        <ContactSection />
+              <div className="shell mb-12 text-center relative z-10">
+                <p className="eyebrow text-berry">03 / Civic Feedback · 50 States</p>
+                <h2 className="mt-3 font-display text-[clamp(2rem,4.5vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.02em] text-white">
+                  Democracy in motion,
+                  <br />
+                  voiced by the people.
+                </h2>
+                <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/70">
+                  Constituents, educators, union organizers, and researchers across the nation who rely on
+                  CitizenShift for open legislative tracking and one-tap advocacy.
+                </p>
+              </div>
+
+              <Testimonials3D />
+
+              <div className="mt-10 text-center relative z-10 mb-8">
+                <Link
+                  href="/testimonials"
+                  className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.2em] text-white transition-all duration-300 hover:border-white hover:bg-white hover:text-navy shadow-sm"
+                >
+                  <span>Explore All Community Stories</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
+
+              {/* Horizontal Scroll Effect: Pinned 50-State Civic Voices Track */}
+              <CivicHorizontalScroll />
+            </section>
+          </ScrollStackItem>
+
+          {/* STACK LAYER 2: About Mission & Nonpartisan Charter */}
+          <ScrollStackItem index={1} total={6} className="bg-[#060913]">
+            <About />
+          </ScrollStackItem>
+
+          {/* STACK LAYER 3: The Builders / Team (with Horizontal Pinned Lanyard Rail) */}
+          <ScrollStackItem index={2} total={6} className="bg-[#060913]">
+            <Team />
+          </ScrollStackItem>
+
+          {/* STACK LAYER 4: Grassroots Backing & Verified Donors */}
+          <ScrollStackItem index={3} total={6} className="bg-[#060913]">
+            <Donate />
+          </ScrollStackItem>
+
+          {/* STACK LAYER 5: Get in Touch / Contact (Laxer Design & 3D Sculpture) */}
+          <ScrollStackItem index={4} total={6} className="bg-[#eae7df]" borderTop={false}>
+            <ContactSection />
+          </ScrollStackItem>
+
+          {/* STACK LAYER 6: Halftone Wordmark & Comprehensive Routed Footer */}
+          <ScrollStackItem index={5} total={6} className="bg-[#060913]">
+            <Footer />
+          </ScrollStackItem>
+        </ScrollStackContainer>
       </main>
-      <Footer />
     </>
   );
 }
