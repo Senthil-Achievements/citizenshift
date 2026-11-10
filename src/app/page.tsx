@@ -16,6 +16,7 @@ import Team from "@/components/site/Team";
 import Donate from "@/components/site/Donate";
 import ContactSection from "@/components/site/ContactSection";
 import Footer from "@/components/site/Footer";
+import { ProjectDeck } from "@/components/ui/ProjectDeck";
 
 export const metadata: Metadata = {
   title: "CitizenShift — Bringing Power to the People",
@@ -81,10 +82,13 @@ export default function Page() {
           <CivicHorizontalScroll />
         </section>
 
-        <About />
-        <Team />
-        <Donate />
-        <ContactSection />
+        {/* Project Deck: Scroll-dealt 3D Deck Effect (starts from feedback page to footer) */}
+        <ProjectDeck>
+          <About />
+          <Team />
+          <Donate />
+          <ContactSection />
+        </ProjectDeck>
       </main>
       <Footer />
     </>
