@@ -1,46 +1,76 @@
 "use client";
 
-import HalftoneWordmarkFooter from "@/components/ui/halftone-wordmark-footer";
-
-const COLUMNS = [
-  {
-    title: "Explore",
-    links: [
-      { label: "Home", href: "#home" },
-      { label: "Explore Legislation", href: "#legislation" },
-      { label: "Stories & Voices", href: "/testimonials" },
-      { label: "About Mission", href: "#about" },
-      { label: "The Team", href: "#team" },
-    ],
-  },
-  {
-    title: "Support",
-    links: [
-      { label: "Donate (ActBlue)", href: "https://secure.actblue.com/donate/citizenshift-1" },
-      { label: "Join the Movement", href: "#home" },
-      { label: "Explore Feed", href: "#legislation" },
-      { label: "Nonpartisan Charter", href: "#about" },
-    ],
-  },
-  {
-    title: "Contact",
-    links: [
-      { label: "erin.chouinard@citizenshift.us", href: "mailto:erin.chouinard@citizenshift.us" },
-      { label: "LinkedIn", href: "https://www.linkedin.com/company/citizenshift/posts/?feedView=all" },
-      { label: "New York, NY", href: "#contact" },
-      { label: "Privacy & Terms", href: "#contact" },
-    ],
-  },
-];
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import HalftoneWordmarkFooter, { FooterColumn } from "@/components/ui/halftone-wordmark-footer";
+import JoinModal from "@/components/site/JoinModal";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const [joinOpen, setJoinOpen] = useState(false);
+
+  // Intelligently route hash anchors so they smooth-scroll on home, and navigate safely from subpages
+  const resolveHash = (hash: string) => (isHome ? hash : `/${hash}`);
+
+  const columns: FooterColumn[] = [
+    {
+      title: "Explore",
+      links: [
+        { label: "Home", href: resolveHash("#home") },
+        { label: "Explore Legislation", href: resolveHash("#legislation") },
+        { label: "Stories & Voices", href: isHome ? "#stories" : "/testimonials" },
+        { label: "About Mission", href: resolveHash("#about") },
+        { label: "The Team", href: resolveHash("#team") },
+      ],
+    },
+    {
+      title: "Support",
+      links: [
+        {
+          label: "Donate (ActBlue)",
+          href: "https://secure.actblue.com/donate/citizenshift-1",
+          target: "_blank",
+          rel: "noopener noreferrer",
+        },
+        {
+          label: "Join the Movement",
+          href: resolveHash("#join"),
+          onClick: (e) => {
+            e.preventDefault();
+            setJoinOpen(true);
+          },
+        },
+        { label: "Explore Feed", href: resolveHash("#legislation") },
+        { label: "Nonpartisan Charter", href: resolveHash("#charter") },
+      ],
+    },
+    {
+      title: "Contact",
+      links: [
+        {
+          label: "erin.chouinard@citizenshift.us",
+          href: "mailto:erin.chouinard@citizenshift.us?subject=CitizenShift%20Inquiry",
+        },
+        {
+          label: "LinkedIn",
+          href: "https://www.linkedin.com/company/citizenshift/posts/?feedView=all",
+          target: "_blank",
+          rel: "noopener noreferrer",
+        },
+        { label: "New York, NY", href: resolveHash("#contact") },
+        { label: "Privacy & Terms", href: "/privacy" },
+      ],
+    },
+  ];
+
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <HalftoneWordmarkFooter
         wordmark="citizenshift"
         label="CitizenShift"
         meta="© 2026 · Bringing Power to the People · New York, NY"
-        columns={COLUMNS}
+        columns={columns}
         preset="night"
         palette={{
           background: "#060913", // Seamless CitizenShift Deep Midnight
@@ -56,6 +86,9 @@ export default function Footer() {
         interactive={true}
         className="border-none"
       />
+
+      {/* Self-contained Join the Movement modal triggered directly from the footer */}
+      <JoinModal open={joinOpen} onClose={() => setJoinOpen(false)} intent="join" />
     </div>
   );
 }

@@ -23,7 +23,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative isolate overflow-hidden bg-[#060913] text-paper min-h-[900px]"
+      className="scroll-mt-20 relative isolate overflow-hidden bg-[#060913] text-paper min-h-[900px]"
       aria-labelledby="about-heading"
     >
       {/* Cinematic Moonlit Petals Live Video Background */}
@@ -151,8 +151,9 @@ export default function About() {
             </span>
           </div>
 
-          <div className="md:col-span-7">
+          <div id="charter" className="scroll-mt-28 md:col-span-7">
             <div
+              id="nonpartisan-charter"
               data-reveal
               className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/50 backdrop-blur-xl p-7 sm:p-9 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-white/20 hover:bg-slate-950/60"
             >

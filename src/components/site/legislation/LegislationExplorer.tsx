@@ -212,7 +212,7 @@ export default function LegislationExplorer() {
   );
 
   return (
-    <section id="legislation" className="grain relative overflow-hidden bg-[#060913] text-paper border-none" aria-labelledby="legislation-heading">
+    <section id="legislation" className="scroll-mt-20 grain relative overflow-hidden bg-[#060913] text-paper border-none" aria-labelledby="legislation-heading">
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.05]"
         aria-hidden="true"

@@ -121,7 +121,7 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative w-full bg-[#eae7df] text-neutral-900 py-16 sm:py-24 lg:py-28 overflow-hidden select-none"
+      className="scroll-mt-20 relative w-full bg-[#eae7df] text-neutral-900 py-16 sm:py-24 lg:py-28 overflow-hidden select-none"
       aria-labelledby="contact-heading"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">

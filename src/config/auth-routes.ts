@@ -64,8 +64,8 @@ export const AUTH_ROUTES = {
   testimonialsSubmit: "/testimonials/submit",
 
   /* --- legal: client-supplied, null until provided --- */
-  privacyPolicy: null,
-  termsOfService: null,
+  privacyPolicy: "/privacy",
+  termsOfService: "/privacy#terms",
 } as const;
 
 export type AuthRouteKey = keyof typeof AUTH_ROUTES;

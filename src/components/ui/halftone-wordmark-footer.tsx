@@ -28,6 +28,9 @@ export type HalftonePreset = "night" | "paper" | "ember" | "cobalt"
 export interface FooterLink {
   label: string
   href?: string
+  target?: string
+  rel?: string
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void
 }
 
 export interface FooterColumn {
@@ -155,14 +158,14 @@ const HWF_CSS = `
 .hwf-brand span { opacity: .45; }
 .hwf-col h3 { margin: 0; font: inherit; opacity: .4; font-weight: 500; }
 .hwf-col ul { list-style: none; margin: 0; padding: 0; }
-.hwf-col a, .hwf-up {
+.hwf-col a, .hwf-up, .hwf-btn {
   color: inherit; text-decoration: none; opacity: .78; background: none; border: 0; padding: 0;
-  font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer;
+  font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; text-align: left;
   background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px;
   background-repeat: no-repeat; background-position: 0 100%; transition: opacity .25s ease, background-size .35s cubic-bezier(.2,.7,.1,1);
 }
-.hwf-col a:hover, .hwf-up:hover { opacity: 1; background-size: 100% 1px; }
-.hwf-col a:focus-visible, .hwf-up:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; opacity: 1; }
+.hwf-col a:hover, .hwf-up:hover, .hwf-btn:hover { opacity: 1; background-size: 100% 1px; }
+.hwf-col a:focus-visible, .hwf-up:focus-visible, .hwf-btn:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; opacity: 1; }
 .hwf-rule {
   position: relative; z-index: 1; display: flex; justify-content: flex-end; align-items: center; gap: 16px;
   margin: clamp(18px, 2.6vw, 30px) clamp(20px, 3.4vw, 44px) 0; padding-top: 12px;
@@ -476,11 +479,34 @@ export default function HalftoneWordmarkFooter({
           <nav className="hwf-col" key={col.title} aria-label={col.title}>
             <h3>{col.title}</h3>
             <ul>
-              {col.links.map((l) => (
-                <li key={l.label}>
-                  <a href={l.href || "#"}>{l.label}</a>
-                </li>
-              ))}
+              {col.links.map((l) => {
+                const isExternal = l.href?.startsWith("http://") || l.href?.startsWith("https://")
+                const target = l.target || (isExternal ? "_blank" : undefined)
+                const rel = l.rel || (isExternal ? "noopener noreferrer" : undefined)
+
+                if (l.onClick && (!l.href || l.href === "#")) {
+                  return (
+                    <li key={l.label}>
+                      <button type="button" className="hwf-btn" onClick={l.onClick}>
+                        {l.label}
+                      </button>
+                    </li>
+                  )
+                }
+
+                return (
+                  <li key={l.label}>
+                    <a
+                      href={l.href || "#"}
+                      target={target}
+                      rel={rel}
+                      onClick={l.onClick}
+                    >
+                      {l.label}
+                    </a>
+                  </li>
+                )
+              })}
             </ul>
           </nav>
         ))}
