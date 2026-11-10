@@ -9,14 +9,22 @@
  * contact-your-representative.
  */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { cn } from "@/lib/utils";
 import { BillCard } from "@/components/site/legislation/BillCard";
 import ShareDialog, { shareOrCopy } from "@/components/site/legislation/ShareDialog";
 import ContactRepDialog from "@/components/site/legislation/ContactRepDialog";
 import type { Bill, LegislationLevel, LegislationResponse } from "@/lib/legislation";
 import { CARD_LIMIT, isPassed, isNew, matchesTopic, shuffle } from "@/lib/legislation";
 import { POLICY_AREAS, US_STATES } from "@/lib/states";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 type LevelFilter = "All" | LegislationLevel;
 type StatusFilter = "All" | "New" | "Passed";
@@ -138,6 +146,50 @@ export default function LegislationExplorer() {
     total: data.bills.length,
     shown: visible.length,
   };
+
+  const gridRef = useRef<HTMLDivElement | null>(null);
+
+  useGSAP(
+    () => {
+      if (typeof window === "undefined") return;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const items = gsap.utils.toArray<HTMLElement>(".spw-bill-item");
+
+      if (reduce) {
+        gsap.set(items, { scale: 1, clearProps: "all" });
+        return;
+      }
+
+      // Each bill card scrubs scale 0 → 1 → 0 across its full pass through the
+      // viewport: it grows in from its transform-origin corner, peaks at
+      // centre, then shrinks away — "comes and goes".
+      items.forEach((el) => {
+        if (el.dataset.expanded === "true") {
+          gsap.set(el, { scale: 1 });
+          return;
+        }
+
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: el,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          })
+          .fromTo(
+            el,
+            { scale: 0 },
+            { scale: 1, ease: "power2.out", duration: 0.5 },
+          )
+          .to(el, { scale: 0, ease: "power2.in", duration: 0.5 });
+      });
+
+      ScrollTrigger.refresh();
+    },
+    { scope: gridRef, dependencies: [visible.length, expandedId], revertOnUpdate: true },
+  );
 
   const doDiscover = () => {
     if (visible.length < 2) return;
@@ -376,30 +428,53 @@ export default function LegislationExplorer() {
               )}
             </div>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {visible.map((bill, i) => (
-                <BillCard
-                  key={bill.id}
-                  bill={bill}
-                  delay={i % CARD_LIMIT}
-                  expanded={expandedId === String(bill.id)}
-                  onToggleExpand={() => setExpandedId(expandedId === String(bill.id) ? null : String(bill.id))}
-                  onShare={() => setShareBill(bill)}
-                  onContact={() => setContactBill(bill)}
-                  onFilterLevel={(l) => {
-                    setLevel(l);
-                    document.getElementById("bill-grid")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  onFilterTopic={(t) => {
-                    setTopic(t);
-                    document.getElementById("bill-grid")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  onFilterStatus={(s) => {
-                    setStatus((cur) => (cur === s ? "All" : s));
-                    document.getElementById("bill-grid")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                />
-              ))}
+            <div ref={gridRef} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {visible.map((bill, i) => {
+                const isExpanded = expandedId === String(bill.id);
+                const colIndex = i % 3;
+                const origin =
+                  colIndex === 0
+                    ? "right bottom"
+                    : colIndex === 1
+                      ? "center bottom"
+                      : "left bottom";
+
+                return (
+                  <div
+                    key={bill.id}
+                    data-expanded={isExpanded ? "true" : "false"}
+                    className={cn(
+                      "spw-bill-item h-full",
+                      isExpanded && "sm:col-span-2 xl:col-span-3 z-10"
+                    )}
+                    style={{
+                      transformOrigin: isExpanded ? "center center" : origin,
+                      willChange: "transform",
+                    }}
+                  >
+                    <BillCard
+                      bill={bill}
+                      delay={i % CARD_LIMIT}
+                      expanded={isExpanded}
+                      onToggleExpand={() => setExpandedId(isExpanded ? null : String(bill.id))}
+                      onShare={() => setShareBill(bill)}
+                      onContact={() => setContactBill(bill)}
+                      onFilterLevel={(l) => {
+                        setLevel(l);
+                        document.getElementById("bill-grid")?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      onFilterTopic={(t) => {
+                        setTopic(t);
+                        document.getElementById("bill-grid")?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      onFilterStatus={(s) => {
+                        setStatus((cur) => (cur === s ? "All" : s));
+                        document.getElementById("bill-grid")?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                    />
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
