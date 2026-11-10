@@ -157,11 +157,14 @@ export function SVGFollower({
 
     private moveShape(shape: SVGElement, point: Point) {
       this.stage.appendChild(shape);
-      const driftX = point.position.x + point.direction.x * (Math.random() * 20) + point.drift.x * (Math.random() * 10);
-      const driftY = point.position.y + point.direction.y * (Math.random() * 20) + point.drift.y * (Math.random() * 10);
+      // Orbital tracking trajectory: particles curve in an orbit around the cursor point
+      const angle = Math.random() * Math.PI * 2;
+      const orbitDist = 16 + Math.random() * 32;
+      const orbitX = point.position.x + Math.cos(angle) * orbitDist + point.direction.x * 12;
+      const orbitY = point.position.y + Math.sin(angle) * orbitDist + point.direction.y * 12;
 
       shape.style.transform = `translate(${point.position.x}px, ${point.position.y}px)`;
-      shape.style.transition = "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease-out";
+      shape.style.transition = "transform 0.52s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease-out";
       shape.style.opacity = "1";
 
       // Failsafe auto-cleanup ensuring elements are always removed
@@ -172,11 +175,11 @@ export function SVGFollower({
       };
 
       requestAnimationFrame(() => {
-        shape.style.transform = `translate(${driftX}px, ${driftY}px) scale(0) rotate(${Math.random() * 360}deg)`;
+        shape.style.transform = `translate(${orbitX}px, ${orbitY}px) scale(0) rotate(${Math.random() * 360}deg)`;
         shape.style.opacity = "0";
       });
 
-      setTimeout(cleanup, 520);
+      setTimeout(cleanup, 530);
     }
 
     public destroy() {

@@ -10,6 +10,7 @@ import Ticker from "@/components/site/Ticker";
 import Pillars from "@/components/site/Pillars";
 import LegislationExplorer from "@/components/site/legislation/LegislationExplorer";
 import Testimonials3D from "@/components/site/Testimonials3D";
+import CivicOrbitSection from "@/components/site/CivicOrbitSection";
 import About from "@/components/site/About";
 import Team from "@/components/site/Team";
 import Donate from "@/components/site/Donate";
@@ -66,6 +67,9 @@ export default function Page() {
             </Link>
           </div>
         </section>
+
+        {/* Civic Orbit Tracking System — Direct after Civic Feedback / Testimonials */}
+        <CivicOrbitSection />
 
         <About />
         <Team />
