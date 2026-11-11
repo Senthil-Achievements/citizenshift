@@ -264,7 +264,9 @@ export default function LegislationExplorer() {
   );
 
   return (
-    <section id="legislation" className="scroll-mt-20 grain relative overflow-hidden bg-[#060913] text-paper border-none" aria-labelledby="legislation-heading">
+    <>
+      <div id="feed" className="scroll-mt-24 pointer-events-none" />
+      <section id="legislation" className="scroll-mt-20 grain relative overflow-hidden bg-[#060913] text-paper border-none" aria-labelledby="legislation-heading">
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.05]"
         aria-hidden="true"
@@ -337,6 +339,7 @@ export default function LegislationExplorer() {
             <label className="relative flex-1 sm:flex-none">
               <span className="sr-only">Choose a state feed</span>
               <select
+                id="state-feed-select"
                 value={state}
                 onChange={(e) => onStateChange(e.target.value)}
                 className="h-12 w-full rounded-xl border hairline-light bg-navy-800/80 px-4 text-sm font-medium text-paper focus:border-icy/50 sm:w-52"
@@ -499,5 +502,6 @@ export default function LegislationExplorer() {
         )}
       </div>
     </section>
+    </>
   );
 }

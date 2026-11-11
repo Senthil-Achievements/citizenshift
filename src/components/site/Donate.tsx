@@ -125,7 +125,7 @@ export default function Donate() {
   return (
     <section
       id="donate"
-      className="relative w-full overflow-hidden bg-[#060913] text-white py-14 sm:py-20 lg:py-24 select-none"
+      className="scroll-mt-24 relative w-full overflow-hidden bg-[#060913] text-white py-14 sm:py-20 lg:py-24 select-none"
       aria-labelledby="donate-heading"
     >
       {/* Background Animated Atmosphere Glows (Ultra-fast GPU radial gradients, 0 blur pass) */}

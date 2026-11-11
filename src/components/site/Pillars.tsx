@@ -25,7 +25,7 @@ const PILLARS: PillarSlide[] = [
     copy: "Legislation is complex, inaccessible, and time-consuming to follow. CitizenShift translates bills into a readable social-media style feed — plain-language summaries, policy areas, and status at a glance — so every American can follow what their government is actually doing.",
     image: "/photo/hearing.jpg",
     alt: "A Senate hearing room during a public legislative hearing",
-    href: "#feed",
+    href: "#legislation",
     actionText: "Explore Public Bills",
   },
   {
@@ -36,7 +36,7 @@ const PILLARS: PillarSlide[] = [
     copy: "Thousands of bills are introduced every year. CitizenShift personalises them by geography and policy interest — federal, state, and municipal — so your feed is built around the places and issues that shape your life.",
     image: "/photo/crowd.jpg",
     alt: "Crowds gathered on the National Mall in Washington DC",
-    href: "#feed",
+    href: "#legislation",
     actionText: "Filter Your State Feed",
   },
   {
@@ -58,7 +58,7 @@ const PILLARS: PillarSlide[] = [
     copy: "Democracy requires honesty. Every bill text, vote count, and sponsor is sourced directly from official state legislatures and Congress with zero partisan commentary or hidden agendas.",
     image: "/photo/hero.jpg",
     alt: "The United States Capitol glowing under evening lights",
-    href: "#feed",
+    href: "#legislation",
     actionText: "Inspect Full Record",
   },
 ];
@@ -268,6 +268,34 @@ export default function Pillars() {
                       {p.href && (
                         <a
                           href={p.href}
+                          onClick={(e) => {
+                            if (p.href?.startsWith("#")) {
+                              const targetId = p.href.slice(1);
+                              const target = document.getElementById(targetId);
+                              if (target) {
+                                e.preventDefault();
+                                if (typeof window !== "undefined" && window.__lenis) {
+                                  window.__lenis.scrollTo(target, { offset: -24, duration: 1.0 });
+                                } else {
+                                  target.scrollIntoView({ behavior: "smooth", block: "start" });
+                                }
+                                try {
+                                  history.replaceState(null, "", p.href);
+                                } catch {}
+
+                                if (p.actionText?.includes("State Feed")) {
+                                  setTimeout(() => {
+                                    const select = document.getElementById("state-feed-select") as HTMLSelectElement | null;
+                                    if (select) {
+                                      select.focus();
+                                      select.classList.add("ring-2", "ring-icy");
+                                      setTimeout(() => select.classList.remove("ring-2", "ring-icy"), 2000);
+                                    }
+                                  }, 850);
+                                }
+                              }
+                            }
+                          }}
                           className="inline-flex items-center gap-2.5 rounded-full border border-paper/30 bg-paper/15 px-5 py-2 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-paper backdrop-blur-md transition-all duration-300 hover:border-paper hover:bg-paper hover:text-navy active:scale-95"
                         >
                           <span>{p.actionText || "Learn More"}</span>

@@ -537,7 +537,7 @@ function LanyardBadgeItem({
             <div className="p-3 bg-black/45 border-t border-white/10 flex items-center justify-center gap-2.5">
               {/* Instagram */}
               <a
-                href={member.socials?.instagram || "#"}
+                href={member.socials?.instagram && member.socials.instagram !== "#" ? member.socials.instagram : "https://instagram.com/citizenshift"}
                 onClick={(e) => e.stopPropagation()}
                 onPointerDown={(e) => e.stopPropagation()}
                 target="_blank"
@@ -550,7 +550,7 @@ function LanyardBadgeItem({
 
               {/* Twitter / X */}
               <a
-                href={member.socials?.twitter || "#"}
+                href={member.socials?.twitter && member.socials.twitter !== "#" ? member.socials.twitter : "https://x.com/citizenshift"}
                 onClick={(e) => e.stopPropagation()}
                 onPointerDown={(e) => e.stopPropagation()}
                 target="_blank"
@@ -563,7 +563,7 @@ function LanyardBadgeItem({
 
               {/* LinkedIn */}
               <a
-                href={member.socials?.linkedin || "#"}
+                href={member.socials?.linkedin && member.socials.linkedin !== "#" ? member.socials.linkedin : "https://www.linkedin.com/company/citizenshift/posts/?feedView=all"}
                 onClick={(e) => e.stopPropagation()}
                 onPointerDown={(e) => e.stopPropagation()}
                 target="_blank"
