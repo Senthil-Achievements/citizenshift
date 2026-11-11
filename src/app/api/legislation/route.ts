@@ -39,8 +39,10 @@ function getFallbackBills(state: string, q: string): Bill[] {
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const state = (searchParams.get("state") || "FL").toUpperCase().slice(0, 2);
-  const q = (searchParams.get("q") || "").trim();
+  const rawState = (searchParams.get("state") || "FL").toUpperCase().slice(0, 2);
+  const state = /^[A-Z]{2}$/.test(rawState) ? rawState : "FL";
+  // Bound query length to 100 characters to prevent ReDoS / upstream query flooding
+  const q = (searchParams.get("q") || "").trim().slice(0, 100);
 
   const upstream = q
     ? `${UPSTREAM}/api/bills/search?state=${encodeURIComponent(state)}&q=${encodeURIComponent(q)}`
