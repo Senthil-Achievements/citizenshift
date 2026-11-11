@@ -16,7 +16,7 @@ import Team from "@/components/site/Team";
 import Donate from "@/components/site/Donate";
 import ContactSection from "@/components/site/ContactSection";
 import Footer from "@/components/site/Footer";
-import { ProjectDeck } from "@/components/ui/ProjectDeck";
+import { ScrollStackSection } from "@/components/motion/ScrollStackSection";
 
 export const metadata: Metadata = {
   title: "CitizenShift — Bringing Power to the People",
@@ -68,7 +68,7 @@ export default function Page() {
 
           <Testimonials3D />
 
-          <div className="mt-10 text-center relative z-10 mb-8">
+          <div className="mt-8 text-center relative z-10">
             <Link
               href="/testimonials"
               className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 font-mono text-[11px] uppercase tracking-[0.2em] text-white transition-all duration-300 hover:border-white hover:bg-white hover:text-navy shadow-sm"
@@ -77,18 +77,27 @@ export default function Page() {
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </Link>
           </div>
-
-          {/* Horizontal Scroll Effect: Pinned 50-State Civic Voices Track */}
-          <CivicHorizontalScroll />
         </section>
 
-        {/* Project Deck: Scroll-dealt 3D Deck Effect (starts from feedback page to footer) */}
-        <ProjectDeck>
+        {/* 50-State Civic Voices Horizontal Stream (Zero dead space) */}
+        <CivicHorizontalScroll />
+
+        {/* 3D Scroll Stack Animation: Applied directly to CitizenShift's own sections */}
+        <ScrollStackSection index={0}>
           <About />
+        </ScrollStackSection>
+
+        <ScrollStackSection index={1}>
           <Team />
+        </ScrollStackSection>
+
+        <ScrollStackSection index={2}>
           <Donate />
+        </ScrollStackSection>
+
+        <ScrollStackSection index={3}>
           <ContactSection />
-        </ProjectDeck>
+        </ScrollStackSection>
       </main>
       <Footer />
     </>

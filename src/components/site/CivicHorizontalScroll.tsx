@@ -115,10 +115,10 @@ export function CivicHorizontalScroll() {
   return (
     <div
       ref={targetRef}
-      className="relative h-[230vh] w-full select-none"
+      className="relative h-[170vh] w-full select-none bg-[#060913]"
     >
       {/* Pinned Viewport Container */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center bg-[#060913]">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-start pt-12 sm:pt-16 md:pt-20 bg-[#060913]">
         {/* Subtle Ambient Radial Lighting */}
         <div
           className="pointer-events-none absolute -top-24 left-1/4 size-96 rounded-full bg-[radial-gradient(circle_at_center,rgba(79,70,229,0.18)_0%,transparent_70%)] transform-gpu will-change-transform"

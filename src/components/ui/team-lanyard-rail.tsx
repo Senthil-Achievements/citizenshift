@@ -672,6 +672,15 @@ export default function TeamLanyardRail({
   className = "",
 }: TeamLanyardRailProps) {
   const runwayRef = useRef<HTMLDivElement>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 1024px)");
+    setIsDesktop(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   // Pinned Horizontal Scroll driven by vertical scroll progress
   const { scrollYProgress } = useScroll({
@@ -679,14 +688,15 @@ export default function TeamLanyardRail({
     offset: ["start start", "end end"],
   });
 
-  // Calculate horizontal translation across the leaders
-  const x = useTransform(scrollYProgress, [0, 1], ["5%", "-38%"]);
+  // Calculate horizontal translation: on desktop, badges span the rail evenly. On mobile/tablet, glides across.
+  const xMobile = useTransform(scrollYProgress, [0, 1], ["0%", "-42%"]);
+  const x = isDesktop ? "0%" : xMobile;
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["25%", "100%"]);
 
   return (
-    <div ref={runwayRef} className={`relative h-[220vh] w-full select-none ${className}`}>
-      {/* Sticky Fullscreen Stage */}
-      <section className="sticky top-0 h-screen w-full bg-[#060913] flex flex-col justify-center overflow-hidden border-none">
+    <div ref={runwayRef} className={`relative h-[150vh] lg:h-auto lg:py-16 w-full select-none ${className}`}>
+      {/* Stage: Sticky on mobile/tablet runway, natural centered stage on desktop */}
+      <section className="sticky lg:relative top-0 min-h-screen lg:min-h-0 w-full bg-[#060913] flex flex-col justify-center overflow-hidden border-none py-12 sm:py-16">
         {/* Floating Ambient Aurora Glow Bridging About & Team (Ultra-fast radial gradients) */}
         <div className="pointer-events-none absolute -top-28 left-1/3 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.18)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
         <div className="pointer-events-none absolute -bottom-28 right-1/4 size-80 rounded-full bg-[radial-gradient(circle_at_center,rgba(244,63,94,0.16)_0%,transparent_70%)] transform-gpu will-change-transform" aria-hidden="true" />
@@ -709,15 +719,15 @@ export default function TeamLanyardRail({
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sky-400 font-mono text-[10px] sm:text-[11px] uppercase tracking-widest mb-3">
                 <span className="size-1.5 rounded-full bg-sky-400 animate-pulse" />
-                <span>Leadership Rail · Horizontal Scroll Experience</span>
+                <span>Leadership Rail · Interactive Team Experience</span>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
                 {title}
               </h2>
             </div>
 
-            {/* Scroll Indicator & Progress */}
-            <div className="flex flex-col items-start sm:items-end gap-1.5 shrink-0">
+            {/* Scroll Indicator & Progress (shown on mobile/tablet or when scrolling) */}
+            <div className="flex flex-col items-start sm:items-end gap-1.5 shrink-0 lg:hidden">
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/50">
                 [ 4 Leaders · Scroll to glide across rail ]
               </span>
@@ -731,15 +741,15 @@ export default function TeamLanyardRail({
           </div>
 
           {/* ========================================================
-              THE METALLIC RAIL & SUSPENDED LANYARD BADGES (HORIZONTAL GLIDE)
+              THE METALLIC RAIL & SUSPENDED LANYARD BADGES
              ======================================================== */}
           <div className="relative w-full overflow-hidden">
             <motion.div
               style={{ x }}
-              className="relative min-w-[1550px] pb-10 pt-2 flex flex-col items-start will-change-transform transform-gpu"
+              className="relative w-full min-w-[1100px] lg:min-w-0 pb-10 pt-2 flex flex-col items-start will-change-transform transform-gpu"
             >
               {/* 1. Left Wall Mounting Flange Bracket */}
-              <div className="absolute left-2 sm:left-4 top-2 z-30 flex flex-col items-center pointer-events-none">
+              <div className="absolute left-1 sm:left-2 top-2 z-30 flex flex-col items-center pointer-events-none">
                 <div className="w-5 h-9 rounded-sm bg-gradient-to-r from-zinc-700 via-zinc-400 to-zinc-600 border border-zinc-500 shadow-md flex flex-col justify-around py-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
@@ -747,21 +757,21 @@ export default function TeamLanyardRail({
               </div>
 
               {/* 2. Brushed Aluminum Metal Pipe Rail */}
-              <div className="relative w-full h-3 z-10 mx-4 pointer-events-none">
+              <div className="relative w-full h-3 z-10 mx-2 pointer-events-none">
                 <div className="absolute -bottom-2 inset-x-0 h-3 bg-black/40 blur-xs rounded-full" />
                 <div className="w-full h-full rounded-full bg-gradient-to-b from-zinc-100 via-zinc-300 to-zinc-500 border-t border-b border-zinc-200 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_2px_4px_rgba(0,0,0,0.6)]" />
               </div>
 
               {/* 3. Right Wall Mounting Flange Bracket */}
-              <div className="absolute right-2 sm:right-4 top-2 z-30 flex flex-col items-center pointer-events-none">
+              <div className="absolute right-1 sm:right-2 top-2 z-30 flex flex-col items-center pointer-events-none">
                 <div className="w-5 h-9 rounded-sm bg-gradient-to-r from-zinc-600 via-zinc-400 to-zinc-700 border border-zinc-500 shadow-md flex flex-col justify-around py-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
                   <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 mx-auto shadow-inner" />
                 </div>
               </div>
 
-              {/* 4. Suspended Badges: 4 Leaders with Generous Stage Clearances */}
-              <div className="relative -mt-3.5 z-20 w-full flex items-start justify-start gap-8 sm:gap-12 md:gap-16 lg:gap-20 px-12 sm:px-16">
+              {/* 4. Suspended Badges: 4 Leaders Balanced Evenly Across the Rail */}
+              <div className="relative -mt-3.5 z-20 w-full flex items-start justify-between px-6 sm:px-10 lg:px-14">
                 {members.map((member, idx) => (
                   <LanyardBadgeItem
                     key={member.id}
