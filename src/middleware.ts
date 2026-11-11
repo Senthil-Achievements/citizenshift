@@ -35,6 +35,27 @@ function isProtected(pathname: string): boolean {
 }
 
 export async function middleware(request: NextRequest) {
+  const { pathname, search } = request.nextUrl;
+  const lower = pathname.toLowerCase();
+
+  // Proactive Security Filter: immediately block attempts to probe .env, .git, or system files
+  if (
+    lower.startsWith("/.env") ||
+    lower.startsWith("/.git") ||
+    lower.startsWith("/.svn") ||
+    lower.startsWith("/.hg") ||
+    lower.startsWith("/.aws") ||
+    lower.startsWith("/.ssh") ||
+    lower.includes("/..") ||
+    lower.endsWith(".env") ||
+    lower.endsWith(".sql") ||
+    lower.endsWith(".config") ||
+    lower.endsWith(".bak") ||
+    lower.endsWith(".backup")
+  ) {
+    return new NextResponse("Not Found", { status: 404 });
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
   const key =
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim() ||
@@ -42,8 +63,6 @@ export async function middleware(request: NextRequest) {
 
   // Unconfigured deployment: let the request through untouched.
   if (!url || !key) return NextResponse.next({ request });
-
-  const { pathname, search } = request.nextUrl;
 
   let response = NextResponse.next({ request });
 
