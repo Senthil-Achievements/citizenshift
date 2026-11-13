@@ -25,8 +25,14 @@ const mono = IBM_Plex_Mono({
 
 const TAGLINE = "Understand legislation. Stay informed. Make your voice heard.";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : null) ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
+  "https://citizenshift-rebuild.vercel.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://citizenshift.us"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "CitizenShift — Bringing Power to the People",
     template: "%s — CitizenShift",
@@ -45,17 +51,30 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://citizenshift.us",
+    url: siteUrl,
     siteName: "CitizenShift",
     title: "CitizenShift — Bringing Power to the People",
     description: TAGLINE,
-    images: [{ url: "/photo/hero.jpg", width: 1920, height: 1080, alt: "The United States Capitol at dusk" }],
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 576,
+        height: 1024,
+        alt: "CitizenShift — Bringing Power to the People",
+      },
+      {
+        url: "/og-landscape.jpg",
+        width: 1200,
+        height: 630,
+        alt: "CitizenShift — Bringing Power to the People",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "CitizenShift — Bringing Power to the People",
     description: TAGLINE,
-    images: ["/photo/hero.jpg"],
+    images: ["/og-image.jpg"],
   },
   icons: { icon: "/brand/logo.png", apple: "/brand/logo.png" },
 };
