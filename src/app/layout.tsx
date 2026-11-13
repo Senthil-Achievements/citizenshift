@@ -58,12 +58,6 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/og-image.jpg",
-        width: 576,
-        height: 1024,
-        alt: "CitizenShift — Bringing Power to the People",
-      },
-      {
-        url: "/og-landscape.jpg",
         width: 1200,
         height: 630,
         alt: "CitizenShift — Bringing Power to the People",
